@@ -21,6 +21,7 @@ namespace InventoryManagementApp.Helper
             CreateMap<MaintenanceActivity, MaintenanceActivityVM>();
             CreateMap<Truck, TruckVM>();
             CreateMap<TruckStockItem, TruckStockItemVM>();
+            CreateMap<Company, CompanyVM>();
         }   
     }
 }
