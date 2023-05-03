@@ -26,5 +26,17 @@ namespace InventoryManagementApp.Data.Repository
         {
             return _context.StockItems.Any(i => i.StockItemID == stockitemID);
         }
+
+        public bool CreateStockItem(StockItem stockitem)
+        {
+            _context.Add(stockitem);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
     }
 }
