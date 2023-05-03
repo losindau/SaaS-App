@@ -507,6 +507,60 @@ namespace InventoryManagementApp.Data
                     context.AddRange(toolboxequipment);
                     context.SaveChanges();
                 }
+
+                //UsageLog
+                var usagelogs = new List<UsageLog>()
+                {
+                    new UsageLog()
+                    {
+                        Date = DateTime.Now,
+                        TruckID = 1,
+                        CompanyID = 1
+                    }
+                };
+                if (!context.UsageLogs.Any())
+                {
+                    context.AddRange(usagelogs);
+                    context.SaveChanges();
+                }
+
+                //DetailUsageLog
+                var detailusagelogs = new List<DetailUsageLog>()
+                {
+                    new DetailUsageLog()
+                    {
+                        StockItemID = 1,
+                        Quantity = 1,
+                        UsageLogID = 1,
+                        CompanyID=1
+                    },
+                    new DetailUsageLog()
+                    {
+                        StockItemID = 2,
+                        Quantity = 1,
+                        UsageLogID = 1,
+                        CompanyID=1
+                    },
+                    new DetailUsageLog()
+                    {
+                        StockItemID = 3,
+                        Quantity = 1,
+                        UsageLogID = 1,
+                        CompanyID=1
+                    },
+                    new DetailUsageLog()
+                    {
+                        StockItemID = 4,
+                        Quantity = 1,
+                        UsageLogID = 1,
+                        CompanyID=1
+                    }
+                };
+                if (!context.DetailUsageLogs.Any())
+                {
+                    context.AddRange(detailusagelogs);
+                    context.SaveChanges();
+                }
             }
         }
 
