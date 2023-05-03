@@ -20,6 +20,7 @@ builder.Services.AddScoped<IEquipmentRepository, EquipmentRepository>();
 builder.Services.AddScoped<IUsageLogRepository, UsageLogRepository>();
 builder.Services.AddScoped<IRestockLogRepository, RestockLogRepository>();
 builder.Services.AddScoped<IEqDamageLogRepository, EqDamageLogRepository>();
+builder.Services.AddScoped<ITruckRepository, TruckRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
