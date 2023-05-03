@@ -1,14 +1,14 @@
 ﻿using InventoryManagementApp.Data.Enum;
 
-namespace InventoryManagementApp.Models
+namespace InventoryManagementApp.Data.ViewModels
 {
-    public class StockItem
+    public class StockItemVM
     {
         public int StockItemID { get; set; }
         public string Name { get; set; }
         public StockItemType Type { get; set; }
         public int Quantity { get; set; }
         public QuantityState QuantityState { get; set; }
-        public ICollection<TruckStockItem> TruckStockItems { get; set; }
+        public int? CompanyID { get; set; }
     }
 }
