@@ -561,6 +561,63 @@ namespace InventoryManagementApp.Data
                     context.AddRange(detailusagelogs);
                     context.SaveChanges();
                 }
+
+                //RestockLog
+                var restocklogs = new List<RestockLog>()
+                {
+                    new RestockLog()
+                    {
+                        RequestDate = DateTime.Now,
+                        LogState = LogState.Pending,
+                        RestockDate = DateTime.Now,
+                        RestockState = RestockState.Restocked,
+                        TruckID = 1,
+                        CompanyID = 1
+                    }
+                };
+                if (!context.RestockLogs.Any())
+                {
+                    context.AddRange(restocklogs);
+                    context.SaveChanges();
+                }
+
+                //DetailRestockLog
+                var detailrestocklogs = new List<DetailRestockLog>()
+                {
+                    new DetailRestockLog()
+                    {
+                        StockItemID = 1,
+                        Quantity = 1,
+                        RestockLogID = 1,
+                        CompanyID=1
+                    },
+                    new DetailRestockLog()
+                    {
+                        StockItemID = 2,
+                        Quantity = 1,
+                        RestockLogID = 1,
+                        CompanyID=1
+                    },
+                    new DetailRestockLog()
+                    {
+                        StockItemID = 3,
+                        Quantity = 1,
+                        RestockLogID = 1,
+                        CompanyID=1
+                    },
+                    new DetailRestockLog()
+                    {
+                        StockItemID = 4,
+                        Quantity = 1,
+                        RestockLogID = 1,
+                        CompanyID=1
+                    }
+                };
+                if (!context.DetailRestockLogs.Any())
+                {
+                    context.AddRange(detailrestocklogs);
+                    context.SaveChanges();
+                }
             }
         }
 

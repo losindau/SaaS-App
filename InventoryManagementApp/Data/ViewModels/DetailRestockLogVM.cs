@@ -2,13 +2,13 @@
 
 namespace InventoryManagementApp.Data.ViewModels
 {
-    public class DetailUsageLogVM
+    public class DetailRestockLogVM
     {
-        public int DetailUsageLogID { get; set; }
+        public int DetailRestockLogID { get; set; }
         public int? StockItemID { get; set; }
         public StockItem? StockItem { get; set; }
         public int Quantity { get; set; }
-        public int? UsageLogID { get; set; }
+        public int? RestockLogID { get; set; }
         public int? CompanyID { get; set; }
     }
 }
