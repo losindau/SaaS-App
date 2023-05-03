@@ -13,7 +13,9 @@ namespace InventoryManagementApp.Helper
             CreateMap<UsageLog, UsageLogVM>();
             CreateMap<DetailUsageLog, DetailUsageLogVM>();
             CreateMap<RestockLog, RestockLogVM>();
-            CreateMap<DetailRestockLog, DetailRestockLogVM>();
+            CreateMap<DetailRestockLog, DetailRestockLogVM>(); 
+            CreateMap<EqDamageLog, EqDamageLogVM>();
+            CreateMap<DetailEqDamageLog, DetailEqDamageLogVM>();
         }   
     }
 }

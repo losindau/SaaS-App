@@ -618,6 +618,67 @@ namespace InventoryManagementApp.Data
                     context.AddRange(detailrestocklogs);
                     context.SaveChanges();
                 }
+
+                //EqDamageLog
+                var eqdamagelog = new List<EqDamageLog>()
+                {
+                    new EqDamageLog()
+                    {
+                        ReportDate = DateTime.Now,
+                        LogState = LogState.Pending,
+                        ReplaceDate = DateTime.Now,
+                        RestockState = RestockState.Restocked,
+                        ToolboxID = 1,
+                        CompanyID = 1
+                    }
+                };
+                if (!context.EqDamageLogs.Any())
+                {
+                    context.AddRange(eqdamagelog);
+                    context.SaveChanges();
+                }
+
+                //DetailRestockLog
+                var detaileqdamagelogs = new List<DetailEqDamageLog>()
+                {
+                    new DetailEqDamageLog()
+                    {
+                        EquipmentID = 1,
+                        Quantity = 1,
+                        Comment = "This is Comment",
+                        EqDamageLogID = 1,
+                        CompanyID=1
+                    },
+                    new DetailEqDamageLog()
+                    {
+                        EquipmentID = 2,
+                        Quantity = 1,
+                        Comment = "This is Comment",
+                        EqDamageLogID = 1,
+                        CompanyID=1
+                    },
+                    new DetailEqDamageLog()
+                    {
+                        EquipmentID = 3, 
+                        Quantity = 1, 
+                        Comment = "This is Comment", 
+                        EqDamageLogID = 1,
+                        CompanyID=1
+                    },
+                    new DetailEqDamageLog()
+                    {
+                        EquipmentID = 4, 
+                        Quantity = 1, 
+                        Comment = "This is Comment", 
+                        EqDamageLogID = 1,
+                        CompanyID=1
+                    }
+                };
+                if (!context.DetailEqDamageLogs.Any())
+                {
+                    context.AddRange(detaileqdamagelogs);
+                    context.SaveChanges();
+                }
             }
         }
 

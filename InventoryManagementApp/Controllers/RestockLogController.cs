@@ -18,6 +18,7 @@ namespace InventoryManagementApp.Controllers
             this._restockLogRepository = restockLogRepository;
             this._mapper = mapper;
         }
+
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<RestockLog>))]
         public IActionResult GetRestockLog()
@@ -47,14 +48,15 @@ namespace InventoryManagementApp.Controllers
                 return NotFound();
             }
 
-            var usagelog = _mapper.Map<RestockLogVM>(_restockLogRepository.RestockLogExists(restocklogID));
+            var restocklog = _mapper.Map<RestockLogVM>(_restockLogRepository.GetRestockLogById(restocklogID));
+            restocklog.DetailRestockLogs = _mapper.Map<List<DetailRestockLogVM>>(_restockLogRepository.GetDetailRestockLogs(restocklogID));
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            return Ok(usagelog);
+            return Ok(restocklog);
         }
     }
 }

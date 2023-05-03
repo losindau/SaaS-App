@@ -49,6 +49,7 @@ namespace InventoryManagementApp.Controllers
             }
 
             var usagelog = _mapper.Map<UsageLogVM>(_usageLogRepository.GetUsageLogById(usagelogID));
+            usagelog.DetailUsageLogs = _mapper.Map<List<DetailUsageLogVM>>(_usageLogRepository.GetDetailUsageLogs(usagelogID));
 
             if (!ModelState.IsValid)
             {
