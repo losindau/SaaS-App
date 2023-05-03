@@ -9,6 +9,7 @@ namespace InventoryManagementApp.Helper
         public MappingProfiles()
         {
             CreateMap<StockItem, StockItemVM>();
+            CreateMap<StockItemVM, StockItem>();
             CreateMap<Equipment, EquipmentVM>();
             CreateMap<UsageLog, UsageLogVM>();
             CreateMap<DetailUsageLog, DetailUsageLogVM>();

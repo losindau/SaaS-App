@@ -52,5 +52,34 @@ namespace InventoryManagementApp.Controllers
 
             return Ok(stockitem);
         }
+
+        [HttpPost]
+        public IActionResult CreateStockItem([FromBody] StockItemVM stockitemCreate)
+        {
+            if (stockitemCreate == null)
+            {
+                return BadRequest(ModelState);                
+            }
+
+            var stockitems = _stockItemRepository.GetStockItems()
+                .Where(i => i.Name.Trim().ToLower().Equals(stockitemCreate.Name.Trim().ToLower()))
+                .FirstOrDefault();
+
+            if (stockitems != null)
+            {
+                ModelState.AddModelError("", "This item is already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            var stockitemMap = _mapper.Map<StockItem>(stockitemCreate);
+
+            if (!_stockItemRepository.CreateStockItem(stockitemMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
+        }
     }
 }
