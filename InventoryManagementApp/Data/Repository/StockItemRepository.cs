@@ -14,7 +14,7 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<StockItem> GetStockItems()
         {
-            return _context.StockItems.OrderBy(i => i.StockItemID).ToList();
+            return _context.StockItems.Where(i => i.isDeleted == false).OrderBy(i => i.StockItemID).ToList();
         }
 
         public StockItem GetStockItemById(int stockitemID)
@@ -24,7 +24,7 @@ namespace InventoryManagementApp.Data.Repository
 
         public bool StockItemExists(int stockitemID)
         {
-            return _context.StockItems.Any(i => i.StockItemID == stockitemID);
+            return _context.StockItems.Where(i => i.isDeleted == false).Any(i => i.StockItemID == stockitemID);
         }
 
         public bool CreateStockItem(StockItem stockitem)

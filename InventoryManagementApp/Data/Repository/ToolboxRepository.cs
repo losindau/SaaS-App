@@ -19,17 +19,35 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<ToolboxEquipment> GetToolboxEquipments(int toolboxID)
         {
-            return _context.ToolboxEquipment.Where(t => t.ToolboxID == toolboxID).ToList();
+            return _context.ToolboxEquipment.Where(t => t.ToolboxID == toolboxID &&t.isDeleted == false).ToList();
         }
 
         public ICollection<Toolbox> GetToolboxes()
         {
-            return _context.Toolboxes.OrderBy(t => t.ToolboxID).ToList();
+            return _context.Toolboxes.Where(t => t.isDeleted == false).OrderBy(t => t.ToolboxID).ToList();
         }
 
         public bool ToolboxExists(int toolboxID)
         {
-            return _context.Toolboxes.Any(t => t.ToolboxID == toolboxID);
+            return _context.Toolboxes.Where(t => t.isDeleted == false).Any(t => t.ToolboxID == toolboxID);
+        }     
+        
+        public bool CreateToolbox(Toolbox toolbox)
+        {
+            _context.Add(toolbox);
+            return Save();
+        }
+
+        public bool CreateToolboxEquipments(List<ToolboxEquipment> toolboxEquipment)
+        {
+            _context.AddRange(toolboxEquipment);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

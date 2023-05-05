@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.Repository;
 using InventoryManagementApp.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryManagementApp.Controllers
@@ -57,6 +59,39 @@ namespace InventoryManagementApp.Controllers
             }
 
             return Ok(truck);
+        }
+
+        [HttpPost]
+        public IActionResult CreateTruck(TruckVM truckCreate)
+        {
+            if (truckCreate == null || truckCreate.TruckStockItems == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var truckMap = _mapper.Map<Truck>(truckCreate);
+
+            if (!_truckRepository.CreateTruck(truckMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            List<TruckStockItem> truckStockItemMaps = new List<TruckStockItem>();
+
+            foreach (TruckStockItemVM item in truckCreate.TruckStockItems)
+            {
+                var truckStockItemMap = _mapper.Map<TruckStockItem>(item);
+                truckStockItemMaps.Add(truckStockItemMap);
+            }
+
+            if (!_truckRepository.CreateTruckStockItems(truckStockItemMaps))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

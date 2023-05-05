@@ -14,6 +14,7 @@ namespace InventoryManagementApp.Data.Models
         public QualityState QualityState { get; set; }
         public int? CompanyID { get; set; }
         public Company? Company { get; set; }
+        public bool isDeleted { get; set; }
 
         public ICollection<ToolboxEquipment>? ToolboxEquipments { get; set; }
         public ICollection<DetailEqDamageLog>? DetailEqDamageLogs { get; set; }

@@ -11,5 +11,6 @@ namespace InventoryManagementApp.Data.ViewModels
         public string Comment { get; set; }
         public int? EqDamageLogID { get; set; }
         public int? CompanyID { get; set; }
+        public bool isDeleted { get; set; }
     }
 }

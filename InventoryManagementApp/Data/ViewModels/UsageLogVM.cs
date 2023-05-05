@@ -11,6 +11,7 @@ namespace InventoryManagementApp.Data.ViewModels
         [ForeignKey("AppUser")]
         public string? AppUserID { get; set; }
         public int? CompanyID { get; set; }
+        public bool isDeleted { get; set; }
 
         public ICollection<DetailUsageLogVM>? DetailUsageLogs { get; set; }
     }

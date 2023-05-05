@@ -6,6 +6,8 @@ namespace InventoryManagementApp.Data.Interfaces
     {
         ICollection<Company> GetCompanys();
         Company GetCompanyById(int companyID);
-        bool CompanyExists(int companyID);
+        bool CompanyExists(int companyID); 
+        bool CreateCompany(Company company);
+        bool Save();
     }
 }

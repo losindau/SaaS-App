@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.Repository;
 using InventoryManagementApp.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryManagementApp.Controllers
@@ -57,6 +59,39 @@ namespace InventoryManagementApp.Controllers
             }
 
             return Ok(restocklog);
+        }
+
+        [HttpPost]
+        public IActionResult CreateRestockLog(RestockLogVM restockLogCreate)
+        {
+            if (restockLogCreate == null || restockLogCreate.DetailRestockLogs == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var restockLogMap = _mapper.Map<RestockLog>(restockLogCreate);
+
+            if (!_restockLogRepository.CreateRestockLog(restockLogMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            List<DetailRestockLog> detaiRestockLogMaps = new List<DetailRestockLog>();
+
+            foreach (DetailRestockLogVM item in restockLogCreate.DetailRestockLogs)
+            {
+                var detaiRestockLogMap = _mapper.Map<DetailRestockLog>(item);
+                detaiRestockLogMaps.Add(detaiRestockLogMap);
+            }
+
+            if (!_restockLogRepository.CreateDetailRestockLogs(detaiRestockLogMaps))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

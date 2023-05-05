@@ -11,9 +11,10 @@ namespace InventoryManagementApp.Data.Repository
         {
             this._context = context;
         }
+
         public bool CompanyExists(int companyID)
         {
-            return _context.Companies.Any(c => c.CompanyID == companyID);
+            return _context.Companies.Where(c => c.isDeleted == false).Any(c => c.CompanyID == companyID);
         }
 
         public Company GetCompanyById(int companyID)
@@ -23,7 +24,19 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<Company> GetCompanys()
         {
-            return _context.Companies.OrderBy(c => c.CompanyID).ToList();
+            return _context.Companies.Where(c => c.isDeleted == false).OrderBy(c => c.CompanyID).ToList();
+        }
+
+        public bool CreateCompany(Company company)
+        {
+            _context.Add(company);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

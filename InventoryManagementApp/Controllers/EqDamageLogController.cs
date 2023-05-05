@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.Repository;
 using InventoryManagementApp.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryManagementApp.Controllers
@@ -58,6 +60,39 @@ namespace InventoryManagementApp.Controllers
             }
 
             return Ok(eqdamagelog);
+        }
+
+        [HttpPost]
+        public IActionResult CreateEqDamageLog(EqDamageLogVM eqDamageLogCreate)
+        {
+            if (eqDamageLogCreate == null || eqDamageLogCreate.DetailEqDamageLogs == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var eqDamageLogMap = _mapper.Map<EqDamageLog>(eqDamageLogCreate);
+
+            if (!_eqDamageLogRepository.CreateEqDamageLog(eqDamageLogMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            List<DetailEqDamageLog> detaiEqDamageLogMaps = new List<DetailEqDamageLog>();
+
+            foreach (DetailEqDamageLogVM item in eqDamageLogCreate.DetailEqDamageLogs)
+            {
+                var detaiEqDamageLogMap = _mapper.Map<DetailEqDamageLog>(item);
+                detaiEqDamageLogMaps.Add(detaiEqDamageLogMap);
+            }
+
+            if (!_eqDamageLogRepository.CreateDetailEqDamageLogs(detaiEqDamageLogMaps))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

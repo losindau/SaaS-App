@@ -23,6 +23,7 @@ namespace InventoryManagementApp.Data
                             Address = "56 Nguyen Dinh Chieu",
                             Phone = 123456789,
                             Email = "ueha@gmail.com",
+                            isDeleted = false
                         },
                         new Company()
                         {
@@ -30,6 +31,7 @@ namespace InventoryManagementApp.Data
                             Address = "56 Nguyen Dinh Chieu",
                             Phone = 123456789,
                             Email = "uehb@gmail.com",
+                            isDeleted = false
                         }
                     };
                 if (!context.Companies.Any())
@@ -43,43 +45,53 @@ namespace InventoryManagementApp.Data
                     {
                         new Toolbox()
                         {
-                            CompanyID = 1
+                            CompanyID = 1,
+                            isDeleted = false
                         },
                         new Toolbox()
                         {
-                            CompanyID = 1
+                            CompanyID = 1,
+                            isDeleted = false
                         },
                         new Toolbox()
                         {
-                            CompanyID = 1
+                            CompanyID = 1,
+                            isDeleted = false
                         },
                         new Toolbox()
                         {
-                            CompanyID = 1
+                            CompanyID = 1,
+                            isDeleted = false
                         },
                         new Toolbox()
                         {
-                            CompanyID = 1
+                            CompanyID = 1,
+                            isDeleted = false
                         },
                         new Toolbox()
                         {
-                            CompanyID = 2
+                            CompanyID = 2,
+                            isDeleted = false
                         },
                         new Toolbox()
                         {
-                            CompanyID = 2
+                            CompanyID = 2,
+                            isDeleted = false
                         },
                         new Toolbox()
                         {
-                            CompanyID = 2
+                            CompanyID = 2,
+                            isDeleted = false
                         },
                         new Toolbox()
                         {
-                            CompanyID = 2
+                            CompanyID = 2,
+                            isDeleted = false
                         },
                         new Toolbox()
                         {
-                            CompanyID = 2
+                            CompanyID = 2,
+                            isDeleted = false
                         },
                     };
                 if (!context.Toolboxes.Any())
@@ -96,70 +108,80 @@ namespace InventoryManagementApp.Data
                             Model = "Ford F150",
                             LicensePlate = "ABC123",
                             ToolboxID = 1,
-                            CompanyID = 1
+                            CompanyID = 1,
+                            isDeleted = true
                         },
                         new Truck()
                         {
                             Model = "Chevy Silverado",
                             LicensePlate = "DEF456",
                             ToolboxID = 2,
-                            CompanyID = 1
+                            CompanyID = 1,
+                            isDeleted = false
                         },
                         new Truck()
                         {
                             Model = "GMC Sierra",
                             LicensePlate = "GHI789",
                             ToolboxID = 3,
-                            CompanyID = 1
+                            CompanyID = 1,
+                            isDeleted = false
                         },
                         new Truck()
                         {
                             Model = "Dodge Ram",
                             LicensePlate = "JKL012",
                             ToolboxID = 4,
-                            CompanyID = 1
+                            CompanyID = 1,
+                            isDeleted = false
                         },
                         new Truck()
                         {
                             Model = "Toyota Taconma",
                             LicensePlate = "MNO345",
                             ToolboxID = 5,
-                            CompanyID = 1
+                            CompanyID = 1,
+                            isDeleted = false
                         },
                         new Truck()
                         {
                             Model = "Ford F150",
                             LicensePlate = "PQR678",
                             ToolboxID = 6,
-                            CompanyID = 2
+                            CompanyID = 2,
+                            isDeleted = false
                         },
                         new Truck()
                         {
                             Model = "Chevy Silverado",
                             LicensePlate = "STU901",
                             ToolboxID = 7,
-                            CompanyID = 2
+                            CompanyID = 2,
+                            isDeleted = false
                         },
                         new Truck()
                         {
                             Model = "GMC Sierra",
                             LicensePlate = "VWX234",
                             ToolboxID = 8,
-                            CompanyID = 2
+                            CompanyID = 2,
+                            isDeleted = false
                         },
                         new Truck()
                         {
                             Model = "Dodge Ram",
                             LicensePlate = "YZA567",
                             ToolboxID = 9,
-                            CompanyID = 2
+                            CompanyID = 2,
+                            isDeleted = false
                         },
                         new Truck()
                         {
                             Model = "Toyota Taconma",
                             ToolboxID = 10,
                             LicensePlate = "BCD890",
-                            CompanyID = 2
+                            CompanyID = 2,
+                            isDeleted = false
                         }
                     };
                 if (!context.Trucks.Any())
@@ -177,7 +199,8 @@ namespace InventoryManagementApp.Data
                         Type = StockItemType.Wiring,
                         Quantity = 500,
                         QuantityState = QuantityState.High,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new StockItem()
                     {
@@ -185,7 +208,8 @@ namespace InventoryManagementApp.Data
                         Type = StockItemType.Lighting,
                         Quantity = 500,
                         QuantityState = QuantityState.High,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new StockItem()
                     {
@@ -193,7 +217,8 @@ namespace InventoryManagementApp.Data
                         Type = StockItemType.Switches,
                         Quantity = 500,
                         QuantityState = QuantityState.High,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new StockItem()
                     {
@@ -201,7 +226,8 @@ namespace InventoryManagementApp.Data
                         Type = StockItemType.Electrical,
                         Quantity = 500,
                         QuantityState = QuantityState.High,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new StockItem()
                     {
@@ -209,7 +235,8 @@ namespace InventoryManagementApp.Data
                         Type = StockItemType.Electrical,
                         Quantity = 500,
                         QuantityState = QuantityState.High,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new StockItem()
                     {
@@ -217,7 +244,8 @@ namespace InventoryManagementApp.Data
                         Type = StockItemType.Wiring,
                         Quantity = 500,
                         QuantityState = QuantityState.High,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     },
                     new StockItem()
                     {
@@ -225,7 +253,8 @@ namespace InventoryManagementApp.Data
                         Type = StockItemType.Lighting,
                         Quantity = 500,
                         QuantityState = QuantityState.High,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     },
                     new StockItem()
                     {
@@ -233,7 +262,8 @@ namespace InventoryManagementApp.Data
                         Type = StockItemType.Switches,
                         Quantity = 500,
                         QuantityState = QuantityState.High,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     },
                     new StockItem()
                     {
@@ -241,7 +271,8 @@ namespace InventoryManagementApp.Data
                         Type = StockItemType.Electrical,
                         Quantity = 500,
                         QuantityState = QuantityState.High,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     },
                     new StockItem()
                     {
@@ -249,7 +280,8 @@ namespace InventoryManagementApp.Data
                         Type = StockItemType.Electrical,
                         Quantity = 500,
                         QuantityState = QuantityState.High,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     }
                 };
                 if (!context.StockItems.Any())
@@ -266,70 +298,80 @@ namespace InventoryManagementApp.Data
                         TruckID = 1,
                         StockItemID = 1,
                         QuantityInTruck = 50,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new TruckStockItem()
                     {
                         TruckID = 1,
                         StockItemID = 2,
                         QuantityInTruck = 50,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new TruckStockItem()
                     {
                         TruckID = 1,
                         StockItemID = 3,
                         QuantityInTruck = 50,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new TruckStockItem()
                     {
                         TruckID = 1,
                         StockItemID = 4,
                         QuantityInTruck = 50,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new TruckStockItem()
                     {
                         TruckID = 1,
                         StockItemID = 5,
                         QuantityInTruck = 50,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new TruckStockItem()
                     {
                         TruckID = 6,
                         StockItemID = 6,
                         QuantityInTruck = 50,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     },
                     new TruckStockItem()
                     {
                         TruckID = 6,
                         StockItemID = 7,
                         QuantityInTruck = 50,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     },
                     new TruckStockItem()
                     {
                         TruckID = 6,
                         StockItemID = 8,
                         QuantityInTruck = 50,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     },
                     new TruckStockItem()
                     {
                         TruckID = 6,
                         StockItemID = 9,
                         QuantityInTruck = 50,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     },
                     new TruckStockItem()
                     {
                         TruckID = 6,
                         StockItemID = 10,
                         QuantityInTruck = 50,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     }
                 };
                 if (!context.TruckStockItems.Any())
@@ -348,6 +390,7 @@ namespace InventoryManagementApp.Data
                             Type = EquipmentType.HandTool,
                             QualityState = QualityState.High,
                             CompanyID = 1,
+                            isDeleted = false
                         },
                         new Equipment()
                         {
@@ -356,6 +399,7 @@ namespace InventoryManagementApp.Data
                             Type = EquipmentType.HandTool,
                             QualityState = QualityState.High,
                             CompanyID = 1,
+                            isDeleted = false
                         },
                         new Equipment()
                         {
@@ -364,6 +408,7 @@ namespace InventoryManagementApp.Data
                             Type = EquipmentType.ElectricalTool,
                             QualityState = QualityState.High,
                             CompanyID = 1,
+                            isDeleted = false
                         },
                         new Equipment()
                         {
@@ -372,6 +417,7 @@ namespace InventoryManagementApp.Data
                             Type = EquipmentType.PowerTool,
                             QualityState = QualityState.High,
                             CompanyID = 1,
+                            isDeleted = false
                         },
                         new Equipment()
                         {
@@ -380,6 +426,7 @@ namespace InventoryManagementApp.Data
                             Type = EquipmentType.MeasuringTool,
                             QualityState = QualityState.High,
                             CompanyID = 1,
+                            isDeleted = false
                         },
                         new Equipment()
                         {
@@ -388,6 +435,7 @@ namespace InventoryManagementApp.Data
                             Type = EquipmentType.HandTool,
                             QualityState = QualityState.High,
                             CompanyID = 2,
+                            isDeleted = false
                         },
                         new Equipment()
                         {
@@ -396,6 +444,7 @@ namespace InventoryManagementApp.Data
                             Type = EquipmentType.HandTool,
                             QualityState = QualityState.High,
                             CompanyID = 2,
+                            isDeleted = false
                         },
                         new Equipment()
                         {
@@ -404,6 +453,7 @@ namespace InventoryManagementApp.Data
                             Type = EquipmentType.ElectricalTool,
                             QualityState = QualityState.High,
                             CompanyID = 2,
+                            isDeleted = false
                         },
                         new Equipment()
                         {
@@ -412,6 +462,7 @@ namespace InventoryManagementApp.Data
                             Type = EquipmentType.PowerTool,
                             QualityState = QualityState.High,
                             CompanyID = 2,
+                            isDeleted = false
                         },
                         new Equipment()
                         {
@@ -420,6 +471,7 @@ namespace InventoryManagementApp.Data
                             Type = EquipmentType.MeasuringTool,
                             QualityState = QualityState.High,
                             CompanyID = 2,
+                            isDeleted = false
                         },
                     };
                 if (!context.Equipment.Any())
@@ -436,70 +488,80 @@ namespace InventoryManagementApp.Data
                         ToolboxID = 1,
                         EquipmentID = 1,
                         QuantityInToolbox = 5,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new ToolboxEquipment()
                     {
                         ToolboxID = 1,
                         EquipmentID = 2,
                         QuantityInToolbox = 5,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new ToolboxEquipment()
                     {
                         ToolboxID = 1,
                         EquipmentID = 3,
                         QuantityInToolbox = 5,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new ToolboxEquipment()
                     {
                         ToolboxID = 1,
                         EquipmentID = 4,
                         QuantityInToolbox = 5,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new ToolboxEquipment()
                     {
                         ToolboxID = 1,
                         EquipmentID = 5,
                         QuantityInToolbox = 5,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     },
                     new ToolboxEquipment()
                     {
                         ToolboxID = 6,
                         EquipmentID = 6,
                         QuantityInToolbox = 5,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     },
                     new ToolboxEquipment()
                     {
                         ToolboxID = 6,
                         EquipmentID = 7,
                         QuantityInToolbox = 5,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     },
                     new ToolboxEquipment()
                     {
                         ToolboxID = 6,
                         EquipmentID = 8,
                         QuantityInToolbox = 5,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     },
                     new ToolboxEquipment()
                     {
                         ToolboxID = 6,
                         EquipmentID = 9,
                         QuantityInToolbox = 5,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     },
                     new ToolboxEquipment()
                     {
                         ToolboxID = 6,
                         EquipmentID = 10,
                         QuantityInToolbox = 5,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     }
                 };
                 if (!context.ToolboxEquipment.Any())
@@ -515,7 +577,8 @@ namespace InventoryManagementApp.Data
                     {
                         Date = DateTime.Now,
                         TruckID = 1,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     }
                 };
                 if (!context.UsageLogs.Any())
@@ -532,28 +595,32 @@ namespace InventoryManagementApp.Data
                         StockItemID = 1,
                         Quantity = 1,
                         UsageLogID = 1,
-                        CompanyID=1
+                        CompanyID=1,
+                        isDeleted = false
                     },
                     new DetailUsageLog()
                     {
                         StockItemID = 2,
                         Quantity = 1,
                         UsageLogID = 1,
-                        CompanyID=1
+                        CompanyID=1,
+                        isDeleted = false
                     },
                     new DetailUsageLog()
                     {
                         StockItemID = 3,
                         Quantity = 1,
                         UsageLogID = 1,
-                        CompanyID=1
+                        CompanyID=1,
+                        isDeleted = false
                     },
                     new DetailUsageLog()
                     {
                         StockItemID = 4,
                         Quantity = 1,
                         UsageLogID = 1,
-                        CompanyID=1
+                        CompanyID=1,
+                        isDeleted = false
                     }
                 };
                 if (!context.DetailUsageLogs.Any())
@@ -572,7 +639,8 @@ namespace InventoryManagementApp.Data
                         RestockDate = DateTime.Now,
                         RestockState = RestockState.Restocked,
                         TruckID = 1,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     }
                 };
                 if (!context.RestockLogs.Any())
@@ -589,28 +657,32 @@ namespace InventoryManagementApp.Data
                         StockItemID = 1,
                         Quantity = 1,
                         RestockLogID = 1,
-                        CompanyID=1
+                        CompanyID=1,
+                        isDeleted = false
                     },
                     new DetailRestockLog()
                     {
                         StockItemID = 2,
                         Quantity = 1,
                         RestockLogID = 1,
-                        CompanyID=1
+                        CompanyID=1,
+                        isDeleted = false
                     },
                     new DetailRestockLog()
                     {
                         StockItemID = 3,
                         Quantity = 1,
                         RestockLogID = 1,
-                        CompanyID=1
+                        CompanyID=1,
+                        isDeleted = false
                     },
                     new DetailRestockLog()
                     {
                         StockItemID = 4,
                         Quantity = 1,
                         RestockLogID = 1,
-                        CompanyID=1
+                        CompanyID=1,
+                        isDeleted = false
                     }
                 };
                 if (!context.DetailRestockLogs.Any())
@@ -629,7 +701,8 @@ namespace InventoryManagementApp.Data
                         ReplaceDate = DateTime.Now,
                         RestockState = RestockState.Restocked,
                         ToolboxID = 1,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     }
                 };
                 if (!context.EqDamageLogs.Any())
@@ -647,7 +720,8 @@ namespace InventoryManagementApp.Data
                         Quantity = 1,
                         Comment = "This is Comment",
                         EqDamageLogID = 1,
-                        CompanyID=1
+                        CompanyID=1,
+                        isDeleted = false
                     },
                     new DetailEqDamageLog()
                     {
@@ -655,23 +729,26 @@ namespace InventoryManagementApp.Data
                         Quantity = 1,
                         Comment = "This is Comment",
                         EqDamageLogID = 1,
-                        CompanyID=1
+                        CompanyID=1,
+                        isDeleted = false
                     },
                     new DetailEqDamageLog()
                     {
-                        EquipmentID = 3, 
-                        Quantity = 1, 
-                        Comment = "This is Comment", 
+                        EquipmentID = 3,
+                        Quantity = 1,
+                        Comment = "This is Comment",
                         EqDamageLogID = 1,
-                        CompanyID=1
+                        CompanyID=1,
+                        isDeleted = false
                     },
                     new DetailEqDamageLog()
                     {
-                        EquipmentID = 4, 
-                        Quantity = 1, 
-                        Comment = "This is Comment", 
+                        EquipmentID = 4,
+                        Quantity = 1,
+                        Comment = "This is Comment",
                         EqDamageLogID = 1,
-                        CompanyID=1
+                        CompanyID=1,
+                        isDeleted = false
                     }
                 };
                 if (!context.DetailEqDamageLogs.Any())

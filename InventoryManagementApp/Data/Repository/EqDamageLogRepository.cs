@@ -11,14 +11,15 @@ namespace InventoryManagementApp.Data.Repository
         {
             this._context = context;
         }
+
         public bool EqDamageLogExists(int eqdamagelogID)
         {
-            return _context.EqDamageLogs.Any(e => e.EqDamageLogID == eqdamagelogID);
+            return _context.EqDamageLogs.Where(e => e.isDeleted == false).Any(e => e.EqDamageLogID == eqdamagelogID);
         }
 
         public ICollection<DetailEqDamageLog> GetDetailEqDamageLogs(int eqdamagelogID)
         {
-            return _context.DetailEqDamageLogs.Where(d => d.EqDamageLogID == eqdamagelogID).ToList();
+            return _context.DetailEqDamageLogs.Where(d => d.EqDamageLogID == eqdamagelogID && d.isDeleted == false).ToList();
         }
 
         public EqDamageLog GetEqDamageLogById(int eqdamagelogID)
@@ -28,7 +29,25 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<EqDamageLog> GetEqDamageLogs()
         {
-            return _context.EqDamageLogs.OrderBy(e => e.EqDamageLogID).ToList();
+            return _context.EqDamageLogs.Where(e => e.isDeleted == false).OrderBy(e => e.EqDamageLogID).ToList();
+        }
+
+        public bool CreateDetailEqDamageLogs(List<DetailEqDamageLog> detailEqDamageLog)
+        {
+            _context.AddRange(detailEqDamageLog);
+            return Save();
+        }
+
+        public bool CreateEqDamageLog(EqDamageLog eqDamageLog)
+        {
+            _context.Add(eqDamageLog);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

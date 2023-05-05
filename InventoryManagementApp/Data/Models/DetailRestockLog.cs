@@ -14,5 +14,6 @@ namespace InventoryManagementApp.Data.Models
         public RestockLog? RestockLog { get; set; }
         public int? CompanyID { get; set; }
         public Company? Company { get; set; }
+        public bool isDeleted { get; set; }
     }
 }

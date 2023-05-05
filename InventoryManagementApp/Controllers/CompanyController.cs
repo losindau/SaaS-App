@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.Repository;
 using InventoryManagementApp.Data.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,6 +52,35 @@ namespace InventoryManagementApp.Controllers
             }
 
             return Ok(company);
+        }
+
+        [HttpPost]
+        public IActionResult CreateCompany([FromBody] CompanyVM companyCreate)
+        {
+            if (companyCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var company = _companyRepository.GetCompanys()
+                .Where(i => i.Name.Trim().ToLower().Equals(companyCreate.Name.Trim().ToLower()))
+                .FirstOrDefault();
+
+            if (company != null)
+            {
+                ModelState.AddModelError("", "This item is already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            var companyMap = _mapper.Map<Company>(companyCreate);
+
+            if (!_companyRepository.CreateCompany(companyMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

@@ -8,5 +8,8 @@ namespace InventoryManagementApp.Data.Interfaces
         Truck GetTruckId(int truckID);
         bool TruckExists(int truckID);
         ICollection<TruckStockItem> GetTruckStockItems(int truckID);
+        bool CreateTruck(Truck truck);
+        bool CreateTruckStockItems(List<TruckStockItem> truckStockItem);
+        bool Save();
     }
 }

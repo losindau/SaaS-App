@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.Repository;
 using InventoryManagementApp.Data.ViewModels;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +53,35 @@ namespace InventoryManagementApp.Controllers
             }
 
             return Ok(equipment);
+        }
+
+        [HttpPost]
+        public IActionResult CreateEquipment([FromBody] EquipmentVM equipmentCreate)
+        {
+            if (equipmentCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var equipments = _equipmentRepository.GetEquipments()
+                .Where(i => i.Name.Trim().ToLower().Equals(equipmentCreate.Name.Trim().ToLower()))
+                .FirstOrDefault();
+
+            if (equipments != null)
+            {
+                ModelState.AddModelError("", "This item is already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            var equipmentMap = _mapper.Map<Equipment>(equipmentCreate);
+
+            if (!_equipmentRepository.CreateEquipment(equipmentMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

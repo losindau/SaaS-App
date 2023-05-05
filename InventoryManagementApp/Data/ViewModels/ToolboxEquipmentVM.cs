@@ -10,5 +10,6 @@ namespace InventoryManagementApp.Data.ViewModels
         public EquipmentVM? Equipment { get; set; }
         public int QuantityInToolbox { get; set; }
         public int? CompanyID { get; set; }
+        public bool isDeleted { get; set; }
     }
 }

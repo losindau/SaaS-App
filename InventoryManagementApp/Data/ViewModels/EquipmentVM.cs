@@ -11,5 +11,6 @@ namespace InventoryManagementApp.Data.ViewModels
         public EquipmentType Type { get; set; }
         public QualityState QualityState { get; set; }
         public int? CompanyID { get; set; }
+        public bool isDeleted { get; set; }
     }
 }

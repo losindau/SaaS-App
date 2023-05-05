@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.Repository;
 using InventoryManagementApp.Data.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,6 +58,39 @@ namespace InventoryManagementApp.Controllers
             }
 
             return Ok(toolbox);
+        }
+
+        [HttpPost]
+        public IActionResult CreateToolbox(ToolboxVM toolboxCreate)
+        {
+            if (toolboxCreate == null || toolboxCreate.ToolboxEquipments == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var toolboxMap = _mapper.Map<Toolbox>(toolboxCreate);
+
+            if (!_toolboxRepository.CreateToolbox(toolboxMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            List<ToolboxEquipment> toolboxEquipmentMaps = new List<ToolboxEquipment>();
+
+            foreach (ToolboxEquipmentVM item in toolboxCreate.ToolboxEquipments)
+            {
+                var toolboxEqMap = _mapper.Map<ToolboxEquipment>(item);
+                toolboxEquipmentMaps.Add(toolboxEqMap);
+            }
+
+            if (!_toolboxRepository.CreateToolboxEquipments(toolboxEquipmentMaps))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

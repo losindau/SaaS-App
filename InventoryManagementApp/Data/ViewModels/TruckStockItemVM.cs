@@ -10,5 +10,6 @@ namespace InventoryManagementApp.Data.ViewModels
         public StockItemVM? StockItem { get; set; }
         public int QuantityInTruck { get; set; }
         public int? CompanyID { get; set; }
+        public bool isDeleted { get; set; }
     }
 }

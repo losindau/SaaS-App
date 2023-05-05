@@ -10,5 +10,6 @@ namespace InventoryManagementApp.Data.ViewModels
         public int Quantity { get; set; }
         public int? UsageLogID { get; set; }
         public int? CompanyID { get; set; }
+        public bool isDeleted { get; set; }
     }
 }

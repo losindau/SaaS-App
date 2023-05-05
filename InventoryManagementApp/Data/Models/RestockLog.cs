@@ -19,6 +19,7 @@ namespace InventoryManagementApp.Data.Models
         public AppUser? AppUser { get; set; }
         public int? CompanyID { get; set; }
         public Company? Company { get; set; }
+        public bool isDeleted { get; set; }
 
         public ICollection<DetailRestockLog>? DetailRestockLogs { get; set; }
     }

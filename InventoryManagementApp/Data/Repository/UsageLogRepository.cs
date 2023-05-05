@@ -14,7 +14,7 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<DetailUsageLog> GetDetailUsageLogs(int usagelogID)
         {
-            return _context.DetailUsageLogs.Where(d => d.UsageLogID == usagelogID).ToList();
+            return _context.DetailUsageLogs.Where(d => d.UsageLogID == usagelogID && d.isDeleted == false).ToList();
         }
 
         public UsageLog GetUsageLogById(int usagelogID)
@@ -24,12 +24,12 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<UsageLog> GetUsageLogs()
         {
-            return _context.UsageLogs.OrderBy(u => u.UsageLogID).ToList();
+            return _context.UsageLogs.Where(u => u.isDeleted == false).OrderBy(u => u.UsageLogID).ToList();
         }
 
         public bool UsageLogExists(int usagelogID)
         {
-            return _context.UsageLogs.Any(u => u.UsageLogID == usagelogID);
+            return _context.UsageLogs.Where(u => u.isDeleted == false).Any(u => u.UsageLogID == usagelogID);
         }
 
         public bool CreateUsageLog(UsageLog usageLog)

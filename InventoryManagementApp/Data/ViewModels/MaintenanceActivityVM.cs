@@ -18,5 +18,6 @@ namespace InventoryManagementApp.Data.ViewModels
         public int? TruckID { get; set; }
         public TruckVM? Truck { get; set; }
         public int? CompanyID { get; set; }
+        public bool isDeleted { get; set; }
     }
 }
