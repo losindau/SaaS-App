@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.Repository;
 using InventoryManagementApp.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.Design;
 
 namespace InventoryManagementApp.Controllers
 {
@@ -57,6 +60,40 @@ namespace InventoryManagementApp.Controllers
             }
 
             return Ok(usagelog);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult CreateUsageLog(UsageLogVM usageLogCreate)
+        {
+            if (usageLogCreate == null || usageLogCreate.DetailUsageLogs == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var usageLogMap = _mapper.Map<UsageLog>(usageLogCreate);
+
+            if (!_usageLogRepository.CreateUsageLog(usageLogMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            List<DetailUsageLog> detaiUsageLogMaps = new List<DetailUsageLog>();
+
+            foreach (DetailUsageLogVM item in usageLogCreate.DetailUsageLogs)
+            {
+                var detaiUsageLogMap = _mapper.Map<DetailUsageLog>(item);
+                detaiUsageLogMaps.Add(detaiUsageLogMap);
+            }
+
+            if (!_usageLogRepository.CreateDetailUsageLogs(detaiUsageLogMaps))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

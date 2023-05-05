@@ -7,7 +7,7 @@ namespace InventoryManagementApp.Data.Interfaces
         ICollection<StockItem> GetStockItems();
         StockItem GetStockItemById(int stockitemID);
         bool StockItemExists(int stockitemID);
-        bool CreateStockItem(StockItem stockitem);
+        bool CreateStockItem(StockItem stockItem);
         bool Save();
     }
 }

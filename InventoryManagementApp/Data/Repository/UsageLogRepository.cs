@@ -11,6 +11,7 @@ namespace InventoryManagementApp.Data.Repository
         {
             this._context = context;
         }
+
         public ICollection<DetailUsageLog> GetDetailUsageLogs(int usagelogID)
         {
             return _context.DetailUsageLogs.Where(d => d.UsageLogID == usagelogID).ToList();
@@ -26,9 +27,27 @@ namespace InventoryManagementApp.Data.Repository
             return _context.UsageLogs.OrderBy(u => u.UsageLogID).ToList();
         }
 
-        public bool UsageLogExists(int usageuogID)
+        public bool UsageLogExists(int usagelogID)
         {
-            return _context.UsageLogs.Any(u => u.UsageLogID == usageuogID);
+            return _context.UsageLogs.Any(u => u.UsageLogID == usagelogID);
+        }
+
+        public bool CreateUsageLog(UsageLog usageLog)
+        {
+            _context.Add(usageLog);
+            return Save();
+        }
+
+        public bool CreateDetailUsageLogs(List<DetailUsageLog> detailUsageLogs)
+        {
+            _context.AddRange(detailUsageLogs);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }
