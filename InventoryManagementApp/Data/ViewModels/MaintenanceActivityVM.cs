@@ -14,9 +14,9 @@ namespace InventoryManagementApp.Data.ViewModels
         public ActivityState State { get; set; }
         [ForeignKey("AppUser")]
         public string? AppUserID { get; set; }
-        public AppUser? AppUser { get; set; }
+        public AppUserVM? AppUser { get; set; }
         public int? TruckID { get; set; }
-        public Truck? Truck { get; set; }
+        public TruckVM? Truck { get; set; }
         public int? CompanyID { get; set; }
     }
 }
