@@ -12,28 +12,28 @@ namespace InventoryManagementApp.Data.Repository
 {
     public class AccountRepository : IAccountRepository
     {
-        private readonly UserManager<AppUser> userManager;
-        private readonly SignInManager<AppUser> signInManager;
-        private readonly IConfiguration configuration;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly IConfiguration _configuration;
 
         public AccountRepository(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IConfiguration configuration)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.configuration = configuration;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
+            this._configuration = configuration;
         }
 
         public async Task<string> SignInAsync(SignInVM signInVM)
         {
-            var result = await signInManager.PasswordSignInAsync(signInVM.Email, signInVM.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(signInVM.Email, signInVM.Password, false, false);
 
             if (!result.Succeeded)
             {
                 return string.Empty;
             }
 
-            var user = await userManager.FindByEmailAsync(signInVM.Email);
-            var role = await userManager.GetRolesAsync(user);
+            var user = await _userManager.FindByEmailAsync(signInVM.Email);
+            var role = await _userManager.GetRolesAsync(user);
 
             var authClaims = new List<Claim>
             {
@@ -46,17 +46,22 @@ namespace InventoryManagementApp.Data.Repository
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var authenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]));
+            var authenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
             var token = new JwtSecurityToken(
-                issuer: configuration["JWT:ValidIssuer"],
-                audience: configuration["JWT:ValidAudience"],
+                issuer: _configuration["JWT:ValidIssuer"],
+                audience: _configuration["JWT:ValidAudience"],
                 expires: DateTime.Now.AddMinutes(20),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authenKey, SecurityAlgorithms.HmacSha512Signature)
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public ICollection<AppUser> GetUsers()
+        {
+            return _userManager.Users.ToList();
         }
     }
 }

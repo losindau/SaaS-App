@@ -1,6 +1,8 @@
-﻿using InventoryManagementApp.Data;
+﻿using AutoMapper;
+using InventoryManagementApp.Data;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.Repository;
 using InventoryManagementApp.Data.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +14,17 @@ namespace InventoryManagementApp.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountRepository _accountRepository;
+        private readonly IMapper _mapper;
+        private readonly UserManager<AppUser> _userManager;
 
-        public AccountController(IAccountRepository accountRepository)
+        public AccountController(IAccountRepository accountRepository, IMapper mapper, UserManager<AppUser> userManager)
         {
             this._accountRepository = accountRepository;
+            this._mapper = mapper;
+            this._userManager = userManager;
         }
+
+
 
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn([FromBody] SignInVM signInVM)
@@ -29,6 +37,28 @@ namespace InventoryManagementApp.Controllers
             }
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<AppUser>))]
+        public async Task<IActionResult> GetUsers()
+        {
+            List<AppUser> users = (List<AppUser>)_accountRepository.GetUsers();
+            List<AppUserVM> mapUsers = _mapper.Map<List<AppUserVM>>(users);
+
+            for (int i = 0; i < users.Count(); i++)
+            {
+                var role = await _userManager.GetRolesAsync(users[i]);
+                mapUsers[i].Role = role[0].ToString();
+            }
+            
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(mapUsers);
         }
     }
 }
