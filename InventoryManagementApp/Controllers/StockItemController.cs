@@ -81,5 +81,37 @@ namespace InventoryManagementApp.Controllers
 
             return Ok("Successfully created");
         }
+
+        [HttpPut("{stockitemID}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateCategory(int stockitemID, [FromBody] StockItemVM stockItemVM)
+        {
+            if (stockItemVM == null || stockitemID != stockItemVM.StockItemID)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_stockItemRepository.StockItemExists(stockitemID))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var stockitemMap = _mapper.Map<StockItem>(stockItemVM);
+
+            if (!_stockItemRepository.UpdateStockItem(stockitemMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Updated successfully");
+        }
     }
 }

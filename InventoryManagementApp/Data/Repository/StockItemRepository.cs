@@ -33,6 +33,12 @@ namespace InventoryManagementApp.Data.Repository
             return Save();
         }
 
+        public bool UpdateStockItem(StockItem stockitem)
+        {
+            _context.Update(stockitem);
+            return Save();
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();
