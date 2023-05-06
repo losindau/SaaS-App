@@ -1,6 +1,8 @@
 ﻿using InventoryManagementAppMVC.Models;
+using InventoryManagementAppMVC.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace InventoryManagementAppMVC.Controllers
 {
@@ -15,7 +17,21 @@ namespace InventoryManagementAppMVC.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = new UserVM()
+                {
+                    FirstName = User.FindFirstValue("FirstName"),
+                    LastName = User.FindFirstValue("LastName"),
+                    Email = User.FindFirstValue(ClaimTypes.Email),
+                    Role = User.FindFirstValue(ClaimTypes.Role),
+                    CompanyID = int.Parse(User.FindFirstValue("CompanyID"))
+                };
+
+                return View(user);
+            }
+
+            return RedirectToAction("Login", "Account");
         }
 
         public IActionResult Privacy()

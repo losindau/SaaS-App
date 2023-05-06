@@ -1,5 +1,9 @@
-﻿@{
-    
+﻿@using InventoryManagementAppMVC.ViewModels
+@model SignInVM
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
 <div class="container-xxl">
@@ -59,41 +63,44 @@
                         </a>
                     </div>
                     <!-- /Logo -->
+
                     <h4 class="mb-2">Welcome back 👋</h4>
                     <p class="mb-4">Login into your firm and start working</p>
 
-                    <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="col-md-12 alert alert-danger">
+                            <span><b>Sorry!</b> - @TempData["Error"]</span>
+                        </div>
+                    }
+
+                    <form asp-action="Login" id="formAuthentication" class="mb-3">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email or Username</label>
-                            <input type="text" class="form-control" id="email" name="email-username"
-                                   placeholder="Enter your email or username" autofocus />
+                            <label asp-for="Email" class="form-label">Email</label>
+                            <input asp-for="Email" class="form-control" id="email"
+                                   placeholder="Enter your email" autofocus />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                         <div class="mb-3 form-password-toggle">
                             <div class="d-flex justify-content-between">
-                                <label class="form-label" for="password">Password</label>
+                                <label asp-for="Password" class="form-label">Password</label>
                                 <a href="auth-forgot-password-basic.html">
                                     <small>Forgot Password?</small>
                                 </a>
                             </div>
                             <div class="input-group input-group-merge">
-                                <input type="password" id="password" class="form-control" name="password"
-                                       placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                       aria-describedby="password" />
-                                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                <input asp-for="Password" type="password" id="password" class="form-control"
+                                       placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="remember-me" />
-                                <label class="form-check-label" for="remember-me"> Remember Me </label>
-                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
                         </div>
                     </form>
                     <p class="text-center">
-                        <span>Want to access with firm account?</span>
+                        <span>Do not have an account?</span>
                         <a href="auth-register-basic.html">
                             <span>Click here!</span>
                         </a>
@@ -104,4 +111,3 @@
         </div>
     </div>
 </div>
-
