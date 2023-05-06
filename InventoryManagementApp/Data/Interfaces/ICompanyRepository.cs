@@ -8,6 +8,7 @@ namespace InventoryManagementApp.Data.Interfaces
         Company GetCompanyById(int companyID);
         bool CompanyExists(int companyID); 
         bool CreateCompany(Company company);
+        bool UpdateCompany(Company company);
         bool Save();
     }
 }

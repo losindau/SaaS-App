@@ -1,5 +1,6 @@
 ﻿using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.ViewModels;
 
 namespace InventoryManagementApp.Data.Repository
 {
@@ -41,6 +42,18 @@ namespace InventoryManagementApp.Data.Repository
         public bool CreateToolboxEquipments(List<ToolboxEquipment> toolboxEquipment)
         {
             _context.AddRange(toolboxEquipment);
+            return Save();
+        }
+
+        public bool UpdateToolbox(Toolbox toolbox)
+        {
+            _context.Update(toolbox);
+            return Save();
+        }
+
+        public bool UpdateToolboxEquipment(ToolboxEquipment toolboxEquipment)
+        {
+            _context.Update(toolboxEquipment);
             return Save();
         }
 

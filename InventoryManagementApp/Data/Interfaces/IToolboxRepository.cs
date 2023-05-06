@@ -10,6 +10,8 @@ namespace InventoryManagementApp.Data.Interfaces
         ICollection<ToolboxEquipment> GetToolboxEquipments(int toolboxID);
         bool CreateToolbox(Toolbox toolbox);
         bool CreateToolboxEquipments(List<ToolboxEquipment> toolboxEquipment);
+        bool UpdateToolbox(Toolbox toolbox);
+        bool UpdateToolboxEquipment(ToolboxEquipment toolboxEquipment);
         bool Save();
     }
 }

@@ -83,5 +83,37 @@ namespace InventoryManagementApp.Controllers
 
             return Ok("Successfully created");
         }
+
+        [HttpPut("{equipmentID}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateEquipment(int equipmentID, [FromBody] EquipmentVM equipmentVM)
+        {
+            if (equipmentVM == null || equipmentID != equipmentVM.EquipmentID)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_equipmentRepository.EquipmentExists(equipmentID))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var equipmentMap = _mapper.Map<Equipment>(equipmentVM);
+
+            if (!_equipmentRepository.UpdateEquipment(equipmentMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Updated successfully");
+        }
     }
 }

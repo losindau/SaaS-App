@@ -1,5 +1,6 @@
 ﻿using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.ViewModels;
 
 namespace InventoryManagementApp.Data.Repository
 {
@@ -30,6 +31,12 @@ namespace InventoryManagementApp.Data.Repository
         public bool CreateCompany(Company company)
         {
             _context.Add(company);
+            return Save();
+        }
+
+        public bool UpdateCompany(Company company)
+        {
+            _context.Update(company);
             return Save();
         }
 

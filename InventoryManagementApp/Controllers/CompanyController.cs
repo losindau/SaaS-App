@@ -82,5 +82,37 @@ namespace InventoryManagementApp.Controllers
 
             return Ok("Successfully created");
         }
+
+        [HttpPut("{companyID}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateCompany(int companyID, [FromBody] CompanyVM companyVM)
+        {
+            if (companyVM == null || companyID != companyVM.CompanyID)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_companyRepository.CompanyExists(companyID))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var companyMap = _mapper.Map<Company>(companyVM);
+
+            if (!_companyRepository.UpdateCompany(companyMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Updated successfully");
+        }
     }
 }

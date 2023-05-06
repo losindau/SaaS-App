@@ -9,7 +9,7 @@ namespace InventoryManagementApp.Data.Interfaces
         bool UsageLogExists(int usagelogID);
         ICollection<DetailUsageLog> GetDetailUsageLogs(int usagelogID);
         bool CreateUsageLog(UsageLog usageLog);
-        bool CreateDetailUsageLogs(List<DetailUsageLog> detailUsageLog);
+        bool UpdateUsageLog(UsageLog usageLog);
         bool Save();
     }
 }

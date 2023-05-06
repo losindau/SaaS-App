@@ -1,5 +1,6 @@
 ﻿using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.ViewModels;
 
 namespace InventoryManagementApp.Data.Repository
 {
@@ -41,6 +42,18 @@ namespace InventoryManagementApp.Data.Repository
         public bool CreateRestockLog(RestockLog restockLog)
         {
             _context.Add(restockLog);
+            return Save();
+        }
+
+        public bool UpdateRestockLog(RestockLog restockLog)
+        {
+            _context.Update(restockLog);
+            return Save();
+        }
+
+        public bool UpdateDetailRestockLog(DetailRestockLog detailRestockLog)
+        {
+            _context.Update(detailRestockLog);
             return Save();
         }
 

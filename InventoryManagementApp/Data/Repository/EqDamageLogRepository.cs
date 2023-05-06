@@ -1,5 +1,6 @@
 ﻿using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.ViewModels;
 
 namespace InventoryManagementApp.Data.Repository
 {
@@ -41,6 +42,18 @@ namespace InventoryManagementApp.Data.Repository
         public bool CreateEqDamageLog(EqDamageLog eqDamageLog)
         {
             _context.Add(eqDamageLog);
+            return Save();
+        }
+
+        public bool UpdateEqDamageLog(EqDamageLog eqDamageLog)
+        {
+            _context.Update(eqDamageLog);
+            return Save();
+        }
+
+        public bool UpdateDetailEqDamageLog(DetailEqDamageLog detailEqDamageLog)
+        {
+            _context.Update(detailEqDamageLog);
             return Save();
         }
 

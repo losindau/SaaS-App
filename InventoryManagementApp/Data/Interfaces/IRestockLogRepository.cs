@@ -10,6 +10,8 @@ namespace InventoryManagementApp.Data.Interfaces
         ICollection<DetailRestockLog> GetDetailRestockLogs(int restocklogID);
         bool CreateRestockLog(RestockLog restockLog);
         bool CreateDetailRestockLogs(List<DetailRestockLog> detailRestockLog);
+        bool UpdateRestockLog(RestockLog restockLog);
+        bool UpdateDetailRestockLog(DetailRestockLog detailRestockLog);
         bool Save();
     }
 }

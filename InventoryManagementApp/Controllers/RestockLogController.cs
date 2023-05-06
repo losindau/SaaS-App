@@ -77,21 +77,39 @@ namespace InventoryManagementApp.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            List<DetailRestockLog> detaiRestockLogMaps = new List<DetailRestockLog>();
+            return Ok("Successfully created");
+        }
 
-            foreach (DetailRestockLogVM item in restockLogCreate.DetailRestockLogs)
+        [HttpPut("{restocklogID}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateRestockLog(int restocklogID, [FromBody] RestockLogVM restocklogVM)
+        {
+            if (restocklogVM == null || restocklogID != restocklogVM.RestockLogID)
             {
-                var detaiRestockLogMap = _mapper.Map<DetailRestockLog>(item);
-                detaiRestockLogMaps.Add(detaiRestockLogMap);
+                return BadRequest(ModelState);
             }
 
-            if (!_restockLogRepository.CreateDetailRestockLogs(detaiRestockLogMaps))
+            if (!_restockLogRepository.RestockLogExists(restocklogID))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var restocklogMap = _mapper.Map<RestockLog>(restocklogVM);
+
+            if (!_restockLogRepository.UpdateRestockLog(restocklogMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating");
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Successfully created");
+            return Ok("Updated successfully");
         }
     }
 }

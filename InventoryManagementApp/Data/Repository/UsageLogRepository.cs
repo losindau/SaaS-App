@@ -1,5 +1,6 @@
 ﻿using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.ViewModels;
 
 namespace InventoryManagementApp.Data.Repository
 {
@@ -38,9 +39,9 @@ namespace InventoryManagementApp.Data.Repository
             return Save();
         }
 
-        public bool CreateDetailUsageLogs(List<DetailUsageLog> detailUsageLogs)
+        public bool UpdateUsageLog(UsageLog usageLog)
         {
-            _context.AddRange(detailUsageLogs);
+            _context.Update(usageLog);
             return Save();
         }
 
