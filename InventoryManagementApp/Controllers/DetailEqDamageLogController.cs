@@ -64,14 +64,14 @@ namespace InventoryManagementApp.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateDetailEqDamageLog(int detaileqdamagelogID, [FromBody] DetailEqDamageLogVM detaileqdamagelogVM)
+        public IActionResult UpdateDetailEqDamageLog(int detailEqDamagelogID, [FromBody] DetailEqDamageLogVM detaileqdamagelogVM)
         {
-            if (detaileqdamagelogVM == null || detaileqdamagelogID != detaileqdamagelogVM.DetailEqDamageLogID)
+            if (detaileqdamagelogVM == null || detailEqDamagelogID != detaileqdamagelogVM.DetailEqDamageLogID)
             {
                 return BadRequest(ModelState);
             }
 
-            if (!_detailEqDamageLogRepository.DetailEqDamageLogExists(detaileqdamagelogID))
+            if (!_detailEqDamageLogRepository.DetailEqDamageLogExists(detailEqDamagelogID))
             {
                 return NotFound();
             }

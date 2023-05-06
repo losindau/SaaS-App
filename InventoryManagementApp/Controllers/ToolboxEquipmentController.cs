@@ -63,14 +63,14 @@ namespace InventoryManagementApp.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateToolboxEquipment(int toolboxeqID, [FromBody] ToolboxEquipmentVM toolboxEqVM)
+        public IActionResult UpdateToolboxEquipment(int toolboxequipmentID, [FromBody] ToolboxEquipmentVM toolboxEqVM)
         {
-            if (toolboxEqVM == null || toolboxeqID != toolboxEqVM.ToolboxEquipmentID)
+            if (toolboxEqVM == null || toolboxequipmentID != toolboxEqVM.ToolboxEquipmentID)
             {
                 return BadRequest(ModelState);
             }
 
-            if (!_toolboxRepository.ToolboxEquipmentExists(toolboxeqID))
+            if (!_toolboxRepository.ToolboxEquipmentExists(toolboxequipmentID))
             {
                 return NotFound();
             }
