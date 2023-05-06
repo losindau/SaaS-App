@@ -7,6 +7,8 @@ using InventoryManagementApp.Data.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace InventoryManagementApp.Controllers
 {
@@ -55,7 +57,6 @@ namespace InventoryManagementApp.Controllers
                 usersMap[i].Role = role[0].ToString();
             }
             
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

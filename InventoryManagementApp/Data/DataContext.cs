@@ -1,15 +1,27 @@
-﻿using InventoryManagementApp.Data.Models;
+﻿using Azure.Core;
+using InventoryManagementApp.Data.Interfaces;
+using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Helper;
+using InventoryManagementApp.Migrations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Reflection.Metadata;
+using System.Security.Claims;
 
 namespace InventoryManagementApp.Data
 {
     public class DataContext : IdentityDbContext<AppUser>
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
-        {
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
+        public DataContext(DbContextOptions<DataContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
+        {
+            this._httpContextAccessor = httpContextAccessor;
         }
 
         public DbSet<MaintenanceActivity> MaintenanceActivities { get; set; }
@@ -31,6 +43,8 @@ namespace InventoryManagementApp.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            //int currentCompanyID = int.Parse(Users.First().CompanyID.ToString());
+
             //Many to many relationship
             modelBuilder.Entity<ToolboxEquipment>()
                 .HasOne(t => t.Toolbox)
@@ -51,6 +65,34 @@ namespace InventoryManagementApp.Data
                 .HasOne(s => s.StockItem)
                 .WithMany(ts => ts.TruckStockItems)
                 .HasForeignKey(s => s.StockItemID);
+
+            var authHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            
+
+            if (!string.IsNullOrEmpty(authHeader))
+            {
+                var token = authHeader[0].Substring("Bearer ".Length).Trim();
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+                var stringClaimValue = securityToken.Claims.First(claim => claim.Type == "CompanyID").Value;
+
+                // define your filter expression tree
+                Expression<Func<ITenantEntity, bool>> filterExpr = bm => bm.CompanyID == int.Parse(stringClaimValue);
+                foreach (var mutableEntityType in modelBuilder.Model.GetEntityTypes())
+                {
+                    // check if current entity type is child of BaseModel
+                    if (mutableEntityType.ClrType.IsAssignableTo(typeof(ITenantEntity)))
+                    {
+                        // modify expression to handle correct child type
+                        var parameter = Expression.Parameter(mutableEntityType.ClrType);
+                        var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(), parameter, filterExpr.Body);
+                        var lambdaExpression = Expression.Lambda(body, parameter);
+
+                        // set filter
+                        mutableEntityType.SetQueryFilter(lambdaExpression);
+                    }
+                }
+            }
         }
     }
 }
