@@ -32,9 +32,17 @@ namespace InventoryManagementApp.Data.Repository
                 return string.Empty;
             }
 
+            var user = await userManager.FindByEmailAsync(signInVM.Email);
+            var role = await userManager.GetRolesAsync(user);
+
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, signInVM.Email),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, role[0]),
+                new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
+                new Claim("FirstName", user.FirstName),
+                new Claim("LastName", user.LastName),
+                new Claim("CompanyID", user.CompanyID.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
