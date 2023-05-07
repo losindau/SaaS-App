@@ -78,21 +78,39 @@ namespace InventoryManagementApp.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            List<DetailEqDamageLog> detaiEqDamageLogMaps = new List<DetailEqDamageLog>();
+            return Ok("Successfully created");
+        }
 
-            foreach (DetailEqDamageLogVM item in eqDamageLogCreate.DetailEqDamageLogs)
+        [HttpPut("{eqdamagelogID}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateEqDamaggeLog(int eqdamagelogID, [FromBody] EqDamageLogVM eqdamagelogVM)
+        {
+            if (eqdamagelogVM == null || eqdamagelogID != eqdamagelogVM.EqDamageLogID)
             {
-                var detaiEqDamageLogMap = _mapper.Map<DetailEqDamageLog>(item);
-                detaiEqDamageLogMaps.Add(detaiEqDamageLogMap);
+                return BadRequest(ModelState);
             }
 
-            if (!_eqDamageLogRepository.CreateDetailEqDamageLogs(detaiEqDamageLogMaps))
+            if (!_eqDamageLogRepository.EqDamageLogExists(eqdamagelogID))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var eqdamagelogMap = _mapper.Map<EqDamageLog>(eqdamagelogVM);
+
+            if (!_eqDamageLogRepository.UpdateEqDamageLog(eqdamagelogMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating");
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Successfully created");
+            return Ok("Updated successfully");
         }
     }
 }

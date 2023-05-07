@@ -77,21 +77,39 @@ namespace InventoryManagementApp.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            List<TruckStockItem> truckStockItemMaps = new List<TruckStockItem>();
+            return Ok("Successfully created");
+        }
 
-            foreach (TruckStockItemVM item in truckCreate.TruckStockItems)
+        [HttpPut("{truckID}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateTruck(int truckID, [FromBody] TruckVM truckVM)
+        {
+            if (truckVM == null || truckID != truckVM.TruckID)
             {
-                var truckStockItemMap = _mapper.Map<TruckStockItem>(item);
-                truckStockItemMaps.Add(truckStockItemMap);
+                return BadRequest(ModelState);
             }
 
-            if (!_truckRepository.CreateTruckStockItems(truckStockItemMaps))
+            if (!_truckRepository.TruckExists(truckID))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var truckMap = _mapper.Map<Truck>(truckVM);
+
+            if (!_truckRepository.UpdateTruck(truckMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating");
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Successfully created");
+            return Ok("Updated successfully");
         }
     }
 }

@@ -63,10 +63,9 @@ namespace InventoryManagementApp.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult CreateUsageLog(UsageLogVM usageLogCreate)
         {
-            if (usageLogCreate == null || usageLogCreate.DetailUsageLogs == null)
+            if (usageLogCreate == null)
             {
                 return BadRequest(ModelState);
             }
@@ -79,21 +78,39 @@ namespace InventoryManagementApp.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            List<DetailUsageLog> detaiUsageLogMaps = new List<DetailUsageLog>();
+            return Ok("Successfully created");
+        }
 
-            foreach (DetailUsageLogVM item in usageLogCreate.DetailUsageLogs)
+        [HttpPut("{usagelogID}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateUsageLog(int usagelogID, [FromBody] UsageLogVM usagelogVM)
+        {
+            if (usagelogVM == null || usagelogID != usagelogVM.UsageLogID)
             {
-                var detaiUsageLogMap = _mapper.Map<DetailUsageLog>(item);
-                detaiUsageLogMaps.Add(detaiUsageLogMap);
+                return BadRequest(ModelState);
             }
 
-            if (!_usageLogRepository.CreateDetailUsageLogs(detaiUsageLogMaps))
+            if (!_usageLogRepository.UsageLogExists(usagelogID))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var usagelogMap = _mapper.Map<UsageLog>(usagelogVM);
+
+            if (!_usageLogRepository.UpdateUsageLog(usagelogMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating");
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Successfully created");
+            return Ok("Updated successfully");
         }
     }
 }

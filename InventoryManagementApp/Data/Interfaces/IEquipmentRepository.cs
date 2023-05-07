@@ -8,6 +8,7 @@ namespace InventoryManagementApp.Data.Interfaces
         Equipment GetEquipmnetById(int equipmentID);
         bool EquipmentExists(int equipmentID);
         bool CreateEquipment(Equipment equipment);
+        bool UpdateEquipment(Equipment equipment);
         bool Save();
     }
 }

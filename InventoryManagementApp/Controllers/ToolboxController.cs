@@ -76,21 +76,39 @@ namespace InventoryManagementApp.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            List<ToolboxEquipment> toolboxEquipmentMaps = new List<ToolboxEquipment>();
+            return Ok("Successfully created");
+        }
 
-            foreach (ToolboxEquipmentVM item in toolboxCreate.ToolboxEquipments)
+        [HttpPut("{toolboxID}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateToolbox(int toolboxID, [FromBody] ToolboxVM toolboxVM)
+        {
+            if (toolboxVM == null || toolboxID != toolboxVM.ToolboxID)
             {
-                var toolboxEqMap = _mapper.Map<ToolboxEquipment>(item);
-                toolboxEquipmentMaps.Add(toolboxEqMap);
+                return BadRequest(ModelState);
             }
 
-            if (!_toolboxRepository.CreateToolboxEquipments(toolboxEquipmentMaps))
+            if (!_toolboxRepository.ToolboxExists(toolboxID))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var toolboxMap = _mapper.Map<Toolbox>(toolboxVM);
+
+            if (!_toolboxRepository.UpdateToolbox(toolboxMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating");
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Successfully created");
+            return Ok("Updated successfully");
         }
     }
 }

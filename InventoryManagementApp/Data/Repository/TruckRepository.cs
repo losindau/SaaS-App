@@ -1,5 +1,6 @@
 ﻿using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.ViewModels;
 
 namespace InventoryManagementApp.Data.Repository
 {
@@ -38,9 +39,9 @@ namespace InventoryManagementApp.Data.Repository
             return Save();
         }
 
-        public bool CreateTruckStockItems(List<TruckStockItem> truckStockItem)
+        public bool UpdateTruck(Truck truck)
         {
-            _context.AddRange(truckStockItem);
+            _context.Update(truck);
             return Save();
         }
 

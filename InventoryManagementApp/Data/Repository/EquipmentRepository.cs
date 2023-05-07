@@ -1,5 +1,6 @@
 ﻿using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagementApp.Data.Repository
@@ -31,6 +32,12 @@ namespace InventoryManagementApp.Data.Repository
         public bool CreateEquipment(Equipment equipment)
         {
             _context.Add(equipment);
+            return Save();
+        }
+
+        public bool UpdateEquipment(Equipment equipment)
+        {
+            _context.Update(equipment);
             return Save();
         }
 
