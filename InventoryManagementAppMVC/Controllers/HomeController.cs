@@ -1,5 +1,4 @@
-﻿using InventoryManagementAppMVC.Models;
-using InventoryManagementAppMVC.ViewModels;
+﻿using InventoryManagementAppMVC.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
@@ -19,7 +18,7 @@ namespace InventoryManagementAppMVC.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var user = new UserVM()
+                var user = new AppUserVM()
                 {
                     FirstName = User.FindFirstValue("FirstName"),
                     LastName = User.FindFirstValue("LastName"),
@@ -32,17 +31,6 @@ namespace InventoryManagementAppMVC.Controllers
             }
 
             return RedirectToAction("Login", "Account");
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
