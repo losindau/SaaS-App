@@ -11,7 +11,6 @@ namespace InventoryManagementApp.Data.ViewModels
         public int? ToolboxID { get; set; }
         public ToolboxVM? Toolbox { get; set; }
         [ForeignKey("AppUser")]
-        public string? AppUserID { get; set; }
         public int? CompanyID { get; set; }
         public bool isDeleted { get; set; }
 

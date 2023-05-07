@@ -7,6 +7,7 @@ namespace InventoryManagementApp.Data.Models
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public int? TruckID { get; set; }
         public Truck? Truck { get; set; }
         public int? CompanyID { get; set; }
         public Company? Company { get; set; }

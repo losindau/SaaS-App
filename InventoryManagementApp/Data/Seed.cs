@@ -50,46 +50,6 @@ namespace InventoryManagementApp.Data
                         },
                         new Toolbox()
                         {
-                            CompanyID = 1,
-                            isDeleted = false
-                        },
-                        new Toolbox()
-                        {
-                            CompanyID = 1,
-                            isDeleted = false
-                        },
-                        new Toolbox()
-                        {
-                            CompanyID = 1,
-                            isDeleted = false
-                        },
-                        new Toolbox()
-                        {
-                            CompanyID = 1,
-                            isDeleted = false
-                        },
-                        new Toolbox()
-                        {
-                            CompanyID = 2,
-                            isDeleted = false
-                        },
-                        new Toolbox()
-                        {
-                            CompanyID = 2,
-                            isDeleted = false
-                        },
-                        new Toolbox()
-                        {
-                            CompanyID = 2,
-                            isDeleted = false
-                        },
-                        new Toolbox()
-                        {
-                            CompanyID = 2,
-                            isDeleted = false
-                        },
-                        new Toolbox()
-                        {
                             CompanyID = 2,
                             isDeleted = false
                         },
@@ -116,70 +76,6 @@ namespace InventoryManagementApp.Data
                             Model = "Chevy Silverado",
                             LicensePlate = "DEF456",
                             ToolboxID = 2,
-                            CompanyID = 1,
-                            isDeleted = false
-                        },
-                        new Truck()
-                        {
-                            Model = "GMC Sierra",
-                            LicensePlate = "GHI789",
-                            ToolboxID = 3,
-                            CompanyID = 1,
-                            isDeleted = false
-                        },
-                        new Truck()
-                        {
-                            Model = "Dodge Ram",
-                            LicensePlate = "JKL012",
-                            ToolboxID = 4,
-                            CompanyID = 1,
-                            isDeleted = false
-                        },
-                        new Truck()
-                        {
-                            Model = "Toyota Taconma",
-                            LicensePlate = "MNO345",
-                            ToolboxID = 5,
-                            CompanyID = 1,
-                            isDeleted = false
-                        },
-                        new Truck()
-                        {
-                            Model = "Ford F150",
-                            LicensePlate = "PQR678",
-                            ToolboxID = 6,
-                            CompanyID = 2,
-                            isDeleted = false
-                        },
-                        new Truck()
-                        {
-                            Model = "Chevy Silverado",
-                            LicensePlate = "STU901",
-                            ToolboxID = 7,
-                            CompanyID = 2,
-                            isDeleted = false
-                        },
-                        new Truck()
-                        {
-                            Model = "GMC Sierra",
-                            LicensePlate = "VWX234",
-                            ToolboxID = 8,
-                            CompanyID = 2,
-                            isDeleted = false
-                        },
-                        new Truck()
-                        {
-                            Model = "Dodge Ram",
-                            LicensePlate = "YZA567",
-                            ToolboxID = 9,
-                            CompanyID = 2,
-                            isDeleted = false
-                        },
-                        new Truck()
-                        {
-                            Model = "Toyota Taconma",
-                            ToolboxID = 10,
-                            LicensePlate = "BCD890",
                             CompanyID = 2,
                             isDeleted = false
                         }
@@ -335,7 +231,7 @@ namespace InventoryManagementApp.Data
                     },
                     new TruckStockItem()
                     {
-                        TruckID = 6,
+                        TruckID = 2,
                         StockItemID = 6,
                         QuantityInTruck = 50,
                         CompanyID = 2,
@@ -343,7 +239,7 @@ namespace InventoryManagementApp.Data
                     },
                     new TruckStockItem()
                     {
-                        TruckID = 6,
+                        TruckID = 2,
                         StockItemID = 7,
                         QuantityInTruck = 50,
                         CompanyID = 2,
@@ -351,7 +247,7 @@ namespace InventoryManagementApp.Data
                     },
                     new TruckStockItem()
                     {
-                        TruckID = 6,
+                        TruckID = 2,
                         StockItemID = 8,
                         QuantityInTruck = 50,
                         CompanyID = 2,
@@ -359,7 +255,7 @@ namespace InventoryManagementApp.Data
                     },
                     new TruckStockItem()
                     {
-                        TruckID = 6,
+                        TruckID = 2,
                         StockItemID = 9,
                         QuantityInTruck = 50,
                         CompanyID = 2,
@@ -367,7 +263,7 @@ namespace InventoryManagementApp.Data
                     },
                     new TruckStockItem()
                     {
-                        TruckID = 6,
+                        TruckID = 2,
                         StockItemID = 10,
                         QuantityInTruck = 50,
                         CompanyID = 2,
@@ -525,7 +421,7 @@ namespace InventoryManagementApp.Data
                     },
                     new ToolboxEquipment()
                     {
-                        ToolboxID = 6,
+                        ToolboxID = 2,
                         EquipmentID = 6,
                         QuantityInToolbox = 5,
                         CompanyID = 2,
@@ -533,7 +429,7 @@ namespace InventoryManagementApp.Data
                     },
                     new ToolboxEquipment()
                     {
-                        ToolboxID = 6,
+                        ToolboxID = 2,
                         EquipmentID = 7,
                         QuantityInToolbox = 5,
                         CompanyID = 2,
@@ -541,7 +437,7 @@ namespace InventoryManagementApp.Data
                     },
                     new ToolboxEquipment()
                     {
-                        ToolboxID = 6,
+                        ToolboxID = 2,
                         EquipmentID = 8,
                         QuantityInToolbox = 5,
                         CompanyID = 2,
@@ -549,7 +445,7 @@ namespace InventoryManagementApp.Data
                     },
                     new ToolboxEquipment()
                     {
-                        ToolboxID = 6,
+                        ToolboxID = 2,
                         EquipmentID = 9,
                         QuantityInToolbox = 5,
                         CompanyID = 2,
@@ -557,7 +453,7 @@ namespace InventoryManagementApp.Data
                     },
                     new ToolboxEquipment()
                     {
-                        ToolboxID = 6,
+                        ToolboxID = 2,
                         EquipmentID = 10,
                         QuantityInToolbox = 5,
                         CompanyID = 2,
@@ -857,6 +753,7 @@ namespace InventoryManagementApp.Data
                         PhoneNumberConfirmed = true,
                         Email = staffAEmail,
                         EmailConfirmed = true,
+                        TruckID = 1,
                         CompanyID = 1
                     };
                     await userManager.CreateAsync(newAppUser, "staffA@1234?");
@@ -876,7 +773,8 @@ namespace InventoryManagementApp.Data
                         PhoneNumberConfirmed = true,
                         Email = staffBEmail,
                         EmailConfirmed = true,
-                        CompanyID = 1
+                        TruckID = 2,
+                        CompanyID = 2
                     };
                     await userManager.CreateAsync(newAppUser, "staffB@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.Staff);

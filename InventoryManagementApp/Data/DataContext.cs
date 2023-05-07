@@ -66,33 +66,33 @@ namespace InventoryManagementApp.Data
                 .WithMany(ts => ts.TruckStockItems)
                 .HasForeignKey(s => s.StockItemID);
 
-            var authHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            //var authHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
             
 
-            if (!string.IsNullOrEmpty(authHeader))
-            {
-                var token = authHeader[0].Substring("Bearer ".Length).Trim();
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
-                var stringClaimValue = securityToken.Claims.First(claim => claim.Type == "CompanyID").Value;
+            //if (!string.IsNullOrEmpty(authHeader))
+            //{
+            //    var token = authHeader[0].Substring("Bearer ".Length).Trim();
+            //    var tokenHandler = new JwtSecurityTokenHandler();
+            //    var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+            //    var stringClaimValue = securityToken.Claims.First(claim => claim.Type == "CompanyID").Value;
 
-                // define your filter expression tree
-                Expression<Func<ITenantEntity, bool>> filterExpr = bm => bm.CompanyID == int.Parse(stringClaimValue);
-                foreach (var mutableEntityType in modelBuilder.Model.GetEntityTypes())
-                {
-                    // check if current entity type is child of BaseModel
-                    if (mutableEntityType.ClrType.IsAssignableTo(typeof(ITenantEntity)))
-                    {
-                        // modify expression to handle correct child type
-                        var parameter = Expression.Parameter(mutableEntityType.ClrType);
-                        var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(), parameter, filterExpr.Body);
-                        var lambdaExpression = Expression.Lambda(body, parameter);
+            //    // define your filter expression tree
+            //    Expression<Func<ITenantEntity, bool>> filterExpr = bm => bm.CompanyID == int.Parse(stringClaimValue);
+            //    foreach (var mutableEntityType in modelBuilder.Model.GetEntityTypes())
+            //    {
+            //        // check if current entity type is child of BaseModel
+            //        if (mutableEntityType.ClrType.IsAssignableTo(typeof(ITenantEntity)))
+            //        {
+            //            // modify expression to handle correct child type
+            //            var parameter = Expression.Parameter(mutableEntityType.ClrType);
+            //            var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(), parameter, filterExpr.Body);
+            //            var lambdaExpression = Expression.Lambda(body, parameter);
 
-                        // set filter
-                        mutableEntityType.SetQueryFilter(lambdaExpression);
-                    }
-                }
-            }
+            //            // set filter
+            //            mutableEntityType.SetQueryFilter(lambdaExpression);
+            //        }
+            //    }
+            //}
         }
     }
 }
