@@ -64,7 +64,6 @@ namespace InventoryManagementApp.Data
                 .WithMany(ts => ts.TruckStockItems)
                 .HasForeignKey(s => s.StockItemID);
 
-
             // define your filter expression tree
             Expression<Func<ITenantEntity, bool>> filterExpr = bm => bm.CompanyID == TenantID;
             foreach (var mutableEntityType in modelBuilder.Model.GetEntityTypes())

@@ -1,4 +1,5 @@
-﻿using InventoryManagementApp.Data.Models;
+﻿using InventoryManagementApp.Data.Interfaces;
+using InventoryManagementApp.Data.Models;
 
 namespace InventoryManagementApp.Data.ViewModels
 {

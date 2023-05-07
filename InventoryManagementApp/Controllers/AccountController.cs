@@ -7,6 +7,8 @@ using InventoryManagementApp.Data.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -41,26 +43,38 @@ namespace InventoryManagementApp.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("{page}")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<AppUser>))]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers(int page)
         {
             List<AppUser> users = (List<AppUser>)_accountRepository.GetUsers();
-            List<AppUserVM> usersMap = _mapper.Map<List<AppUserVM>>(users);
 
-            for (int i = 0; i < users.Count(); i++)
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(users.Count() / pageResults);
+
+
+            List<AppUserVM> usersMap = _mapper.Map<List<AppUserVM>>(users.Skip((page - 1) * (int)pageResults).Take((int)pageResults));
+
+            for (int i = 0; i < usersMap.Count(); i++)
             {
                 var role = await _userManager.GetRolesAsync(users[i]);
                 usersMap[i].Role = role[0].ToString();
             }
-            
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            return Ok(usersMap);
+            var response = new ResponsePagination()
+            {
+                Entities = new List<object>(usersMap),
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+
+            return Ok(response);
         }
     }
 }

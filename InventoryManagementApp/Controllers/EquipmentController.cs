@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InventoryManagementApp.Data;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.Repository;
@@ -21,18 +22,30 @@ namespace InventoryManagementApp.Controllers
             this._mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("{page}/equipments")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Equipment>))]
-        public IActionResult GetEquipments()
+        public IActionResult GetEquipments(int page)
         {
-            var equipments = _mapper.Map<List<EquipmentVM>>(_equipmentRepository.GetEquipments());
+            var equipments = _equipmentRepository.GetEquipments();
+
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(equipments.Count() / pageResults);
+
+            var equipmentsMap = _mapper.Map<List<EquipmentVM>>(equipments.Skip((page - 1) * (int)pageResults).Take((int)pageResults));
             
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            return Ok(equipments);
+            var response = new ResponsePagination()
+            {
+                Entities = new List<object>(equipmentsMap),
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+
+            return Ok(response);
         }
 
         [HttpGet("{equipmentID}")]

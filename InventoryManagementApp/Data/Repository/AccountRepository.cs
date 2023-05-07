@@ -70,7 +70,6 @@ namespace InventoryManagementApp.Data.Repository
             var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
             var tenantId = securityToken.Claims.First(claim => claim.Type == "CompanyID").Value;
 
-
             return _userManager.Users.Include(a => a.Truck).Where(a => a.CompanyID == int.Parse(tenantId)).ToList();
         }
     }
