@@ -1,6 +1,4 @@
-﻿using InventoryManagementApp.Data.Models;
-
-namespace InventoryManagementApp.Data.ViewModels
+﻿namespace InventoryManagementAppMVC.ViewModels
 {
     public class AppUserVM
     {
