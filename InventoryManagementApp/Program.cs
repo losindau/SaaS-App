@@ -2,6 +2,7 @@ using InventoryManagementApp.Data;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.Repository;
+using InventoryManagementApp.Helper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -71,8 +72,6 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
-//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-//    .AddCookie();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -109,9 +108,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<TenantMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

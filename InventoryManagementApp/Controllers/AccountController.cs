@@ -27,8 +27,6 @@ namespace InventoryManagementApp.Controllers
             this._userManager = userManager;
         }
 
-
-
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn([FromBody] SignInVM signInVM)
         {

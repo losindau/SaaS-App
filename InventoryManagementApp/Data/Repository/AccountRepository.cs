@@ -16,12 +16,14 @@ namespace InventoryManagementApp.Data.Repository
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AccountRepository(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IConfiguration configuration)
+        public AccountRepository(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._configuration = configuration;
+            this._httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<string> SignInAsync(SignInVM signInVM)
@@ -62,7 +64,14 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<AppUser> GetUsers()
         {
-            return _userManager.Users.Include(a=>a.Truck).ToList();
+            var authHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            var token = authHeader[0].Substring("Bearer ".Length).Trim();
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+            var tenantId = securityToken.Claims.First(claim => claim.Type == "CompanyID").Value;
+
+
+            return _userManager.Users.Include(a => a.Truck).Where(a => a.CompanyID == int.Parse(tenantId)).ToList();
         }
     }
 }
