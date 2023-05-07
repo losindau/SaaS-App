@@ -3,6 +3,7 @@ using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -61,7 +62,7 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<AppUser> GetUsers()
         {
-            return _userManager.Users.ToList();
+            return _userManager.Users.Include(a=>a.Truck).ToList();
         }
     }
 }

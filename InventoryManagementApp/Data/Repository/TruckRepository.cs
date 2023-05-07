@@ -21,7 +21,7 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<Truck> GetTrucks()
         {
-            return _context.Trucks.Include(x => x.Toolbox).Where(t => t.isDeleted == false).OrderBy(t => t.TruckID).ToList();
+            return _context.Trucks.Include(x => x.Toolbox.ToolboxEquipments).Where(t => t.isDeleted == false).OrderBy(t => t.TruckID).ToList();
         }
 
         public ICollection<TruckStockItem> GetTruckStockItems(int truckID)
