@@ -9,9 +9,7 @@ namespace InventoryManagementApp.Data.Interfaces
         bool EqDamageLogExists(int eqdamagelogID);
         ICollection<DetailEqDamageLog> GetDetailEqDamageLogs(int eqdamagelogID);
         bool CreateEqDamageLog(EqDamageLog eqDamageLog);
-        bool CreateDetailEqDamageLogs(List<DetailEqDamageLog> detailEqDamageLog);
         bool UpdateEqDamageLog(EqDamageLog eqDamageLog);
-        bool UpdateDetailEqDamageLog(DetailEqDamageLog detailEqDamageLog);
         bool Save();
     }
 }

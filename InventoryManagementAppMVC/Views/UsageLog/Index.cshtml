@@ -1,0 +1,89 @@
+﻿@model List<UsageLogVM>
+
+<!-- Striped Rows -->
+<h5 class="fw-bold"><span class="text-muted fw-light">Usage /</span> Basic Tables</h5>
+
+<div class="card">
+    <div class="table-responsive text-nowrap">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>log id</th>
+                    <th>Date</th>
+                    <th>License Plate</th>
+                    <th>Driver</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0 accordion" id="accordionExample">
+
+                @{
+                    int i = 1;
+                    foreach (var item in Model)
+                    {
+                        <tr class="accordion-item" data-bs-toggle="collapse" data-bs-target="#usagedetail-@i" aria-expanded="false" aria-controls="usagedetail-@i">
+                            <td>@i</td>
+                            <td>@item.UsageLogID</td>
+                            <td>@item.Date</td>
+                            <td>@item.AppUser.Truck.LicensePlate</td>
+                            <td>@item.AppUser.FirstName @item.AppUser.LastName</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <div id="usagedetail-@i" class="accordion-collapse collapse"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="card">
+                                            <div class="table-responsive text-nowrap">
+                                                <table class="table table-primary">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>StockItem</th>
+                                                            <th>Quantity</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-border-bottom-0">
+
+                                                        @{
+                                                            int j = 1;
+                                                            @foreach (var detail in item.DetailUsageLogs)
+                                                            {
+                                                                <tr>
+                                                                    <td>@j</td>
+                                                                    <td>@detail.StockItem.Name</td>
+                                                                    <td>@detail.Quantity</td>
+                                                                </tr>
+                                                                j++;
+                                                            }
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        i++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <!-- Pagination -->
+    <div class="pt-3">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<!--/ Striped Rows -->

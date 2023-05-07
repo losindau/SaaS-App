@@ -1,6 +1,7 @@
 ﻿using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagementApp.Data.Repository
 {
@@ -15,28 +16,22 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<DetailRestockLog> GetDetailRestockLogs(int restocklogID)
         {
-            return _context.DetailRestockLogs.Where(d => d.RestockLogID == restocklogID && d.isDeleted == false).ToList();
+            return _context.DetailRestockLogs.Include(u => u.StockItem).Where(d => d.RestockLogID == restocklogID && d.isDeleted == false).ToList();
         }
 
         public RestockLog GetRestockLogById(int restocklogID)
         {
-            return _context.RestockLogs.Where(d => d.RestockLogID == restocklogID).FirstOrDefault();
+            return _context.RestockLogs.Include(u => u.AppUser.Truck).Where(d => d.RestockLogID == restocklogID).FirstOrDefault();
         }
 
         public ICollection<RestockLog> GetRestockLogs()
         {
-            return _context.RestockLogs.Where(r => r.isDeleted == false).OrderBy(r => r.RestockLogID).ToList();
+            return _context.RestockLogs.Include(u => u.AppUser.Truck).Where(r => r.isDeleted == false).OrderBy(r => r.RestockLogID).ToList();
         }
 
         public bool RestockLogExists(int restocklogID)
         {
             return _context.RestockLogs.Where(r => r.isDeleted == false).Any(r => r.RestockLogID == restocklogID);
-        }
-
-        public bool CreateDetailRestockLogs(List<DetailRestockLog> detailRestockLog)
-        {
-            _context.AddRange(detailRestockLog);
-            return Save();
         }
 
         public bool CreateRestockLog(RestockLog restockLog)
@@ -48,12 +43,6 @@ namespace InventoryManagementApp.Data.Repository
         public bool UpdateRestockLog(RestockLog restockLog)
         {
             _context.Update(restockLog);
-            return Save();
-        }
-
-        public bool UpdateDetailRestockLog(DetailRestockLog detailRestockLog)
-        {
-            _context.Update(detailRestockLog);
             return Save();
         }
 

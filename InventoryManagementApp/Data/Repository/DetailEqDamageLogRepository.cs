@@ -1,6 +1,7 @@
 ﻿using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagementApp.Data.Repository
 {
@@ -15,7 +16,7 @@ namespace InventoryManagementApp.Data.Repository
 
         public DetailEqDamageLog GetDetailEqDamageLogById(int detailEqdamagelogID)
         {            
-            return _context.DetailEqDamageLogs.Where(e => e.DetailEqDamageLogID == detailEqdamagelogID).FirstOrDefault();
+            return _context.DetailEqDamageLogs.Include(u => u.Equipment).Where(e => e.DetailEqDamageLogID == detailEqdamagelogID).FirstOrDefault();
         }
 
         public bool DetailEqDamageLogExists(int detailEqdamagelogID)

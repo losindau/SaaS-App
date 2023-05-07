@@ -1,6 +1,7 @@
 ﻿using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagementApp.Data.Repository
 {
@@ -20,23 +21,17 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<DetailEqDamageLog> GetDetailEqDamageLogs(int eqdamagelogID)
         {
-            return _context.DetailEqDamageLogs.Where(d => d.EqDamageLogID == eqdamagelogID && d.isDeleted == false).ToList();
+            return _context.DetailEqDamageLogs.Include(u => u.Equipment).Where(d => d.EqDamageLogID == eqdamagelogID && d.isDeleted == false).ToList();
         }
 
         public EqDamageLog GetEqDamageLogById(int eqdamagelogID)
         {
-            return _context.EqDamageLogs.Where(e => e.EqDamageLogID == eqdamagelogID).FirstOrDefault();
+            return _context.EqDamageLogs.Include(u => u.AppUser).Where(e => e.EqDamageLogID == eqdamagelogID).FirstOrDefault();
         }
 
         public ICollection<EqDamageLog> GetEqDamageLogs()
         {
-            return _context.EqDamageLogs.Where(e => e.isDeleted == false).OrderBy(e => e.EqDamageLogID).ToList();
-        }
-
-        public bool CreateDetailEqDamageLogs(List<DetailEqDamageLog> detailEqDamageLog)
-        {
-            _context.AddRange(detailEqDamageLog);
-            return Save();
+            return _context.EqDamageLogs.Include(u => u.AppUser).Where(e => e.isDeleted == false).OrderBy(e => e.EqDamageLogID).ToList();
         }
 
         public bool CreateEqDamageLog(EqDamageLog eqDamageLog)
@@ -48,12 +43,6 @@ namespace InventoryManagementApp.Data.Repository
         public bool UpdateEqDamageLog(EqDamageLog eqDamageLog)
         {
             _context.Update(eqDamageLog);
-            return Save();
-        }
-
-        public bool UpdateDetailEqDamageLog(DetailEqDamageLog detailEqDamageLog)
-        {
-            _context.Update(detailEqDamageLog);
             return Save();
         }
 

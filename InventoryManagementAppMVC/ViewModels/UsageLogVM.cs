@@ -9,6 +9,7 @@ namespace InventoryManagementAppMVC.ViewModels
         public int? TruckID { get; set; }
         [ForeignKey("AppUser")]
         public string? AppUserID { get; set; }
+        public AppUserVM? AppUser { get; set; }
         public int? CompanyID { get; set; }
         public bool isDeleted { get; set; }
 

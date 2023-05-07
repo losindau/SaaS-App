@@ -39,21 +39,9 @@ namespace InventoryManagementApp.Data.Repository
             return Save();
         }
 
-        public bool CreateToolboxEquipments(List<ToolboxEquipment> toolboxEquipment)
-        {
-            _context.AddRange(toolboxEquipment);
-            return Save();
-        }
-
         public bool UpdateToolbox(Toolbox toolbox)
         {
             _context.Update(toolbox);
-            return Save();
-        }
-
-        public bool UpdateToolboxEquipment(ToolboxEquipment toolboxEquipment)
-        {
-            _context.Update(toolboxEquipment);
             return Save();
         }
 

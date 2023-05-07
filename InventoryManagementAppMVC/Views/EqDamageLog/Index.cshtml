@@ -1,0 +1,96 @@
+﻿@model List<EqDamageLogVM>
+
+<!-- Striped Rows -->
+<h5 class="fw-bold"><span class="text-muted fw-light">Equipment Damage /</span> Basic Tables</h5>
+<div class="card">
+    <div class="table-responsive text-nowrap">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>log id</th>
+                    <th>Report Date</th>
+                    <th>Report State</th>
+                    <th>Replace Date</th>
+                    <th>Replace State</th>
+                    <th>Toolbox</th>
+                    <th>Driver</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0 accordion" id="accordionExample">
+
+                @{
+                    int i = 1;
+                    foreach (var item in Model)
+                    {
+                        <tr class="accordion-item" data-bs-toggle="collapse" data-bs-target="#dmgdetail-@i" aria-expanded="false" aria-controls="dmgdetail-@i">
+                            <td>@i</td>
+                            <td>@item.EqDamageLogID</td>
+                            <td>@item.ReportDate</td>
+                            <td><span class="badge bg-label-success me-1">@item.LogState</span></td>
+                            <td>@item.ReplaceDate</td>
+                            <td><span class="badge bg-label-success me-1">@item.RestockState</span></td>
+                            <td>@item.ToolboxID</td>
+                            <td>@item.AppUser.FirstName @item.AppUser.LastName</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-check-circle me-1"></i> Accept</a>
+                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-x-circle me-1"></i> Reject</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="9">
+                                <div id="dmgdetail-@i" class="accordion-collapse collapse"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="card">
+                                            <div class="table-responsive text-nowrap">
+                                                <table class="table table-primary">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>Equipment</th>
+                                                            <th>Quantity</th>
+                                                            <th>Comment</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-border-bottom-0">
+
+                                                        @{
+                                                            int j = 1;
+                                                            foreach (var detail in item.DetailEqDamageLogs)
+                                                            {
+                                                                <tr>
+                                                                    <td>@j</td>
+                                                                    <td>@detail.Equipment.Name</td>
+                                                                    <td>@detail.Quantity</td>
+                                                                    <td>@detail.Comment</td>
+                                                                </tr>
+                                                                j++;
+                                                            }
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--/ Striped Rows -->

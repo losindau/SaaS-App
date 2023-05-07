@@ -1,6 +1,7 @@
 ﻿using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagementApp.Data.Repository
 {
@@ -15,7 +16,7 @@ namespace InventoryManagementApp.Data.Repository
 
         public DetailRestockLog GetDetailRestockLogById(int detailRestocklogID)
         {
-            return _context.DetailRestockLogs.Where(d => d.DetailRestockLogID == detailRestocklogID).FirstOrDefault();
+            return _context.DetailRestockLogs.Include(u => u.StockItem).Where(d => d.DetailRestockLogID == detailRestocklogID).FirstOrDefault();
         }
 
         public bool DetailRestockLogExists(int detailRestocklogID)

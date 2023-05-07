@@ -475,6 +475,13 @@ namespace InventoryManagementApp.Data
                         TruckID = 1,
                         CompanyID = 1,
                         isDeleted = false
+                    },
+                    new UsageLog()
+                    {
+                        Date = DateTime.Now,
+                        TruckID = 2,
+                        CompanyID = 1,
+                        isDeleted = false
                     }
                 };
                 if (!context.UsageLogs.Any())
@@ -515,6 +522,22 @@ namespace InventoryManagementApp.Data
                         StockItemID = 4,
                         Quantity = 1,
                         UsageLogID = 1,
+                        CompanyID=1,
+                        isDeleted = false
+                    },
+                    new DetailUsageLog()
+                    {
+                        StockItemID = 1,
+                        Quantity = 1,
+                        UsageLogID = 2,
+                        CompanyID=1,
+                        isDeleted = false
+                    },
+                    new DetailUsageLog()
+                    {
+                        StockItemID = 2,
+                        Quantity = 1,
+                        UsageLogID = 2,
                         CompanyID=1,
                         isDeleted = false
                     }
@@ -777,6 +800,66 @@ namespace InventoryManagementApp.Data
                         CompanyID = 2
                     };
                     await userManager.CreateAsync(newAppUser, "staffB@1234?");
+                    await userManager.AddToRoleAsync(newAppUser, UserRoles.Staff);
+                }
+
+                string staffCEmail = "staffc@gmail.com";
+                var staffCUser = await userManager.FindByEmailAsync(staffCEmail);
+                if (staffCUser == null)
+                {
+                    var newAppUser = new AppUser()
+                    {
+                        UserName = staffCEmail,
+                        FirstName = "Boris",
+                        LastName = "Nguyen",
+                        PhoneNumber = "0903777827",
+                        PhoneNumberConfirmed = true,
+                        Email = staffCEmail,
+                        EmailConfirmed = true,
+                        TruckID = 3,
+                        CompanyID = 1
+                    };
+                    await userManager.CreateAsync(newAppUser, "staffC@1234?");
+                    await userManager.AddToRoleAsync(newAppUser, UserRoles.Staff);
+                }
+
+                string staffDEmail = "staffd@gmail.com";
+                var staffDUser = await userManager.FindByEmailAsync(staffDEmail);
+                if (staffDUser == null)
+                {
+                    var newAppUser = new AppUser()
+                    {
+                        UserName = staffDEmail,
+                        FirstName = "Bao",
+                        LastName = "Nguyen",
+                        PhoneNumber = "0904777827",
+                        PhoneNumberConfirmed = true,
+                        Email = staffDEmail,
+                        EmailConfirmed = true,
+                        TruckID = 4,
+                        CompanyID = 1
+                    };
+                    await userManager.CreateAsync(newAppUser, "staffD@1234?");
+                    await userManager.AddToRoleAsync(newAppUser, UserRoles.Staff);
+                }
+
+                string staffEEmail = "staffe@gmail.com";
+                var staffEUser = await userManager.FindByEmailAsync(staffEEmail);
+                if (staffEUser == null)
+                {
+                    var newAppUser = new AppUser()
+                    {
+                        UserName = staffEEmail,
+                        FirstName = "Dau",
+                        LastName = "Losin",
+                        PhoneNumber = "0905777827",
+                        PhoneNumberConfirmed = true,
+                        Email = staffEEmail,
+                        EmailConfirmed = true,
+                        TruckID = 5,
+                        CompanyID = 1
+                    };
+                    await userManager.CreateAsync(newAppUser, "staffE@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.Staff);
                 }
             }

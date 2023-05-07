@@ -1,6 +1,7 @@
 ﻿using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagementApp.Data.Repository
 {
@@ -15,7 +16,7 @@ namespace InventoryManagementApp.Data.Repository
 
         public DetailUsageLog GetDetailUsageLogById(int detailUsagelogID)
         {
-            return _context.DetailUsageLogs.Where(u => u.DetailUsageLogID == detailUsagelogID).FirstOrDefault();
+            return _context.DetailUsageLogs.Include(d => d.StockItem).Where(u => u.DetailUsageLogID == detailUsagelogID).FirstOrDefault();
         }
 
         public bool DetailUsageLogExists(int detailUsagelogID)

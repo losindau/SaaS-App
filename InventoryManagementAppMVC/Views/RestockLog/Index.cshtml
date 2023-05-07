@@ -1,0 +1,94 @@
+﻿@model List<RestockLogVM>
+
+<!-- Striped Rows -->
+<h5 class="fw-bold"><span class="text-muted fw-light">Restock /</span> Basic Tables</h5>
+<div class="card">
+    <div class="table-responsive text-nowrap">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>log id</th>
+                    <th>Request Date</th>
+                    <th>Request State</th>
+                    <th>Restock Date</th>
+                    <th>Restock State</th>
+                    <th>License Plate</th>
+                    <th>Driver</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0 accordion" id="accordionExample">
+
+                @{
+                    int i = 1;
+                    foreach (var item in Model)
+                    {
+                        <tr class="accordion-item" data-bs-toggle="collapse" data-bs-target="#restockdetail-@i" aria-expanded="false" aria-controls="restockdetail-@i">
+                            <td>@i</td>
+                            <td>@item.RestockLogID</td>
+                            <td>@item.RequestDate</td>
+                            <td><span class="badge bg-label-info me-1">@item.LogState</span></td>
+                            <td>@item.RestockDate</td>
+                            <td><span class="badge bg-label-success me-1">@item.RestockState</span></td>
+                            <td>@item.AppUser.Truck.LicensePlate</td>
+                            <td>@item.AppUser.FirstName @item.AppUser.LastName</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-check-circle me-1"></i> Accept</a>
+                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-x-circle me-1"></i> Reject</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="9">
+                                <div id="restockdetail-@i" class="accordion-collapse collapse"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="card">
+                                            <div class="table-responsive text-nowrap">
+                                                <table class="table table-primary">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>StockItem</th>
+                                                            <th>Quantity</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-border-bottom-0">
+
+                                                        @{
+                                                            int j = 1;
+                                                            @foreach (var detail in item.DetailRestockLogs)
+                                                            {
+                                                                <tr>
+                                                                    <td>@j</td>
+                                                                    <td>@detail.StockItem.Name</td>
+                                                                    <td>@detail.Quantity</td>
+                                                                </tr>
+                                                                j++;
+                                                            }
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--/ Striped Rows -->
