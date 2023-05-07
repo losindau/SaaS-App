@@ -29,7 +29,7 @@ namespace InventoryManagementAppMVC.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Index()
         {
-            List<AppUserVM> users = new List<AppUserVM>();
+            ResponsePagination responsePage = new ResponsePagination();
 
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
@@ -39,7 +39,7 @@ namespace InventoryManagementAppMVC.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var apiResponse = await response.Content.ReadAsStreamAsync();
-                users = await JsonSerializer.DeserializeAsync<List<AppUserVM>>(apiResponse, new JsonSerializerOptions
+                responsePage = await JsonSerializer.DeserializeAsync<ResponsePagination>(apiResponse, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
                     Converters = { new JsonStringEnumConverter() },
@@ -47,7 +47,7 @@ namespace InventoryManagementAppMVC.Controllers
                 });
             }
 
-            return View(users);
+            return View(responsePage);
         }
 
         public IActionResult Login()
