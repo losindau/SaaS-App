@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
+using InventoryManagementApp.Data;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
+using InventoryManagementApp.Data.Repository;
 using InventoryManagementApp.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace InventoryManagementApp.Controllers
 {
@@ -19,21 +23,35 @@ namespace InventoryManagementApp.Controllers
             this._mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("{page}/stockitems")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<StockItem>))]
-        public IActionResult GetStockItems()
+        public IActionResult GetStockItems(int page)
         {
-            var stockitems = _mapper.Map<List<StockItemVM>>(_stockItemRepository.GetStockItems());
+            var stockitems = _stockItemRepository.GetStockItems();
+
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(stockitems.Count() / pageResults);
+
+            var stockitemsMap = _mapper.Map<List<StockItemVM>>(stockitems.Skip((page - 1) * (int)pageResults).Take((int)pageResults));
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            return Ok(stockitems);
+            var response = new ResponsePagination()
+            {
+                Entities = new List<object>(stockitemsMap),
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+
+            return Ok(response);
         }
 
         [HttpGet("{stockitemID}")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(StockItem))]
         [ProducesResponseType(400)]
         public IActionResult GetStockItem(int stockitemID)
@@ -53,6 +71,7 @@ namespace InventoryManagementApp.Controllers
             return Ok(stockitem);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IActionResult CreateStockItem([FromBody] StockItemVM stockitemCreate)
         {
@@ -83,6 +102,7 @@ namespace InventoryManagementApp.Controllers
         }
 
         [HttpPut("{stockitemID}")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
