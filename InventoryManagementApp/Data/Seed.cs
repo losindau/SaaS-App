@@ -683,7 +683,7 @@ namespace InventoryManagementApp.Data
                     },
                     new DetailRestockLog()
                     {
-                        StockItemID = 6,
+                        StockItemID = 5,
                         Quantity = 21,
                         RestockLogID = 2,
                         CompanyID = 1,
@@ -691,7 +691,7 @@ namespace InventoryManagementApp.Data
                     },
                     new DetailRestockLog()
                     {
-                        StockItemID = 4,
+                        StockItemID = 6,
                         Quantity = 12,
                         RestockLogID = 3,
                         CompanyID = 2,
