@@ -53,6 +53,26 @@ namespace InventoryManagementApp.Data
                             CompanyID = 2,
                             isDeleted = false
                         },
+                        new Toolbox()
+                        {
+                            CompanyID = 1,
+                            isDeleted = false
+                        },
+                        new Toolbox()
+                        {
+                            CompanyID = 1,
+                            isDeleted = false
+                        },
+                        new Toolbox()
+                        {
+                            CompanyID = 1,
+                            isDeleted = false
+                        },
+                        new Toolbox()
+                        {
+                            CompanyID = 1,
+                            isDeleted = false
+                        }
                     };
                 if (!context.Toolboxes.Any())
                 {
@@ -77,6 +97,38 @@ namespace InventoryManagementApp.Data
                             LicensePlate = "DEF456",
                             ToolboxID = 2,
                             CompanyID = 2,
+                            isDeleted = false
+                        },
+                        new Truck()
+                        {
+                            Model = "GMC Sierra",
+                            LicensePlate = "GHI789",
+                            ToolboxID = 3,
+                            CompanyID = 1,
+                            isDeleted = false
+                        },
+                        new Truck()
+                        {
+                            Model = "Dodge Ram",
+                            LicensePlate = "JKL012",
+                            ToolboxID = 4,
+                            CompanyID = 1,
+                            isDeleted = false
+                        },
+                        new Truck()
+                        {
+                            Model = "Toyota Taconma",
+                            LicensePlate = "MNO345",
+                            ToolboxID = 5,
+                            CompanyID = 1,
+                            isDeleted = false
+                        },
+                        new Truck()
+                        {
+                            Model = "Ford F150",
+                            LicensePlate = "PQR678",
+                            ToolboxID = 6,
+                            CompanyID = 1,
                             isDeleted = false
                         }
                     };
@@ -560,6 +612,24 @@ namespace InventoryManagementApp.Data
                         TruckID = 1,
                         CompanyID = 1,
                         isDeleted = false
+                    },
+                    new RestockLog()
+                    {
+                        RequestDate = DateTime.Now,
+                        LogState = LogState.Declined,
+                        TruckID = 3,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new RestockLog()
+                    {
+                        RequestDate = DateTime.Now,
+                        LogState = LogState.Accepted,
+                        RestockDate = DateTime.Now,
+                        RestockState = RestockState.Restocked,
+                        TruckID = 2,
+                        CompanyID = 2,
+                        isDeleted = false
                     }
                 };
                 if (!context.RestockLogs.Any())
@@ -576,7 +646,7 @@ namespace InventoryManagementApp.Data
                         StockItemID = 1,
                         Quantity = 1,
                         RestockLogID = 1,
-                        CompanyID=1,
+                        CompanyID = 1,
                         isDeleted = false
                     },
                     new DetailRestockLog()
@@ -584,7 +654,7 @@ namespace InventoryManagementApp.Data
                         StockItemID = 2,
                         Quantity = 1,
                         RestockLogID = 1,
-                        CompanyID=1,
+                        CompanyID = 1,
                         isDeleted = false
                     },
                     new DetailRestockLog()
@@ -592,7 +662,7 @@ namespace InventoryManagementApp.Data
                         StockItemID = 3,
                         Quantity = 1,
                         RestockLogID = 1,
-                        CompanyID=1,
+                        CompanyID = 1,
                         isDeleted = false
                     },
                     new DetailRestockLog()
@@ -600,7 +670,31 @@ namespace InventoryManagementApp.Data
                         StockItemID = 4,
                         Quantity = 1,
                         RestockLogID = 1,
-                        CompanyID=1,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new DetailRestockLog()
+                    {
+                        StockItemID = 5,
+                        Quantity = 10,
+                        RestockLogID = 2,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new DetailRestockLog()
+                    {
+                        StockItemID = 6,
+                        Quantity = 21,
+                        RestockLogID = 2,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new DetailRestockLog()
+                    {
+                        StockItemID = 4,
+                        Quantity = 12,
+                        RestockLogID = 3,
+                        CompanyID = 2,
                         isDeleted = false
                     }
                 };
@@ -622,6 +716,24 @@ namespace InventoryManagementApp.Data
                         ToolboxID = 1,
                         CompanyID = 1,
                         isDeleted = false
+                    },
+                    new EqDamageLog()
+                    {
+                        ReportDate = DateTime.Now,
+                        LogState = LogState.Accepted,
+                        ReplaceDate = DateTime.Now,
+                        RestockState = RestockState.Restocked,
+                        ToolboxID = 3,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new EqDamageLog()
+                    {
+                        ReportDate = DateTime.Now,
+                        LogState = LogState.Declined,
+                        ToolboxID = 2,
+                        CompanyID = 2,
+                        isDeleted = false
                     }
                 };
                 if (!context.EqDamageLogs.Any())
@@ -639,7 +751,7 @@ namespace InventoryManagementApp.Data
                         Quantity = 1,
                         Comment = "This is Comment",
                         EqDamageLogID = 1,
-                        CompanyID=1,
+                        CompanyID = 1,
                         isDeleted = false
                     },
                     new DetailEqDamageLog()
@@ -648,7 +760,7 @@ namespace InventoryManagementApp.Data
                         Quantity = 1,
                         Comment = "This is Comment",
                         EqDamageLogID = 1,
-                        CompanyID=1,
+                        CompanyID = 1,
                         isDeleted = false
                     },
                     new DetailEqDamageLog()
@@ -657,7 +769,7 @@ namespace InventoryManagementApp.Data
                         Quantity = 1,
                         Comment = "This is Comment",
                         EqDamageLogID = 1,
-                        CompanyID=1,
+                        CompanyID = 1,
                         isDeleted = false
                     },
                     new DetailEqDamageLog()
@@ -666,7 +778,34 @@ namespace InventoryManagementApp.Data
                         Quantity = 1,
                         Comment = "This is Comment",
                         EqDamageLogID = 1,
-                        CompanyID=1,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new DetailEqDamageLog()
+                    {
+                        EquipmentID = 5,
+                        Quantity = 12,
+                        Comment = "Comment",
+                        EqDamageLogID = 2,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new DetailEqDamageLog()
+                    {
+                        EquipmentID = 3,
+                        Quantity = 31,
+                        Comment = "Comment",
+                        EqDamageLogID = 2,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new DetailEqDamageLog()
+                    {
+                        EquipmentID = 4,
+                        Quantity = 21,
+                        Comment = "This is Comment",
+                        EqDamageLogID = 3,
+                        CompanyID = 2,
                         isDeleted = false
                     }
                 };
@@ -812,7 +951,7 @@ namespace InventoryManagementApp.Data
                         UserName = staffCEmail,
                         FirstName = "Boris",
                         LastName = "Nguyen",
-                        PhoneNumber = "0903777827",
+                        PhoneNumber = "0946777827",
                         PhoneNumberConfirmed = true,
                         Email = staffCEmail,
                         EmailConfirmed = true,
@@ -832,7 +971,7 @@ namespace InventoryManagementApp.Data
                         UserName = staffDEmail,
                         FirstName = "Bao",
                         LastName = "Nguyen",
-                        PhoneNumber = "0904777827",
+                        PhoneNumber = "0946777827",
                         PhoneNumberConfirmed = true,
                         Email = staffDEmail,
                         EmailConfirmed = true,
@@ -860,6 +999,26 @@ namespace InventoryManagementApp.Data
                         CompanyID = 1
                     };
                     await userManager.CreateAsync(newAppUser, "staffE@1234?");
+                    await userManager.AddToRoleAsync(newAppUser, UserRoles.Staff);
+                }
+
+                string staffFEmail = "stafff@gmail.com";
+                var staffFUser = await userManager.FindByEmailAsync(staffFEmail);
+                if (staffFUser == null)
+                {
+                    var newAppUser = new AppUser()
+                    {
+                        UserName = staffFEmail,
+                        FirstName = "Dat",
+                        LastName = "Doan",
+                        PhoneNumber = "0946777827",
+                        PhoneNumberConfirmed = true,
+                        Email = staffFEmail,
+                        EmailConfirmed = true,
+                        TruckID = 6,
+                        CompanyID = 1
+                    };
+                    await userManager.CreateAsync(newAppUser, "staffF@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.Staff);
                 }
             }

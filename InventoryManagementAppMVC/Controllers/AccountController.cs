@@ -27,7 +27,7 @@ namespace InventoryManagementAppMVC.Controllers
         }
 
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page)
         {
             ResponsePagination responsePage = new ResponsePagination();
 
@@ -35,7 +35,7 @@ namespace InventoryManagementAppMVC.Controllers
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var response = await _httpClient.GetAsync("api/Account");
+            var response = await _httpClient.GetAsync("api/Account/" + page);
             if (response.IsSuccessStatusCode)
             {
                 var apiResponse = await response.Content.ReadAsStreamAsync();
