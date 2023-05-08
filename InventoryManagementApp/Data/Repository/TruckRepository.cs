@@ -16,17 +16,22 @@ namespace InventoryManagementApp.Data.Repository
 
         public Truck GetTruckId(int truckID)
         {
-            return _context.Trucks.Where(t => t.TruckID == truckID).FirstOrDefault();
+            return _context.Trucks.Include(x => x.Toolbox.ToolboxEquipments).ThenInclude(x => x.Equipment).Where(t => t.TruckID == truckID).FirstOrDefault();
         }
 
         public ICollection<Truck> GetTrucks()
         {
-            return _context.Trucks.Include(x => x.Toolbox.ToolboxEquipments).Where(t => t.isDeleted == false).OrderBy(t => t.TruckID).ToList();
+            return _context.Trucks.Include(x => x.Toolbox.ToolboxEquipments).ThenInclude(x => x.Equipment).Where(t => t.isDeleted == false).OrderBy(t => t.TruckID).ToList();
+            //return (ICollection<Truck>)_context.Trucks.Include(x => x.Toolbox).Include(x => x.AppUser).Where(t => t.isDeleted == false).OrderBy(t => t.TruckID).Select(t => new TruckVM
+            //{
+            //    TruckID = t.TruckID,
+            //    DriverName = t.AppUser.FirstName + " " + t.AppUser.LastName
+            //}).ToList();
         }
 
         public ICollection<TruckStockItem> GetTruckStockItems(int truckID)
         {
-            return _context.TruckStockItems.Where(t => t.TruckID == truckID && t.isDeleted == false).ToList();
+            return _context.TruckStockItems.Include(x => x.StockItem).Where(t => t.TruckID == truckID && t.isDeleted == false).ToList();
         }
 
         public bool TruckExists(int truckID)

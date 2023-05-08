@@ -9,7 +9,7 @@ namespace InventoryManagementAppMVC.ViewModels
         public string LicensePlate { get; set; }
         public int? ToolboxID { get; set; }
         public ToolboxVM? Toolbox { get; set; }
-        [ForeignKey("AppUser")]
+        public string? DriverName { get; set; }
         public int? CompanyID { get; set; }
         public bool isDeleted { get; set; }
 

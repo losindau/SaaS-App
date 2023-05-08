@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InventoryManagementApp.Data;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.Repository;
@@ -21,13 +22,19 @@ namespace InventoryManagementApp.Controllers
             this._mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("{page}/trucks")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Truck>))]
-        public IActionResult GetTruck()
+        public IActionResult GetTruck(int page)
         {
-            var trucks = _mapper.Map<List<TruckVM>>(_truckRepository.GetTrucks());
+            var trucks = _truckRepository.GetTrucks();
 
-            foreach (TruckVM us in trucks)
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(trucks.Count() / pageResults);
+
+            var trucksMap = _mapper.Map<List<TruckVM>>(trucks.Skip((page - 1) * (int)pageResults).Take((int)pageResults));
+
+            foreach (TruckVM us in trucksMap)
             {
                 us.TruckStockItems = _mapper.Map<List<TruckStockItemVM>>(_truckRepository.GetTruckStockItems(us.TruckID));
             }
@@ -37,13 +44,21 @@ namespace InventoryManagementApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok(trucks);
+            var response = new ResponsePagination()
+            {
+                Entities = new List<object>(trucksMap),
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+
+            return Ok(response);
         }
 
         [HttpGet("{truckID}")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(Truck))]
         [ProducesResponseType(400)]
-        public IActionResult GetTruck(int truckID)
+        public IActionResult GetTruckByID(int truckID)
         {
             if (!_truckRepository.TruckExists(truckID))
             {
@@ -61,6 +76,7 @@ namespace InventoryManagementApp.Controllers
             return Ok(truck);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IActionResult CreateTruck(TruckVM truckCreate)
         {
@@ -81,6 +97,7 @@ namespace InventoryManagementApp.Controllers
         }
 
         [HttpPut("{truckID}")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

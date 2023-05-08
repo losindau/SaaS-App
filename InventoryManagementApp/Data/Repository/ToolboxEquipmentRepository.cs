@@ -1,6 +1,7 @@
 ﻿using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagementApp.Data.Repository
 {
@@ -15,7 +16,7 @@ namespace InventoryManagementApp.Data.Repository
 
         public ToolboxEquipment GetToolboxEquipmentById(int toolboxEquipmentID)
         {
-            return _context.ToolboxEquipment.Where(t => t.ToolboxEquipmentID == toolboxEquipmentID).FirstOrDefault();
+            return _context.ToolboxEquipment.Include(i => i.Equipment).Where(t => t.ToolboxEquipmentID == toolboxEquipmentID).FirstOrDefault();
         }
 
         public bool ToolboxEquipmentExists(int toolboxEquipmentID)

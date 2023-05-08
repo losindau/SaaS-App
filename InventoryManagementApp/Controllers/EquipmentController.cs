@@ -4,6 +4,7 @@ using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.Repository;
 using InventoryManagementApp.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,7 @@ namespace InventoryManagementApp.Controllers
         }
 
         [HttpGet("{page}/equipments")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Equipment>))]
         public IActionResult GetEquipments(int page)
         {
@@ -49,6 +51,7 @@ namespace InventoryManagementApp.Controllers
         }
 
         [HttpGet("{equipmentID}")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200,Type = typeof(Equipment))]
         [ProducesResponseType(400)]
         public IActionResult GetEquipment(int equipmentID) 
@@ -68,6 +71,7 @@ namespace InventoryManagementApp.Controllers
             return Ok(equipment);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IActionResult CreateEquipment([FromBody] EquipmentVM equipmentCreate)
         {
@@ -98,6 +102,7 @@ namespace InventoryManagementApp.Controllers
         }
 
         [HttpPut("{equipmentID}")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
