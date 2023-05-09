@@ -14,12 +14,14 @@ using System.Net.Http.Headers;
 using Microsoft.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
 
 namespace InventoryManagementAppMVC.Controllers
 {
     public class AccountController : Controller
     {
         private readonly HttpClient _httpClient;
+        
 
         public AccountController(IHttpClientFactory httpClientFactory)
         {
@@ -50,13 +52,13 @@ namespace InventoryManagementAppMVC.Controllers
             return View(responsePage);
         }
 
-        public IActionResult Login()
+        public IActionResult SignIn()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(SignInVM signInVM)
+        public async Task<IActionResult> SignIn(SignInVM signInVM)
         {
             if (!ModelState.IsValid)
             {
@@ -103,5 +105,39 @@ namespace InventoryManagementAppMVC.Controllers
             }
         }
 
+        public async Task<IActionResult> SignUp()
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(signUpVM);
+            }
+
+            SignUpVM signUpVM = new SignUpVM();
+
+            // Send a POST request to the login API
+            var response = await _httpClient.PostAsJsonAsync("api/Account/SignUp", signUpVM);
+
+            // Check if the request was successful
+            if (response.IsSuccessStatusCode)
+            {
+               
+
+                // Redirect the user to a protected page
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                // Handle unsuccessful login (e.g., display an error message)
+                TempData["Error"] = "Wrong credentials. Please, try again";
+                return View(signUpVM);
+            }
+        }
+
+        public async Task<IActionResult> SignOut()
+        {
+            await HttpContext.SignOutAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

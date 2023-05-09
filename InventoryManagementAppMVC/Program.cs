@@ -19,7 +19,11 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie()
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Home";
+        options.AccessDeniedPath = "/Home";
+    })
     .AddJwtBearer(options =>
     {
         options.SaveToken = true;

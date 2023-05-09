@@ -63,6 +63,11 @@ namespace InventoryManagementApp.Data.Repository
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        public async Task<IdentityResult> SignUpAsync(AppUser appUser, string password)
+        {
+            return await _userManager.CreateAsync(appUser, password);
+        }
+
         public ICollection<AppUser> GetUsers()
         {
             var authHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];

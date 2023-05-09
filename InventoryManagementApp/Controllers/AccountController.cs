@@ -42,6 +42,42 @@ namespace InventoryManagementApp.Controllers
             return Ok(result);
         }
 
+        [HttpPost("SignUp")]
+        public async Task<IActionResult> SignUp([FromBody] SignUpVM signUpVM)
+        {
+            if (signUpVM == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _userManager.FindByEmailAsync(signUpVM.Email);
+
+            if (result != null)
+            {
+                ModelState.AddModelError("", "This email is already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            var newUser = new AppUser()
+            {
+                FirstName = signUpVM.FirstName,
+                LastName = signUpVM.LastName,
+                PhoneNumber = signUpVM.PhoneNumber,
+                Email = signUpVM.Email,
+                TruckID = signUpVM.TruckID,
+                CompanyID = signUpVM.CompanyID
+            };
+
+            var signUpResult = await _accountRepository.SignUpAsync(newUser, signUpVM.Password);
+
+            if (!signUpResult.Succeeded)
+            {
+                return Unauthorized();
+            }
+
+            await _userManager.AddToRoleAsync(newUser, signUpVM.Role);
+            return Ok(signUpResult.Succeeded);
+        }
 
         [HttpGet("{page}")]
         [Authorize(Roles = "Manager")]

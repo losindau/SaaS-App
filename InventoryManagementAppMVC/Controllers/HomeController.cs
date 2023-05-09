@@ -30,7 +30,7 @@ namespace InventoryManagementAppMVC.Controllers
                 return View(user);
             }
 
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("SignIn", "Account");
         }
     }
 }

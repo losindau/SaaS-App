@@ -24,7 +24,7 @@ namespace InventoryManagementApp.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Company>))]
         public IActionResult GetCompanies()
         {
-            var companies = _mapper.Map<List<CompanyVM>>(_companyRepository.GetCompanys());
+            var companies = _mapper.Map<List<CompanyVM>>(_companyRepository.GetCompanies());
 
             if (!ModelState.IsValid)
             {
@@ -62,13 +62,13 @@ namespace InventoryManagementApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            var company = _companyRepository.GetCompanys()
+            var company = _companyRepository.GetCompanies()
                 .Where(i => i.Name.Trim().ToLower().Equals(companyCreate.Name.Trim().ToLower()))
                 .FirstOrDefault();
 
             if (company != null)
             {
-                ModelState.AddModelError("", "This item is already exists");
+                ModelState.AddModelError("", "This company name is already exists");
                 return StatusCode(422, ModelState);
             }
 

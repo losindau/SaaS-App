@@ -23,7 +23,7 @@ namespace InventoryManagementApp.Data.Repository
             return _context.Companies.Where(c => c.CompanyID == companyID).FirstOrDefault();
         }
 
-        public ICollection<Company> GetCompanys()
+        public ICollection<Company> GetCompanies()
         {
             return _context.Companies.Where(c => c.isDeleted == false).OrderBy(c => c.CompanyID).ToList();
         }
