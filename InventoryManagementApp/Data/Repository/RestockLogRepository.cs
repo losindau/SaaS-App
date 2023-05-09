@@ -16,17 +16,17 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<DetailRestockLog> GetDetailRestockLogs(int restocklogID)
         {
-            return _context.DetailRestockLogs.Include(u => u.StockItem).Where(d => d.RestockLogID == restocklogID && d.isDeleted == false).ToList();
+            return _context.DetailRestockLogs.Where(d => d.RestockLogID == restocklogID && d.isDeleted == false).ToList();
         }
 
         public RestockLog GetRestockLogById(int restocklogID)
         {
-            return _context.RestockLogs.Include(u => u.AppUser.Truck).Where(d => d.RestockLogID == restocklogID).FirstOrDefault();
+            return _context.RestockLogs.Where(d => d.RestockLogID == restocklogID).FirstOrDefault();
         }
 
         public ICollection<RestockLog> GetRestockLogs()
         {
-            return _context.RestockLogs.Include(u => u.AppUser.Truck).Where(r => r.isDeleted == false).OrderBy(r => r.RestockLogID).ToList();
+            return _context.RestockLogs.Where(r => r.isDeleted == false).OrderBy(r => r.RestockLogID).ToList();
         }
 
         public bool RestockLogExists(int restocklogID)

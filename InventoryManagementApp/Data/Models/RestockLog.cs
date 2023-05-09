@@ -12,10 +12,12 @@ namespace InventoryManagementApp.Data.Models
         public LogState LogState { get; set; }
         public DateTime RestockDate { get; set; }
         public RestockState RestockState { get; set; }
-        public int? TruckID { get; set; }
+        public int? TruckID { get; set; }        
+        public string? LicensePlate { get; set; }
         public Truck? Truck { get; set; }
         [ForeignKey("AppUser")]
         public string? AppUserID { get; set; }
+        public string? AppUserName { get; set; }
         public AppUser? AppUser { get; set; }
         public int? CompanyID { get; set; }
         public Company? Company { get; set; }

@@ -16,6 +16,7 @@ namespace InventoryManagementApp.Data.Models
         public Toolbox? Toolbox { get; set; }
         [ForeignKey("AppUser")]
         public string? AppUserID { get; set; }
+        public string? AppUserName { get; set; }
         public AppUser? AppUser { get; set; }
         public int? CompanyID { get; set; }
         public Company? Company { get; set; }
