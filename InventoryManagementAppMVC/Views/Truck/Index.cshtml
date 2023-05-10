@@ -23,10 +23,10 @@
                     foreach (JsonElement item in Model.Entities)
                     {
                         TruckVM user = JsonSerializer.Deserialize<TruckVM>(item, new JsonSerializerOptions
-                        {
-                            PropertyNameCaseInsensitive = true,
-                            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-                        });
+                {
+                    PropertyNameCaseInsensitive = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
 
                         <tr class="accordion-item" data-bs-toggle="collapse" data-bs-target="#usagedetail-@i" aria-expanded="false" aria-controls="usagedetail-@i">
                             <td>@i</td>
@@ -50,73 +50,74 @@
                                 <div id="usagedetail-@i" class="accordion-collapse collapse"
                                      data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        <div class="row"></div>
+                                        <div class="row">
 
-                                        <!-- Toolbox -->
-                                        <div class="col-md-6">
-                                            <span class="text-muted fw-light">Toolbox #@user.ToolboxID</span>
-                                            <div class="card">
-                                                <div class="table-responsive text-nowrap">
-                                                    <table class="table table-primary">
-                                                        <thead>
-                                                            <tr>
-                                                                <th></th>
-                                                                <th>Equipment</th>
-                                                                <th>Quantity In Toolbox</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody class="table-border-bottom-0">
+                                            <!-- Toolbox -->
+                                            <div class="col-md-6">
+                                                <span class="text-muted fw-light">Toolbox #@user.ToolboxID</span>
+                                                <div class="card">
+                                                    <div class="table-responsive text-nowrap">
+                                                        <table class="table table-primary">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th></th>
+                                                                    <th>Equipment</th>
+                                                                    <th>Quantity In Toolbox</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="table-border-bottom-0">
 
-                                                            @{
-                                                                int j = 1;
-                                                                @foreach (var detail in user.Toolbox.ToolboxEquipments)
-                                                                {
-                                                                    <tr>
-                                                                        <td>@j</td>
-                                                                        <td>@detail.Equipment.Name</td>
-                                                                        <td>@detail.QuantityInToolbox</td>
-                                                                    </tr>
-                                                                    j++;
+                                                                @{
+                                                                    int j = 1;
+                                                                    @foreach (var detail in user.Toolbox.ToolboxEquipments)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@j</td>
+                                                                            <td>@detail.Equipment.Name</td>
+                                                                            <td>@detail.QuantityInToolbox</td>
+                                                                        </tr>
+                                                                        j++;
+                                                                    }
                                                                 }
-                                                            }
 
-                                                        </tbody>
-                                                    </table>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <!-- Truck -->
+                                            <!-- Truck -->
 
-                                        <div class="col-md-6">
-                                            <span class="text-muted fw-light">Stock Item #</span>
-                                            <div class="card">
-                                                <div class="table-responsive text-nowrap">
-                                                    <table class="table table-primary">
-                                                        <thead>
-                                                            <tr>
-                                                                <th></th>
-                                                                <th>Stock Item</th>
-                                                                <th>Quantity In Truck</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody class="table-border-bottom-0">
+                                            <div class="col-md-6">
+                                                <span class="text-muted fw-light">Stock Item</span>
+                                                <div class="card">
+                                                    <div class="table-responsive text-nowrap">
+                                                        <table class="table table-primary">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th></th>
+                                                                    <th>Stock Item</th>
+                                                                    <th>Quantity In Truck</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="table-border-bottom-0">
 
-                                                            @{
-                                                                int k = 1;
-                                                                @foreach (var detail in user.TruckStockItems)
-                                                                {
-                                                                    <tr>
-                                                                        <td>@k</td>
-                                                                        <td>@detail.StockItem.Name</td>
-                                                                        <td>@detail.QuantityInTruck</td>
-                                                                    </tr>
-                                                                    k++;
+                                                                @{
+                                                                    int k = 1;
+                                                                    @foreach (var detail in user.TruckStockItems)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@k</td>
+                                                                            <td>@detail.StockItem.Name</td>
+                                                                            <td>@detail.QuantityInTruck</td>
+                                                                        </tr>
+                                                                        k++;
+                                                                    }
                                                                 }
-                                                            }
 
-                                                        </tbody>
-                                                    </table>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
