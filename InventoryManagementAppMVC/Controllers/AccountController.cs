@@ -15,6 +15,7 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
+using InventoryManagementAppMVC.Helper;
 
 namespace InventoryManagementAppMVC.Controllers
 {
@@ -105,32 +106,60 @@ namespace InventoryManagementAppMVC.Controllers
             }
         }
 
-        public async Task<IActionResult> SignUp()
+        public IActionResult SignUp()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SignUp(SignUpCompany signUpCompany)
         {
             if (!ModelState.IsValid)
             {
-                return View(signUpVM);
+                return View(signUpCompany);
             }
 
-            SignUpVM signUpVM = new SignUpVM();
+            CompanyVM companyVM = new CompanyVM()
+            {
+                Name = signUpCompany.Name,
+                Address = signUpCompany.Address,
+                Phone = int.Parse(signUpCompany.PhoneNumber),
+                Email = signUpCompany.Email,
+                isDeleted = false
+            };
+
+            var responsePostCompany = await _httpClient.PostAsJsonAsync("api/Company", companyVM);
+
+            if (!responsePostCompany.IsSuccessStatusCode)
+            {
+                TempData["Error"] = "Something went wrong";
+                return View(signUpCompany);
+            }
+
+            var companyID = await responsePostCompany.Content.ReadAsStringAsync();
+
+            SignUpVM signUpVM = new SignUpVM()
+            {
+                PhoneNumber = signUpCompany.PhoneNumber,
+                Email = signUpCompany.Email,
+                Password = signUpCompany.Password,
+                ConfirmPassword = signUpCompany.ConfirmPassword,
+                Role = UserRoles.Admin,
+                CompanyID = int.Parse(companyID)
+            };
 
             // Send a POST request to the login API
-            var response = await _httpClient.PostAsJsonAsync("api/Account/SignUp", signUpVM);
+            var responsePostAccount = await _httpClient.PostAsJsonAsync("api/Account/SignUp", signUpVM);
 
             // Check if the request was successful
-            if (response.IsSuccessStatusCode)
+            if (!responsePostAccount.IsSuccessStatusCode)
             {
-               
+                TempData["Error"] = "Something went wrong";
+                return View(signUpCompany);
+            }
 
-                // Redirect the user to a protected page
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                // Handle unsuccessful login (e.g., display an error message)
-                TempData["Error"] = "Wrong credentials. Please, try again";
-                return View(signUpVM);
-            }
+            TempData["Success"] = "You have sign up an account successfully";
+            return View();
         }
 
         public async Task<IActionResult> SignOut()
