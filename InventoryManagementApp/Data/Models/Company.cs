@@ -11,7 +11,6 @@ namespace InventoryManagementApp.Data.Models
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
         public bool isDeleted { get; set; }
-        public ICollection<MaintenanceActivity>? MaintenanceActivities { get; set; }
         public ICollection<AppUser>? AppUsers { get; set; }
         public ICollection<Equipment>? Equipment { get; set; }
         public ICollection<Toolbox>? Toolboxes { get; set; }

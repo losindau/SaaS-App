@@ -15,6 +15,5 @@ namespace InventoryManagementApp.Data.Models
         public ICollection<EqDamageLog>? EqDamageLogs { get; set; }
         public ICollection<RestockLog>? RestockLogs { get; set; }
         public ICollection<UsageLog>? UsageLogs { get; set; }
-        public ICollection<MaintenanceActivity>? MaintenanceActivities { get; set; }
     }
 }

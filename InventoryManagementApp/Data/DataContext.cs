@@ -24,7 +24,6 @@ namespace InventoryManagementApp.Data
 
         }
 
-        public DbSet<MaintenanceActivity> MaintenanceActivities { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Equipment> Equipment { get; set; }
         public DbSet<Toolbox> Toolboxes { get; set; }

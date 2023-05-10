@@ -14,6 +14,5 @@ namespace InventoryManagementApp.Data.ViewModels
         public TruckVM? Truck { get; set; }
         public int? CompanyID { get; set; }
 
-        public ICollection<MaintenanceActivityVM>? MaintenanceActivities { get; set; }
     }
 }

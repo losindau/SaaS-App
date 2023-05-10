@@ -26,8 +26,6 @@ namespace InventoryManagementApp.Helper
             CreateMap<DetailEqDamageLogVM, DetailEqDamageLog>();
             CreateMap<AppUser, AppUserVM>();
             CreateMap<AppUserVM, AppUser>();
-            CreateMap<MaintenanceActivity, MaintenanceActivityVM>();
-            CreateMap<MaintenanceActivityVM, MaintenanceActivity>();
             CreateMap<Truck, TruckVM>();
             CreateMap<TruckVM, Truck>();
             CreateMap<TruckStockItem, TruckStockItemVM>();
