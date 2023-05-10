@@ -16,17 +16,17 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<DetailUsageLog> GetDetailUsageLogs(int usagelogID)
         {
-            return _context.DetailUsageLogs.Include(d => d.StockItem).Where(d => d.UsageLogID == usagelogID && d.isDeleted == false).ToList();
+            return _context.DetailUsageLogs.Where(d => d.UsageLogID == usagelogID && d.isDeleted == false).ToList();
         }
 
         public UsageLog GetUsageLogById(int usagelogID)
         {
-            return _context.UsageLogs.Include(u => u.AppUser.Truck).Where(u => u.UsageLogID == usagelogID).FirstOrDefault();
+            return _context.UsageLogs.Where(u => u.UsageLogID == usagelogID).FirstOrDefault();
         }
 
         public ICollection<UsageLog> GetUsageLogs()
         {
-            return _context.UsageLogs.Include(u => u.AppUser.Truck).Where(u => u.isDeleted == false).OrderBy(u => u.UsageLogID).ToList();
+            return _context.UsageLogs.Where(u => u.isDeleted == false).OrderBy(u => u.UsageLogID).ToList();
         }
 
         public bool UsageLogExists(int usagelogID)

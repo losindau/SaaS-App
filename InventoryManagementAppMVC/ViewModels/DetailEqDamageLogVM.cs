@@ -4,7 +4,8 @@
     {
         public int DetailEqDamageLogID { get; set; }
         public int? EquipmentID { get; set; }
-        public EquipmentVM? Equipment { get; set; }
+        public string? EquipmentName { get; set; }
+        //public EquipmentVM? Equipment { get; set; }
         public int Quantity { get; set; }
         public string Comment { get; set; }
         public int? EqDamageLogID { get; set; }

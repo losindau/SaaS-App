@@ -21,17 +21,17 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<DetailEqDamageLog> GetDetailEqDamageLogs(int eqdamagelogID)
         {
-            return _context.DetailEqDamageLogs.Include(u => u.Equipment).Where(d => d.EqDamageLogID == eqdamagelogID && d.isDeleted == false).ToList();
+            return _context.DetailEqDamageLogs.Where(d => d.EqDamageLogID == eqdamagelogID && d.isDeleted == false).ToList();
         }
 
         public EqDamageLog GetEqDamageLogById(int eqdamagelogID)
         {
-            return _context.EqDamageLogs.Include(u => u.AppUser).Where(e => e.EqDamageLogID == eqdamagelogID).FirstOrDefault();
+            return _context.EqDamageLogs.Where(e => e.EqDamageLogID == eqdamagelogID).FirstOrDefault();
         }
 
         public ICollection<EqDamageLog> GetEqDamageLogs()
         {
-            return _context.EqDamageLogs.Include(u => u.AppUser).Where(e => e.isDeleted == false).OrderBy(e => e.EqDamageLogID).ToList();
+            return _context.EqDamageLogs.Where(e => e.isDeleted == false).OrderBy(e => e.EqDamageLogID).ToList();
         }
 
         public bool CreateEqDamageLog(EqDamageLog eqDamageLog)

@@ -320,6 +320,54 @@ namespace InventoryManagementApp.Data
                         QuantityInTruck = 50,
                         CompanyID = 2,
                         isDeleted = false
+                    },
+                    new TruckStockItem()
+                    {
+                        TruckID = 3,
+                        StockItemID = 1,
+                        QuantityInTruck = 11,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new TruckStockItem()
+                    {
+                        TruckID = 3,
+                        StockItemID = 2,
+                        QuantityInTruck = 12,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new TruckStockItem()
+                    {
+                        TruckID = 4,
+                        StockItemID = 3,
+                        QuantityInTruck = 34,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new TruckStockItem()
+                    {
+                        TruckID = 5,
+                        StockItemID = 4,
+                        QuantityInTruck = 12,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new TruckStockItem()
+                    {
+                        TruckID = 6,
+                        StockItemID = 5,
+                        QuantityInTruck = 23,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new TruckStockItem()
+                    {
+                        TruckID = 6,
+                        StockItemID = 1,
+                        QuantityInTruck = 20,
+                        CompanyID = 1,
+                        isDeleted = false
                     }
                 };
                 if (!context.TruckStockItems.Any())
@@ -510,6 +558,54 @@ namespace InventoryManagementApp.Data
                         QuantityInToolbox = 5,
                         CompanyID = 2,
                         isDeleted = false
+                    },
+                    new ToolboxEquipment()
+                    {
+                        ToolboxID = 3,
+                        EquipmentID = 1,
+                        QuantityInToolbox = 15,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new ToolboxEquipment()
+                    {
+                        ToolboxID = 4,
+                        EquipmentID = 2,
+                        QuantityInToolbox = 11,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new ToolboxEquipment()
+                    {
+                        ToolboxID = 4,
+                        EquipmentID = 3,
+                        QuantityInToolbox = 11,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new ToolboxEquipment()
+                    {
+                        ToolboxID = 5,
+                        EquipmentID = 4,
+                        QuantityInToolbox = 12,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new ToolboxEquipment()
+                    {
+                        ToolboxID = 5,
+                        EquipmentID = 5,
+                        QuantityInToolbox = 7,
+                        CompanyID = 1,
+                        isDeleted = false
+                    },
+                    new ToolboxEquipment()
+                    {
+                        ToolboxID = 6,
+                        EquipmentID = 5,
+                        QuantityInToolbox = 4,
+                        CompanyID = 1,
+                        isDeleted = false
                     }
                 };
                 if (!context.ToolboxEquipment.Any())
@@ -525,14 +621,18 @@ namespace InventoryManagementApp.Data
                     {
                         Date = DateTime.Now,
                         TruckID = 1,
+                        LicensePlate = "HSK-123",
                         CompanyID = 1,
+                        AppUserName = "Bao Bao",
                         isDeleted = false
                     },
                     new UsageLog()
                     {
                         Date = DateTime.Now,
                         TruckID = 2,
+                        LicensePlate = "HJS-233",
                         CompanyID = 1,
+                        AppUserName = "Dau Sin",                        
                         isDeleted = false
                     }
                 };
@@ -548,6 +648,7 @@ namespace InventoryManagementApp.Data
                     new DetailUsageLog()
                     {
                         StockItemID = 1,
+                        StockItemName = "Long Cable",
                         Quantity = 1,
                         UsageLogID = 1,
                         CompanyID=1,
@@ -556,6 +657,7 @@ namespace InventoryManagementApp.Data
                     new DetailUsageLog()
                     {
                         StockItemID = 2,
+                        StockItemName = "Bulb",
                         Quantity = 1,
                         UsageLogID = 1,
                         CompanyID=1,
@@ -564,6 +666,7 @@ namespace InventoryManagementApp.Data
                     new DetailUsageLog()
                     {
                         StockItemID = 3,
+                        StockItemName = "Switch",
                         Quantity = 1,
                         UsageLogID = 1,
                         CompanyID=1,
@@ -572,6 +675,7 @@ namespace InventoryManagementApp.Data
                     new DetailUsageLog()
                     {
                         StockItemID = 4,
+                        StockItemName = "Circuit Breaker",
                         Quantity = 1,
                         UsageLogID = 1,
                         CompanyID=1,
@@ -580,6 +684,7 @@ namespace InventoryManagementApp.Data
                     new DetailUsageLog()
                     {
                         StockItemID = 1,
+                        StockItemName = "Cable",
                         Quantity = 1,
                         UsageLogID = 2,
                         CompanyID=1,
@@ -588,6 +693,7 @@ namespace InventoryManagementApp.Data
                     new DetailUsageLog()
                     {
                         StockItemID = 2,
+                        StockItemName = "Bulb",
                         Quantity = 1,
                         UsageLogID = 2,
                         CompanyID=1,
@@ -610,6 +716,8 @@ namespace InventoryManagementApp.Data
                         RestockDate = DateTime.Now,
                         RestockState = RestockState.Restocked,
                         TruckID = 1,
+                        LicensePlate = "HFS-175",
+                        AppUserName = "Bao Bao",
                         CompanyID = 1,
                         isDeleted = false
                     },
@@ -618,7 +726,9 @@ namespace InventoryManagementApp.Data
                         RequestDate = DateTime.Now,
                         LogState = LogState.Declined,
                         TruckID = 3,
-                        CompanyID = 1,
+                        CompanyID = 1,                        
+                        LicensePlate = "DDL-304",
+                        AppUserName = "Dau Sin",
                         isDeleted = false
                     },
                     new RestockLog()
@@ -628,6 +738,8 @@ namespace InventoryManagementApp.Data
                         RestockDate = DateTime.Now,
                         RestockState = RestockState.Restocked,
                         TruckID = 2,
+                        LicensePlate = "JDG-321",
+                        AppUserName = "Dat Doan",
                         CompanyID = 2,
                         isDeleted = false
                     }
@@ -644,6 +756,7 @@ namespace InventoryManagementApp.Data
                     new DetailRestockLog()
                     {
                         StockItemID = 1,
+                        StockItemName = "Cable",
                         Quantity = 1,
                         RestockLogID = 1,
                         CompanyID = 1,
@@ -652,6 +765,7 @@ namespace InventoryManagementApp.Data
                     new DetailRestockLog()
                     {
                         StockItemID = 2,
+                        StockItemName = "Bulb",
                         Quantity = 1,
                         RestockLogID = 1,
                         CompanyID = 1,
@@ -660,6 +774,7 @@ namespace InventoryManagementApp.Data
                     new DetailRestockLog()
                     {
                         StockItemID = 3,
+                        StockItemName = "Switch",
                         Quantity = 1,
                         RestockLogID = 1,
                         CompanyID = 1,
@@ -668,6 +783,7 @@ namespace InventoryManagementApp.Data
                     new DetailRestockLog()
                     {
                         StockItemID = 4,
+                        StockItemName = "Circuit Breaker",
                         Quantity = 1,
                         RestockLogID = 1,
                         CompanyID = 1,
@@ -676,6 +792,7 @@ namespace InventoryManagementApp.Data
                     new DetailRestockLog()
                     {
                         StockItemID = 5,
+                        StockItemName = "Extension Cord",
                         Quantity = 10,
                         RestockLogID = 2,
                         CompanyID = 1,
@@ -684,6 +801,7 @@ namespace InventoryManagementApp.Data
                     new DetailRestockLog()
                     {
                         StockItemID = 5,
+                        StockItemName = "Extension Cord",
                         Quantity = 21,
                         RestockLogID = 2,
                         CompanyID = 1,
@@ -692,6 +810,7 @@ namespace InventoryManagementApp.Data
                     new DetailRestockLog()
                     {
                         StockItemID = 6,
+                        StockItemName = "Long Cable",
                         Quantity = 12,
                         RestockLogID = 3,
                         CompanyID = 2,
@@ -714,6 +833,7 @@ namespace InventoryManagementApp.Data
                         ReplaceDate = DateTime.Now,
                         RestockState = RestockState.Restocked,
                         ToolboxID = 1,
+                        AppUserName = "Bao Bao",
                         CompanyID = 1,
                         isDeleted = false
                     },
@@ -724,6 +844,7 @@ namespace InventoryManagementApp.Data
                         ReplaceDate = DateTime.Now,
                         RestockState = RestockState.Restocked,
                         ToolboxID = 3,
+                        AppUserName = "Dau Sin",
                         CompanyID = 1,
                         isDeleted = false
                     },
@@ -732,6 +853,7 @@ namespace InventoryManagementApp.Data
                         ReportDate = DateTime.Now,
                         LogState = LogState.Declined,
                         ToolboxID = 2,
+                        AppUserName = "Dat Doan",
                         CompanyID = 2,
                         isDeleted = false
                     }
@@ -748,6 +870,7 @@ namespace InventoryManagementApp.Data
                     new DetailEqDamageLog()
                     {
                         EquipmentID = 1,
+                        EquipmentName = "Screwdriver",
                         Quantity = 1,
                         Comment = "This is Comment",
                         EqDamageLogID = 1,
@@ -757,6 +880,7 @@ namespace InventoryManagementApp.Data
                     new DetailEqDamageLog()
                     {
                         EquipmentID = 2,
+                        EquipmentName = "Pliers",
                         Quantity = 1,
                         Comment = "This is Comment",
                         EqDamageLogID = 1,
@@ -766,6 +890,7 @@ namespace InventoryManagementApp.Data
                     new DetailEqDamageLog()
                     {
                         EquipmentID = 3,
+                        EquipmentName = "Voltage Tester",
                         Quantity = 1,
                         Comment = "This is Comment",
                         EqDamageLogID = 1,
@@ -775,6 +900,7 @@ namespace InventoryManagementApp.Data
                     new DetailEqDamageLog()
                     {
                         EquipmentID = 4,
+                        EquipmentName = "Drill",
                         Quantity = 1,
                         Comment = "This is Comment",
                         EqDamageLogID = 1,
@@ -784,6 +910,7 @@ namespace InventoryManagementApp.Data
                     new DetailEqDamageLog()
                     {
                         EquipmentID = 5,
+                        EquipmentName = "Tape Measure",
                         Quantity = 12,
                         Comment = "Comment",
                         EqDamageLogID = 2,
@@ -793,6 +920,7 @@ namespace InventoryManagementApp.Data
                     new DetailEqDamageLog()
                     {
                         EquipmentID = 3,
+                        EquipmentName = "Voltage Tester",
                         Quantity = 31,
                         Comment = "Comment",
                         EqDamageLogID = 2,
@@ -802,6 +930,7 @@ namespace InventoryManagementApp.Data
                     new DetailEqDamageLog()
                     {
                         EquipmentID = 4,
+                        EquipmentName = "Drill",
                         Quantity = 21,
                         Comment = "This is Comment",
                         EqDamageLogID = 3,

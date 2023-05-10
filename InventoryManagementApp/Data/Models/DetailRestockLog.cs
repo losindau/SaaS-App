@@ -8,6 +8,7 @@ namespace InventoryManagementApp.Data.Models
     {
         public int DetailRestockLogID { get; set; }
         public int? StockItemID { get; set; }
+        public string? StockItemName { get; set; }
         public StockItem? StockItem { get; set; }
         public int Quantity { get; set; }
         public int? RestockLogID { get; set; }

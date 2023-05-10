@@ -13,7 +13,7 @@
                     <th>Report State</th>
                     <th>Replace Date</th>
                     <th>Replace State</th>
-                    <th>Toolbox</th>
+                    <th>Toolbox ID</th>
                     <th>Driver</th>
                     <th>Actions</th>
                 </tr>
@@ -32,7 +32,7 @@
                             <td>@item.ReplaceDate</td>
                             <td><span class="badge bg-label-success me-1">@item.RestockState</span></td>
                             <td>@item.ToolboxID</td>
-                            <td>@item.AppUser.FirstName @item.AppUser.LastName</td>
+                            <td>@item.AppUserName</td>
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -69,7 +69,7 @@
                                                             {
                                                                 <tr>
                                                                     <td>@j</td>
-                                                                    <td>@detail.Equipment.Name</td>
+                                                                    <td>@detail.EquipmentName</td>
                                                                     <td>@detail.Quantity</td>
                                                                     <td>@detail.Comment</td>
                                                                 </tr>

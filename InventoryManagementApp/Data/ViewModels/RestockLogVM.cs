@@ -12,9 +12,11 @@ namespace InventoryManagementApp.Data.ViewModels
         public DateTime RestockDate { get; set; }
         public RestockState RestockState { get; set; }
         public int? TruckID { get; set; }
+        public string? LicensePlate { get; set; }
         [ForeignKey("AppUser")]
         public string? AppUserID { get; set; }
-        public AppUserVM? AppUser { get; set; }
+        public string? AppUserName { get; set; }
+        //public AppUserVM? AppUser { get; set; }
         public int? CompanyID { get; set; }
         public bool isDeleted { get; set; }
 
