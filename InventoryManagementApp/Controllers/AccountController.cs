@@ -63,6 +63,7 @@ namespace InventoryManagementApp.Controllers
                 FirstName = signUpVM.FirstName,
                 LastName = signUpVM.LastName,
                 PhoneNumber = signUpVM.PhoneNumber,
+                UserName = signUpVM.Email,
                 Email = signUpVM.Email,
                 TruckID = signUpVM.TruckID,
                 CompanyID = signUpVM.CompanyID

@@ -1,9 +1,8 @@
-﻿@using InventoryManagementAppMVC.ViewModels
-@model SignInVM
+﻿@model SignInVM
 
 @{
-    ViewData["Title"] = "Login";
-    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewData["Title"] = "Signin";
+    Layout = "~/Views/Shared/_AuthenticateLayout.cshtml";
 }
 
 <div class="container-xxl">
@@ -74,24 +73,19 @@
                         </div>
                     }
 
-                    <form asp-action="SignIn" id="formAuthentication" class="mb-3">
+                    <form asp-controller="Account" asp-action="SignIn" id="formAuthentication" class="mb-3">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="mb-3">
                             <label asp-for="Email" class="form-label">Email</label>
-                            <input asp-for="Email" class="form-control" id="email"
-                                   placeholder="Enter your email" autofocus />
+                            <input asp-for="Email" class="form-control" id="email" placeholder="Enter your email" autofocus />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                         <div class="mb-3 form-password-toggle">
                             <div class="d-flex justify-content-between">
                                 <label asp-for="Password" class="form-label">Password</label>
-                                <a href="auth-forgot-password-basic.html">
-                                    <small>Forgot Password?</small>
-                                </a>
                             </div>
                             <div class="input-group input-group-merge">
-                                <input asp-for="Password" type="password" id="password" class="form-control"
-                                       placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                                <input asp-for="Password" type="password" id="password" class="form-control" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
                             </div>
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
@@ -101,7 +95,7 @@
                     </form>
                     <p class="text-center">
                         <span>Do not have an account?</span>
-                        <a href="auth-register-basic.html">
+                        <a asp-controller="Account" asp-action="SignUp">
                             <span>Click here!</span>
                         </a>
                     </p>
