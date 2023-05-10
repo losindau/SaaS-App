@@ -7,6 +7,15 @@
 
 <div class="authentication-wrapper authentication-basic container-p-y">
     <div class="authentication-inner">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <span>@TempData["Success"]</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+            </div>
+        }
+
         <!-- Register Card -->
         <div class="card">
             <div class="card-body">
@@ -65,9 +74,19 @@
 
                 <form id="formAuthentication" asp-controller="Account" asp-action="SignUp" class="mb-3">
                     <div class="mb-3">
+                        <label class="form-label">First name</label>
+                        <input asp-for="FirstName" type="text" class="form-control" placeholder="Enter your first name" autofocus />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Last name</label>
+                        <input asp-for="LastName" type="text" class="form-control" placeholder="Enter your last name" autofocus />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">Company name</label>
-                        <input asp-for="Name" type="text" class="form-control" placeholder="Enter your company name" autofocus />
-                        <span asp-validation-for="Name" class="text-danger"></span>
+                        <input asp-for="CompanyName" type="text" class="form-control" placeholder="Enter your company name" autofocus />
+                        <span asp-validation-for="CompanyName" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Company address</label>

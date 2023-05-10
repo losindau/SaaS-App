@@ -21,7 +21,7 @@ namespace InventoryManagementApp.Data
                         {
                             Name = "UEHA",
                             Address = "56 Nguyen Dinh Chieu",
-                            Phone = 123456789,
+                            PhoneNumber = "123456789",
                             Email = "ueha@gmail.com",
                             isDeleted = false
                         },
@@ -29,7 +29,7 @@ namespace InventoryManagementApp.Data
                         {
                             Name = "UEHB",
                             Address = "56 Nguyen Dinh Chieu",
-                            Phone = 123456789,
+                            PhoneNumber = "123456789",
                             Email = "uehb@gmail.com",
                             isDeleted = false
                         }

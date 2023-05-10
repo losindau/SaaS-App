@@ -23,7 +23,6 @@ namespace InventoryManagementAppMVC.Controllers
     {
         private readonly HttpClient _httpClient;
         
-
         public AccountController(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient("myclient");
@@ -121,9 +120,9 @@ namespace InventoryManagementAppMVC.Controllers
 
             CompanyVM companyVM = new CompanyVM()
             {
-                Name = signUpCompany.Name,
+                Name = signUpCompany.CompanyName,
                 Address = signUpCompany.Address,
-                Phone = int.Parse(signUpCompany.PhoneNumber),
+                PhoneNumber = signUpCompany.PhoneNumber,
                 Email = signUpCompany.Email,
                 isDeleted = false
             };
@@ -140,6 +139,8 @@ namespace InventoryManagementAppMVC.Controllers
 
             SignUpVM signUpVM = new SignUpVM()
             {
+                FirstName = signUpCompany.FirstName,
+                LastName = signUpCompany.LastName,
                 PhoneNumber = signUpCompany.PhoneNumber,
                 Email = signUpCompany.Email,
                 Password = signUpCompany.Password,
