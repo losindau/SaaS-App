@@ -16,19 +16,6 @@ namespace InventoryManagementApp.Helper
 
         public async Task Invoke(HttpContext context, DataContext userContext)
         {
-            //var authHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-
-            //if (!string.IsNullOrEmpty(authHeader))
-            //{
-            //    var token = authHeader[0].Substring("Bearer ".Length).Trim();
-            //    var tokenHandler = new JwtSecurityTokenHandler();
-            //    var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
-            //    var tenantId = securityToken.Claims.First(claim => claim.Type == "CompanyID").Value;
-
-            //    // Store the tenant ID value in the user context
-            //    userContext.TenantId = int.Parse(tenantId);
-            //}
-
             if (context.Request.Headers.TryGetValue("Authorization", out var authHeader) &&
             authHeader.Count > 0 && authHeader[0].StartsWith("Bearer "))
             {

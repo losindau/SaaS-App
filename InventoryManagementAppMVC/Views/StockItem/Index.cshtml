@@ -1,7 +1,15 @@
 ﻿@using System.Text.Json;
 @using System.Text.Json.Serialization;
-@using InventoryManagementAppMVC.Enum;
 @model ResponsePagination
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <span>@TempData["Success"]</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
 
 <!-- Striped Rows -->
 <h5 class="fw-bold"><span class="text-muted fw-light">Truck /</span> Basic Tables</h5>
@@ -26,10 +34,10 @@
                     foreach (JsonElement item in Model.Entities)
                     {
                         StockItemVM stock = JsonSerializer.Deserialize<StockItemVM>(item, new JsonSerializerOptions
-                        {
-                            PropertyNameCaseInsensitive = true,
-                            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-                        });
+                {
+                    PropertyNameCaseInsensitive = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
 
                         <tr>
                             <td>@i</td>

@@ -27,7 +27,7 @@ namespace InventoryManagementAppMVC.Controllers
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var response = await _httpClient.GetAsync("api/Truck/" + page);
+            var response = await _httpClient.GetAsync("api/Truck/" + page + "/trucks");
             if (response.IsSuccessStatusCode)
             {
                 var apiResponse = await response.Content.ReadAsStreamAsync();
