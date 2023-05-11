@@ -62,6 +62,14 @@
                         </a>
                     </div>
                     <!-- /Logo -->
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible" role="alert">
+                            <span>@TempData["Success"]</span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            </button>
+                        </div>
+                    }
 
                     <h4 class="mb-2">Welcome back 👋</h4>
                     <p class="mb-4">Login into your firm and start working</p>

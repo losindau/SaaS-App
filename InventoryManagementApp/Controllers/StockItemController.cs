@@ -106,7 +106,7 @@ namespace InventoryManagementApp.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateCategory(int stockitemID, [FromBody] StockItemVM stockItemVM)
+        public IActionResult UpdateStockItem(int stockitemID, [FromBody] StockItemVM stockItemVM)
         {
             if (stockItemVM == null || stockitemID != stockItemVM.StockItemID)
             {

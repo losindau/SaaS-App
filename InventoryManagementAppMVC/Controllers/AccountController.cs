@@ -160,7 +160,7 @@ namespace InventoryManagementAppMVC.Controllers
             }
 
             TempData["Success"] = "You have sign up an account successfully";
-            return View();
+            return RedirectToAction("SignIn");
         }
 
         public async Task<IActionResult> SignOut()
