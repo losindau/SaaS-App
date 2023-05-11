@@ -2,8 +2,20 @@
 @using System.Text.Json.Serialization;
 @model ResponsePagination
 
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <span>@TempData["Success"]</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+
 <!-- Striped Rows -->
-<h5 class="fw-bold"><span class="text-muted fw-light">Truck /</span> Basic Tables</h5>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="fw-bold">Equipment in warehouse</h5>
+    <a asp-controller="Equipment" asp-action="Create"><button class="btn btn-primary">Create</button></a>
+</div>
 <div class="card">
     <div class="table-responsive text-nowrap">
         <table class="table table-striped">
@@ -24,7 +36,7 @@
                     int i = 1;
                     foreach (JsonElement item in Model.Entities)
                     {
-                        StockItemVM stock = JsonSerializer.Deserialize<StockItemVM>(item, new JsonSerializerOptions
+                        EquipmentVM stock = JsonSerializer.Deserialize<EquipmentVM>(item, new JsonSerializerOptions
                         {
                             PropertyNameCaseInsensitive = true,
                             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
@@ -32,11 +44,11 @@
 
                         <tr>
                             <td>@i</td>
-                            <td>@stock.StockItemID</td>
+                            <td>@stock.EquipmentID</td>
                             <td>@stock.Name</td>
                             <td>@stock.Type</td>
                             <td>@stock.Quantity</td>
-                            <td>@stock.QuantityState</td>
+                            <td>@stock.QualityState</td>
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">

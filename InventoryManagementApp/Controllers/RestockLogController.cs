@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InventoryManagementApp.Data;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.Repository;
@@ -21,13 +22,19 @@ namespace InventoryManagementApp.Controllers
             this._mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("{page}/restocklogs")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<RestockLog>))]
-        public IActionResult GetRestockLog()
+        public IActionResult GetRestockLog(int page)
         {
-            var restocklogs = _mapper.Map<List<RestockLogVM>>(_restockLogRepository.GetRestockLogs());
+            var restocklogs = _restockLogRepository.GetRestockLogs();
 
-            foreach (RestockLogVM us in restocklogs)
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(restocklogs.Count() / pageResults);
+
+            var restocklogsMap = _mapper.Map<List<RestockLogVM>>(restocklogs.Skip((page - 1) * (int)pageResults).Take((int)pageResults));
+
+            foreach (RestockLogVM us in restocklogsMap)
             {
                 us.DetailRestockLogs = _mapper.Map<List<DetailRestockLogVM>>(_restockLogRepository.GetDetailRestockLogs(us.RestockLogID));
             }
@@ -37,13 +44,21 @@ namespace InventoryManagementApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok(restocklogs);
+            var response = new ResponsePagination()
+            {
+                Entities = new List<object>(restocklogsMap),
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+
+            return Ok(response);
         }
 
         [HttpGet("{restocklogID}")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(RestockLog))]
         [ProducesResponseType(400)]
-        public IActionResult GetRestockLog(int restocklogID)
+        public IActionResult GetRestockLogByID(int restocklogID)
         {
             if (!_restockLogRepository.RestockLogExists(restocklogID))
             {
@@ -64,7 +79,7 @@ namespace InventoryManagementApp.Controllers
         [HttpPost]
         public IActionResult CreateRestockLog(RestockLogVM restockLogCreate)
         {
-            if (restockLogCreate == null || restockLogCreate.DetailRestockLogs == null)
+            if (restockLogCreate == null)
             {
                 return BadRequest(ModelState);
             }

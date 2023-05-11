@@ -86,16 +86,14 @@ namespace InventoryManagementApp.Controllers
 
             if (equipments != null)
             {
-                ModelState.AddModelError("", "This item is already exists");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "This item is already exists");
             }
 
             var equipmentMap = _mapper.Map<Equipment>(equipmentCreate);
 
             if (!_equipmentRepository.CreateEquipment(equipmentMap))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, "Something went wrong while saving");
             }
 
             return Ok("Successfully created");

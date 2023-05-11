@@ -55,7 +55,6 @@ namespace InventoryManagementApp.Controllers
         }
 
         [HttpGet("{truckID}")]
-        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(Truck))]
         [ProducesResponseType(400)]
         public IActionResult GetTruckByID(int truckID)
@@ -80,24 +79,31 @@ namespace InventoryManagementApp.Controllers
         [HttpPost]
         public IActionResult CreateTruck(TruckVM truckCreate)
         {
-            if (truckCreate == null || truckCreate.TruckStockItems == null)
+            if (truckCreate == null)
             {
                 return BadRequest(ModelState);
+            }
+
+            var trucks = _truckRepository.GetTrucks()
+            .Where(i => i.LicensePlate.Trim().ToLower().Equals(truckCreate.LicensePlate.Trim().ToLower()))
+            .FirstOrDefault();
+
+            if (trucks != null)
+            {
+                return StatusCode(422, "This truck Lincense-Plate is already exists");
             }
 
             var truckMap = _mapper.Map<Truck>(truckCreate);
 
             if (!_truckRepository.CreateTruck(truckMap))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, "Something went wrong while saving");
             }
 
             return Ok("Successfully created");
         }
 
         [HttpPut("{truckID}")]
-        [Authorize(Roles = "Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InventoryManagementApp.Data;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.Repository;
@@ -22,13 +23,19 @@ namespace InventoryManagementApp.Controllers
             this._mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("{page}/usagelogs")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<UsageLog>))]
-        public IActionResult GetUsageLog()
+        public IActionResult GetUsageLog(int page)
         {
-            var usagelogs = _mapper.Map<List<UsageLogVM>>(_usageLogRepository.GetUsageLogs());
+            var usagelogs = _usageLogRepository.GetUsageLogs();
 
-            foreach (UsageLogVM us in usagelogs)
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(usagelogs.Count() / pageResults);
+
+            var usagelogsMap = _mapper.Map<List<UsageLogVM>>(usagelogs.Skip((page - 1) * (int)pageResults).Take((int)pageResults));
+
+            foreach (UsageLogVM us in usagelogsMap)
             {
                 us.DetailUsageLogs = _mapper.Map<List<DetailUsageLogVM>>(_usageLogRepository.GetDetailUsageLogs(us.UsageLogID));
             }
@@ -38,13 +45,21 @@ namespace InventoryManagementApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok(usagelogs);
+            var response = new ResponsePagination()
+            {
+                Entities = new List<object>(usagelogsMap),
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+
+            return Ok(response);
         }
 
         [HttpGet("{usagelogID}")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(UsageLog))]
         [ProducesResponseType(400)]
-        public IActionResult GetUsageLog(int usagelogID)
+        public IActionResult GetUsageLogByID(int usagelogID)
         {
             if (!_usageLogRepository.UsageLogExists(usagelogID))
             {
@@ -74,8 +89,7 @@ namespace InventoryManagementApp.Controllers
 
             if (!_usageLogRepository.CreateUsageLog(usageLogMap))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, "Something went wrong while saving");
             }
 
             return Ok("Successfully created");

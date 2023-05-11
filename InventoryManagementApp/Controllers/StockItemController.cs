@@ -86,16 +86,14 @@ namespace InventoryManagementApp.Controllers
 
             if (stockitems != null)
             {
-                ModelState.AddModelError("", "This item is already exists");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "This item is already exists");
             }
 
             var stockitemMap = _mapper.Map<StockItem>(stockitemCreate);
 
             if (!_stockItemRepository.CreateStockItem(stockitemMap))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, "Something went wrong while saving");
             }
 
             return Ok("Successfully created");

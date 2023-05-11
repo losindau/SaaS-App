@@ -1,0 +1,39 @@
+﻿@model EquipmentVM
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <span>@TempData["Error"]</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+
+<div class="col-xl">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Create new equipment</h5>
+        </div>
+        <div class="card-body">
+            <form asp-controller="Equipment" asp-action="Create">
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input asp-for="Name" type="text" class="form-control" placeholder="Drill">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="basic-default-company">Type</label>
+                    <select asp-for="Type" asp-items="@Html.GetEnumSelectList<EquipmentType>()" class="form-control form-control-lg">
+                        <option>--Select--</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Quantity</label>
+                    <input asp-for="Quantity" type="number" min="1" value="1" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+    </div>
+</div>

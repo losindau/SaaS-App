@@ -63,7 +63,7 @@ namespace InventoryManagementApp.Controllers
         [HttpPost]
         public IActionResult CreateToolbox(ToolboxVM toolboxCreate)
         {
-            if (toolboxCreate == null || toolboxCreate.ToolboxEquipments == null)
+            if (toolboxCreate == null)
             {
                 return BadRequest(ModelState);
             }
@@ -76,7 +76,7 @@ namespace InventoryManagementApp.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Successfully created");
+            return Ok(toolboxMap.ToolboxID); ;
         }
 
         [HttpPut("{toolboxID}")]

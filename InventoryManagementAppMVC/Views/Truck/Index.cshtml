@@ -2,8 +2,20 @@
 @using System.Text.Json.Serialization;
 @model ResponsePagination
 
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <span>@TempData["Success"]</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+
 <!-- Striped Rows -->
-<h5 class="fw-bold"><span class="text-muted fw-light">Truck /</span> Basic Tables</h5>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="fw-bold">Truck</h5>
+    <a asp-controller="Truck" asp-action="Create"><button class="btn btn-primary">Create</button></a>
+</div>
 <div class="card">
     <div class="table-responsive text-nowrap">
         <table class="table table-striped">

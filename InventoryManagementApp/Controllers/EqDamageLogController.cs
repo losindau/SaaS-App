@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InventoryManagementApp.Data;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.Repository;
@@ -21,13 +22,19 @@ namespace InventoryManagementApp.Controllers
             this._mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("{page}/eqdamagelogs")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<EqDamageLog>))]
-        public IActionResult GetEqDamageLog()
+        public IActionResult GetEqDamageLog(int page)
         {
-            var eqdamagelogs = _mapper.Map<List<EqDamageLogVM>>(_eqDamageLogRepository.GetEqDamageLogs());
+            var eqdamagelogs = _eqDamageLogRepository.GetEqDamageLogs();
 
-            foreach (EqDamageLogVM us in eqdamagelogs)
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(eqdamagelogs.Count() / pageResults);
+
+            var eqdamagelogsMap = _mapper.Map<List<EqDamageLogVM>>(eqdamagelogs.Skip((page - 1) * (int)pageResults).Take((int)pageResults));
+
+            foreach (EqDamageLogVM us in eqdamagelogsMap)
             {
                 us.DetailEqDamageLogs = _mapper.Map<List<DetailEqDamageLogVM>>(_eqDamageLogRepository.GetDetailEqDamageLogs(us.EqDamageLogID));
             }
@@ -37,13 +44,21 @@ namespace InventoryManagementApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok(eqdamagelogs);
+            var response = new ResponsePagination()
+            {
+                Entities = new List<object>(eqdamagelogsMap),
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+
+            return Ok(response);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet("{eqdamagelogID}")]
         [ProducesResponseType(200, Type = typeof(EqDamageLog))]
         [ProducesResponseType(400)]
-        public IActionResult GetEqDamageLog(int eqdamagelogID)
+        public IActionResult GetEqDamageLogByID(int eqdamagelogID)
         {
             if (!_eqDamageLogRepository.EqDamageLogExists(eqdamagelogID))
             {
@@ -65,7 +80,7 @@ namespace InventoryManagementApp.Controllers
         [HttpPost]
         public IActionResult CreateEqDamageLog(EqDamageLogVM eqDamageLogCreate)
         {
-            if (eqDamageLogCreate == null || eqDamageLogCreate.DetailEqDamageLogs == null)
+            if (eqDamageLogCreate == null)
             {
                 return BadRequest(ModelState);
             }

@@ -52,8 +52,7 @@ namespace InventoryManagementApp.Controllers
 
             if (!_toolboxRepository.CreateToolboxEquipments(toolboxMap))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, "Something went wrong while saving");
             }
 
             return Ok("Successfully created");
