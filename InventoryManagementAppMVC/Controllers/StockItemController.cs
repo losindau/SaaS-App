@@ -83,7 +83,7 @@ namespace InventoryManagementAppMVC.Controllers
             var responsePost = await _httpClient.PostAsJsonAsync("api/StockItem", stockItemVM);
             if (!responsePost.IsSuccessStatusCode)
             {
-                TempData["Error"] = responsePost.Content.ReadAsStringAsync();
+                TempData["Error"] = await responsePost.Content.ReadAsStringAsync();
                 return View(stockItemVM);
             }
 
@@ -140,7 +140,7 @@ namespace InventoryManagementAppMVC.Controllers
             var responsePut = await _httpClient.PutAsJsonAsync("api/StockItem/" + stockItemVM.StockItemID, stockItemVM);
             if (!responsePut.IsSuccessStatusCode)
             {
-                TempData["Error"] = "Something went wrong";
+                TempData["Error"] = await responsePut.Content.ReadAsStringAsync();
                 return View(stockItemVM);
             }
 
@@ -172,7 +172,7 @@ namespace InventoryManagementAppMVC.Controllers
             var responsePut = await _httpClient.PutAsJsonAsync("api/StockItem/" + responseStockItem.StockItemID, responseStockItem);
             if (!responsePut.IsSuccessStatusCode)
             {
-                TempData["Error"] = "Something went wrong";
+                TempData["Error"] = await responsePut.Content.ReadAsStringAsync();
                 return RedirectToAction("Index", new { page = 1 });
             }
 

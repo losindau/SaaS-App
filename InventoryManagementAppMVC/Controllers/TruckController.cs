@@ -96,5 +96,81 @@ namespace InventoryManagementAppMVC.Controllers
             TempData["Success"] = "Create new truck successfully";
             return RedirectToAction("Index", new { page = 1 });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            TruckVM responseTruck = new TruckVM();
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await _httpClient.GetAsync("api/Truck/" + id);
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                responseTruck = await JsonSerializer.DeserializeAsync<TruckVM>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+            return View(responseTruck);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(TruckVM truckVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(truckVM);
+            }
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var responsePut = await _httpClient.PutAsJsonAsync("api/Truck/" + truckVM.TruckID, truckVM);
+            if (!responsePut.IsSuccessStatusCode)
+            {
+                TempData["Error"] = await responsePut.Content.ReadAsStringAsync();
+                return View(truckVM);
+            }
+
+            TempData["Success"] = "Update truck successfully";
+            return RedirectToAction("Index", new { page = 1 });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            TruckVM responseTruck = new TruckVM();
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await _httpClient.GetAsync("api/Truck/" + id);
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                responseTruck = await JsonSerializer.DeserializeAsync<TruckVM>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+            responseTruck.isDeleted = true;
+
+            var responsePut = await _httpClient.PutAsJsonAsync("api/Truck/" + responseTruck.TruckID, responseTruck);
+            if (!responsePut.IsSuccessStatusCode)
+            {
+                TempData["Error"] = await responsePut.Content.ReadAsStringAsync();
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            TempData["Success"] = "Delete truck successfully";
+            return RedirectToAction("Index", new { page = 1 });
+        }
     }
 }

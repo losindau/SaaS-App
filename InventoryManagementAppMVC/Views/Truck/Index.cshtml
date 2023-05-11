@@ -11,6 +11,15 @@
     </div>
 }
 
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <span>@TempData["Error"]</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+
 <!-- Striped Rows -->
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h5 class="fw-bold">Truck</h5>
@@ -34,7 +43,7 @@
                     int i = 1;
                     foreach (JsonElement item in Model.Entities)
                     {
-                        TruckVM user = JsonSerializer.Deserialize<TruckVM>(item, new JsonSerializerOptions
+                        TruckVM truck = JsonSerializer.Deserialize<TruckVM>(item, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
                     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
@@ -42,8 +51,8 @@
 
                         <tr class="accordion-item" data-bs-toggle="collapse" data-bs-target="#usagedetail-@i" aria-expanded="false" aria-controls="usagedetail-@i">
                             <td>@i</td>
-                            <td>@user.Model</td>
-                            <td>@user.LicensePlate</td>
+                            <td>@truck.Model</td>
+                            <td>@truck.LicensePlate</td>
                             <td>-</td>
                             <td>
                                 <div class="dropdown">
@@ -51,8 +60,10 @@
                                         <i class="bx bx-dots-vertical-rounded"></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                                        <a class="dropdown-item" asp-controller="Truck" asp-action="Update" asp-route-id="@truck.TruckID"><i class="bx bx-edit-alt me-1"></i> Update</a>
+                                        <form asp-controller="Truck" asp-action="Delete" asp-route-id="@truck.TruckID">
+                                            <button class="dropdown-item" onclick="alert('Do you want to delete ?')"><i class="bx bx-trash me-1"></i> Delete</button>
+                                        </form>
                                     </div>
                                 </div>
                             </td>
@@ -66,7 +77,7 @@
 
                                             <!-- Toolbox -->
                                             <div class="col-md-6">
-                                                <span class="text-muted fw-light">Toolbox #@user.ToolboxID</span>
+                                                <span class="text-muted fw-light">Toolbox #@truck.ToolboxID</span>
                                                 <div class="card">
                                                     <div class="table-responsive text-nowrap">
                                                         <table class="table table-primary">
@@ -81,7 +92,7 @@
 
                                                                 @{
                                                                     int j = 1;
-                                                                    @foreach (var detail in user.Toolbox.ToolboxEquipments)
+                                                                    @foreach (var detail in truck.Toolbox.ToolboxEquipments)
                                                                     {
                                                                         <tr>
                                                                             <td>@j</td>
@@ -116,7 +127,7 @@
 
                                                                 @{
                                                                     int k = 1;
-                                                                    @foreach (var detail in user.TruckStockItems)
+                                                                    @foreach (var detail in truck.TruckStockItems)
                                                                     {
                                                                         <tr>
                                                                             <td>@k</td>

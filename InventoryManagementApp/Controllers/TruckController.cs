@@ -128,8 +128,7 @@ namespace InventoryManagementApp.Controllers
 
             if (!_truckRepository.UpdateTruck(truckMap))
             {
-                ModelState.AddModelError("", "Something went wrong updating");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, "Something went wrong updating");
             }
 
             return Ok("Updated successfully");

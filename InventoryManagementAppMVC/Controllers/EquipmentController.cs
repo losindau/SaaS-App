@@ -84,5 +84,94 @@ namespace InventoryManagementAppMVC.Controllers
             TempData["Success"] = "Create new equipment successfully";
             return RedirectToAction("Index", new { page = 1 });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            EquipmentVM responseEq = new EquipmentVM();
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await _httpClient.GetAsync("api/Equipment/" + id);
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                responseEq = await JsonSerializer.DeserializeAsync<EquipmentVM>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+            return View(responseEq);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(EquipmentVM equipmentVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(equipmentVM);
+            }
+
+            //if (equipmentVM.Quantity <= 100)
+            //{
+            //    equipmentVM.QuantityState = QuantityState.Low;
+            //}
+            //else if (equipmentVM.Quantity > 100 && equipmentVM.Quantity <= 200)
+            //{
+            //    equipmentVM.QuantityState = QuantityState.Medium;
+            //}
+            //else
+            //{
+            //    equipmentVM.QuantityState = QuantityState.High;
+            //}
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var responsePut = await _httpClient.PutAsJsonAsync("api/Equipment/" + equipmentVM.EquipmentID, equipmentVM);
+            if (!responsePut.IsSuccessStatusCode)
+            {
+                TempData["Error"] = await responsePut.Content.ReadAsStringAsync();
+                return View(equipmentVM);
+            }
+
+            TempData["Success"] = "Update equipment successfully";
+            return RedirectToAction("Index", new { page = 1 });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            EquipmentVM responseEq = new EquipmentVM();
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await _httpClient.GetAsync("api/Equipment/" + id);
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                responseEq = await JsonSerializer.DeserializeAsync<EquipmentVM>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+            responseEq.isDeleted = true;
+
+            var responsePut = await _httpClient.PutAsJsonAsync("api/Equipment/" + responseEq.EquipmentID, responseEq);
+            if (!responsePut.IsSuccessStatusCode)
+            {
+                TempData["Error"] = await responsePut.Content.ReadAsStringAsync();
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            TempData["Success"] = "Delete Equipment successfully";
+            return RedirectToAction("Index", new { page = 1 });
+        }
     }
 }

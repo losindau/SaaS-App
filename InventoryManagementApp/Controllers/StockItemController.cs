@@ -125,8 +125,7 @@ namespace InventoryManagementApp.Controllers
 
             if (!_stockItemRepository.UpdateStockItem(stockitemMap))
             {
-                ModelState.AddModelError("", "Something went wrong updating");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, "Something went wrong updating");
             }
 
             return Ok("Updated successfully");
