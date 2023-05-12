@@ -16,13 +16,17 @@ namespace InventoryManagementApp.Data.Repository
 
         public Truck GetTruckId(int truckID)
         {
-            return _context.Trucks.Include(u => u.AppUser).Include(x => x.Toolbox.ToolboxEquipments).ThenInclude(x => x.Equipment).Where(t => t.TruckID == truckID).FirstOrDefault();
+            return _context.Trucks.Include(x => x.Toolbox.ToolboxEquipments).ThenInclude(x => x.Equipment).Where(t => t.TruckID == truckID).FirstOrDefault();
         }
 
         public ICollection<Truck> GetTrucks()
         {
-            return _context.Trucks.Include(u => u.AppUser).Include(x => x.Toolbox.ToolboxEquipments).ThenInclude(x => x.Equipment).Where(t => t.isDeleted == false).OrderBy(t => t.TruckID).ToList();
-
+            return _context.Trucks.Include(x => x.Toolbox.ToolboxEquipments).ThenInclude(x => x.Equipment).Where(t => t.isDeleted == false).OrderBy(t => t.TruckID).ToList();
+            //return (ICollection<Truck>)_context.Trucks.Include(x => x.Toolbox).Include(x => x.AppUser).Where(t => t.isDeleted == false).OrderBy(t => t.TruckID).Select(t => new TruckVM
+            //{
+            //    TruckID = t.TruckID,
+            //    DriverName = t.AppUser.FirstName + " " + t.AppUser.LastName
+            //}).ToList();
         }
 
         public ICollection<TruckStockItem> GetTruckStockItems(int truckID)

@@ -101,6 +101,10 @@ namespace InventoryManagementApp.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("TruckID")
+                        .IsUnique()
+                        .HasFilter("[TruckID] IS NOT NULL");
+
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
@@ -473,9 +477,6 @@ namespace InventoryManagementApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TruckID"));
 
-                    b.Property<string>("AppUserID")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int?>("CompanyID")
                         .HasColumnType("int");
 
@@ -494,10 +495,6 @@ namespace InventoryManagementApp.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("TruckID");
-
-                    b.HasIndex("AppUserID")
-                        .IsUnique()
-                        .HasFilter("[AppUserID] IS NOT NULL");
 
                     b.HasIndex("CompanyID");
 
@@ -721,7 +718,13 @@ namespace InventoryManagementApp.Migrations
                         .WithMany("AppUsers")
                         .HasForeignKey("CompanyID");
 
+                    b.HasOne("InventoryManagementApp.Data.Models.Truck", "Truck")
+                        .WithOne("AppUser")
+                        .HasForeignKey("InventoryManagementApp.Data.Models.AppUser", "TruckID");
+
                     b.Navigation("Company");
+
+                    b.Navigation("Truck");
                 });
 
             modelBuilder.Entity("InventoryManagementApp.Data.Models.DetailEqDamageLog", b =>
@@ -879,10 +882,6 @@ namespace InventoryManagementApp.Migrations
 
             modelBuilder.Entity("InventoryManagementApp.Data.Models.Truck", b =>
                 {
-                    b.HasOne("InventoryManagementApp.Data.Models.AppUser", "AppUser")
-                        .WithOne("Truck")
-                        .HasForeignKey("InventoryManagementApp.Data.Models.Truck", "AppUserID");
-
                     b.HasOne("InventoryManagementApp.Data.Models.Company", "Company")
                         .WithMany("Trucks")
                         .HasForeignKey("CompanyID");
@@ -890,8 +889,6 @@ namespace InventoryManagementApp.Migrations
                     b.HasOne("InventoryManagementApp.Data.Models.Toolbox", "Toolbox")
                         .WithOne("Truck")
                         .HasForeignKey("InventoryManagementApp.Data.Models.Truck", "ToolboxID");
-
-                    b.Navigation("AppUser");
 
                     b.Navigation("Company");
 
@@ -997,8 +994,6 @@ namespace InventoryManagementApp.Migrations
 
                     b.Navigation("RestockLogs");
 
-                    b.Navigation("Truck");
-
                     b.Navigation("UsageLogs");
                 });
 
@@ -1068,6 +1063,8 @@ namespace InventoryManagementApp.Migrations
 
             modelBuilder.Entity("InventoryManagementApp.Data.Models.Truck", b =>
                 {
+                    b.Navigation("AppUser");
+
                     b.Navigation("RestockLogs");
 
                     b.Navigation("TruckStockItems");
