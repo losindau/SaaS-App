@@ -1,9 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model TruckVM
+﻿@model TruckVM
 
 @if (TempData["Error"] != null)
 {
@@ -21,6 +16,10 @@
         </div>
         <div class="card-body">
             <form asp-controller="Truck" asp-action="Update">
+                <input type="hidden" asp-for="TruckID" />
+                <input type="hidden" asp-for="ToolboxID" />
+                <input type="hidden" asp-for="isDeleted" />
+                <input type="hidden" asp-for="CompanyID" />
                 <div class="mb-3">
                     <label class="form-label">Model</label>
                     <input asp-for="Model" type="text" class="form-control" placeholder="Toyota">
@@ -31,14 +30,6 @@
                     <input asp-for="LicensePlate" type="text" class="form-control" placeholder="ABC-123">
                     <span asp-validation-for="LicensePlate" class="text-danger"></span>
                 </div>
-                @*                <div class="mb-3">
-                <label class="form-label" for="basic-default-company">Type</label>
-                <select asp-for="DriverName" asp-items="" class="form-control form-control-lg">
-                <option>--Select--</option>
-                </select>
-                <span asp-validation-for="Type" class="text-danger"></span>
-                </div>*@
-
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>
