@@ -33,7 +33,7 @@
                     <th></th>
                     <th>Model</th>
                     <th>License plate</th>
-                    <th>Driver</th>
+                    <th>Driver Name</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -53,7 +53,18 @@
                             <td>@i</td>
                             <td>@truck.Model</td>
                             <td>@truck.LicensePlate</td>
-                            <td>-</td>
+
+                            @{
+                                if (truck.AppUser != null)
+                                {
+                                    <td>@truck.AppUser.FirstName @truck.AppUser.LastName</td>
+                                }
+                                else
+                                {
+                                    <td>-</td>
+                                }
+                            }
+
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
