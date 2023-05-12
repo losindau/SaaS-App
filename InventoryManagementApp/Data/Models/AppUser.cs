@@ -11,6 +11,7 @@ namespace InventoryManagementApp.Data.Models
         public Truck? Truck { get; set; }
         public int? CompanyID { get; set; }
         public Company? Company { get; set; }
+        public bool isDeleted { get; set; }
 
         public ICollection<EqDamageLog>? EqDamageLogs { get; set; }
         public ICollection<RestockLog>? RestockLogs { get; set; }

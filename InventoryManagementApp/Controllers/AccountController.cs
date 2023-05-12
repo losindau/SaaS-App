@@ -80,7 +80,7 @@ namespace InventoryManagementApp.Controllers
             return Ok(signUpResult.Succeeded);
         }
 
-        [HttpGet("{page}")]
+        [HttpGet("{page}/users")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<AppUser>))]
         public async Task<IActionResult> GetUsers(int page)
@@ -113,6 +113,29 @@ namespace InventoryManagementApp.Controllers
             };
 
             return Ok(response);
+        }
+
+        [HttpGet("{userID}")]
+        [ProducesResponseType(200, Type = typeof(AppUser))]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> GetUser(string userID)
+        {
+            if (!_accountRepository.UserExists(userID))
+            {
+                return NotFound();
+            }
+
+            var appUser = await _accountRepository.GetUserById(userID);
+            var appUserVM = _mapper.Map<AppUserVM>(appUser);
+            var role = await _userManager.GetRolesAsync(appUser);
+            appUserVM.Role = role[0].ToString();
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(appUserVM);
         }
     }
 }

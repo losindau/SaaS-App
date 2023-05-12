@@ -17,13 +17,15 @@ namespace InventoryManagementApp.Data.Repository
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly DataContext _context;
 
-        public AccountRepository(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public AccountRepository(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IConfiguration configuration, IHttpContextAccessor httpContextAccessor, DataContext context)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._configuration = configuration;
             this._httpContextAccessor = httpContextAccessor;
+            this._context = context;
         }
 
         public async Task<string> SignInAsync(SignInVM signInVM)
@@ -46,6 +48,7 @@ namespace InventoryManagementApp.Data.Repository
                 new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
                 new Claim("FirstName", user.FirstName),
                 new Claim("LastName", user.LastName),
+                new Claim("TruckID", user.TruckID.ToString()),
                 new Claim("CompanyID", user.CompanyID.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
@@ -76,7 +79,17 @@ namespace InventoryManagementApp.Data.Repository
             var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
             var tenantId = securityToken.Claims.First(claim => claim.Type == "CompanyID").Value;
 
-            return _userManager.Users.Include(a => a.Truck).Where(a => a.CompanyID == int.Parse(tenantId)).ToList();
+            return _userManager.Users.Include(a => a.Truck).Where(a => a.CompanyID == int.Parse(tenantId) && a.isDeleted == false).ToList();
+        }
+
+        public async Task<AppUser> GetUserById(string userID)
+        {
+            return _context.Users.Include(u => u.Truck).Where(u => u.Id.Trim().ToLower().Equals(userID.Trim().ToLower())).FirstOrDefault();
+        }
+
+        public bool UserExists(string userID)
+        {
+            return _context.Users.Where(u => u.isDeleted == false).Any(u => u.Id.Trim().ToLower().Equals(userID.Trim().ToLower()));
         }
     }
 }

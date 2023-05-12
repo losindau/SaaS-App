@@ -972,7 +972,8 @@ namespace InventoryManagementApp.Data
                         UserName = uehAEmail,
                         Email = uehAEmail,
                         EmailConfirmed = true,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     };
                     await userManager.CreateAsync(newCompanyUser, "uehA@1234?");
                     await userManager.AddToRoleAsync(newCompanyUser, UserRoles.Admin);
@@ -987,7 +988,8 @@ namespace InventoryManagementApp.Data
                         UserName = uehBEmail,
                         Email = uehBEmail,
                         EmailConfirmed = true,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     };
                     await userManager.CreateAsync(newCompanyUser, "uehB@1234?");
                     await userManager.AddToRoleAsync(newCompanyUser, UserRoles.Admin);
@@ -1006,7 +1008,8 @@ namespace InventoryManagementApp.Data
                         PhoneNumberConfirmed = true,
                         Email = managerAEmail,
                         EmailConfirmed = true,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     };
                     await userManager.CreateAsync(newAppUser, "managerA@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.Manager);
@@ -1025,7 +1028,8 @@ namespace InventoryManagementApp.Data
                         PhoneNumberConfirmed = true,
                         Email = managerBEmail,
                         EmailConfirmed = true,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     };
                     await userManager.CreateAsync(newAppUser, "managerB@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.Manager);
@@ -1045,7 +1049,8 @@ namespace InventoryManagementApp.Data
                         Email = staffAEmail,
                         EmailConfirmed = true,
                         TruckID = 1,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     };
                     await userManager.CreateAsync(newAppUser, "staffA@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.Staff);
@@ -1065,7 +1070,8 @@ namespace InventoryManagementApp.Data
                         Email = staffBEmail,
                         EmailConfirmed = true,
                         TruckID = 2,
-                        CompanyID = 2
+                        CompanyID = 2,
+                        isDeleted = false
                     };
                     await userManager.CreateAsync(newAppUser, "staffB@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.Staff);
@@ -1085,7 +1091,8 @@ namespace InventoryManagementApp.Data
                         Email = staffCEmail,
                         EmailConfirmed = true,
                         TruckID = 3,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     };
                     await userManager.CreateAsync(newAppUser, "staffC@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.Staff);
@@ -1105,7 +1112,8 @@ namespace InventoryManagementApp.Data
                         Email = staffDEmail,
                         EmailConfirmed = true,
                         TruckID = 4,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     };
                     await userManager.CreateAsync(newAppUser, "staffD@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.Staff);
@@ -1125,7 +1133,8 @@ namespace InventoryManagementApp.Data
                         Email = staffEEmail,
                         EmailConfirmed = true,
                         TruckID = 5,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     };
                     await userManager.CreateAsync(newAppUser, "staffE@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.Staff);
@@ -1145,7 +1154,8 @@ namespace InventoryManagementApp.Data
                         Email = staffFEmail,
                         EmailConfirmed = true,
                         TruckID = 6,
-                        CompanyID = 1
+                        CompanyID = 1,
+                        isDeleted = false
                     };
                     await userManager.CreateAsync(newAppUser, "staffF@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.Staff);

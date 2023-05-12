@@ -9,5 +9,7 @@ namespace InventoryManagementApp.Data.Interfaces
         public Task<string> SignInAsync(SignInVM signInVM);
         public Task<IdentityResult> SignUpAsync(AppUser appUser, string password);
         public ICollection<AppUser> GetUsers();
+        public Task<AppUser> GetUserById(string userID);
+        public bool UserExists(string userID);
     }
 }
