@@ -95,7 +95,8 @@ namespace InventoryManagementApp.Controllers
 
             for (int i = 0; i < usersMap.Count(); i++)
             {
-                var role = await _userManager.GetRolesAsync(users[i]);
+                var user = await _userManager.FindByEmailAsync(usersMap[i].Email);
+                var role = await _userManager.GetRolesAsync(user);
                 usersMap[i].Role = role[0].ToString();
             }
 
