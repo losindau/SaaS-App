@@ -46,7 +46,7 @@
                             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
                         });
                         
-                        <tr class="accordion-item" data-bs-toggle="collapse" data-bs-target="#restockdetail-@i" aria-expanded="false" aria-controls="restockdetail-@i">
+                        <tr class="accordion-item">
                             <td>@i</td>
                             <td>@restock.RestockLogID</td>
                             <td>@restock.RequestDate</td>
@@ -66,9 +66,10 @@
                                     </div>
                                 </div>
                             </td>
+                            <td data-bs-toggle="collapse" data-bs-target="#restockdetail-@i" aria-expanded="false" aria-controls="restockdetail-@i"><i class="bx bx-expand-alt bx-burst"></i></td>
                         </tr>
                         <tr>
-                            <td colspan="9">
+                            <td colspan="10">
                                 <div id="restockdetail-@i" class="accordion-collapse collapse"
                                      data-bs-parent="#accordionExample">
                                     <div class="accordion-body">

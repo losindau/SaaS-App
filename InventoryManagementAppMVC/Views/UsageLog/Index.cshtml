@@ -42,15 +42,16 @@
                     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
                 });
 
-                        <tr class="accordion-item" data-bs-toggle="collapse" data-bs-target="#usagedetail-@i" aria-expanded="false" aria-controls="usagedetail-@i">
+                        <tr class="accordion-item">
                             <td>@i</td>
                             <td>@usage.UsageLogID</td>
                             <td>@usage.Date</td>
                             <td>@usage.LicensePlate</td>
                             <td>@usage.AppUserName</td>
+                            <td data-bs-toggle="collapse" data-bs-target="#usagedetail-@i" aria-expanded="false" aria-controls="usagedetail-@i"><i class="bx bx-expand-alt bx-burst"></i></td>
                         </tr>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <div id="usagedetail-@i" class="accordion-collapse collapse"
                                      data-bs-parent="#accordionExample">
                                     <div class="accordion-body">

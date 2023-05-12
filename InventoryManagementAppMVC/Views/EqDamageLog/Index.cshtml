@@ -45,7 +45,7 @@
                             PropertyNameCaseInsensitive = true,
                             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
                         });
-                        <tr class="accordion-item" data-bs-toggle="collapse" data-bs-target="#dmgdetail-@i" aria-expanded="false" aria-controls="dmgdetail-@i">
+                        <tr class="accordion-item">
                             <td>@i</td>
                             <td>@damage.EqDamageLogID</td>
                             <td>@damage.ReportDate</td>
@@ -65,9 +65,10 @@
                                     </div>
                                 </div>
                             </td>
+                            <td data-bs-toggle="collapse" data-bs-target="#dmgdetail-@i" aria-expanded="false" aria-controls="dmgdetail-@i"><i class="bx bx-expand-alt bx-burst"></i></td>
                         </tr>
                         <tr>
-                            <td colspan="9">
+                            <td colspan="10">
                                 <div id="dmgdetail-@i" class="accordion-collapse collapse"
                                      data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
