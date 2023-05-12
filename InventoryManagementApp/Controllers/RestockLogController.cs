@@ -76,6 +76,26 @@ namespace InventoryManagementApp.Controllers
             return Ok(restocklog);
         }
 
+        [HttpGet("myrestocklogs/{userID}")]
+        [ProducesResponseType(200, Type = typeof(RestockLog))]
+        [ProducesResponseType(400)]
+        public IActionResult GetRestockLogByUserID(string userID)
+        {
+            var restocklog = _mapper.Map<List<RestockLogVM>>(_restockLogRepository.GetRestockLogByUserId(userID));
+
+            foreach (RestockLogVM us in restocklog)
+            {
+                us.DetailRestockLogs = _mapper.Map<List<DetailRestockLogVM>>(_restockLogRepository.GetDetailRestockLogs(us.RestockLogID));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(restocklog);
+        }
+
         [HttpPost]
         public IActionResult CreateRestockLog(RestockLogVM restockLogCreate)
         {

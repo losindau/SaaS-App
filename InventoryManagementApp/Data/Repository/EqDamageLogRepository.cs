@@ -29,6 +29,11 @@ namespace InventoryManagementApp.Data.Repository
             return _context.EqDamageLogs.Where(e => e.EqDamageLogID == eqdamagelogID).FirstOrDefault();
         }
 
+        public ICollection<EqDamageLog> GetEqDamageLogByUserId(string userID)
+        {
+            return _context.EqDamageLogs.Where(e => e.AppUserID == userID).ToList();
+        }
+
         public ICollection<EqDamageLog> GetEqDamageLogs()
         {
             return _context.EqDamageLogs.Where(e => e.isDeleted == false).OrderBy(e => e.EqDamageLogID).ToList();

@@ -77,6 +77,26 @@ namespace InventoryManagementApp.Controllers
             return Ok(eqdamagelog);
         }
 
+        [HttpGet("myeqdamagelogs/{userID}")]
+        [ProducesResponseType(200, Type = typeof(EqDamageLog))]
+        [ProducesResponseType(400)]
+        public IActionResult GetUsageLogByUserID(string userID)
+        {
+            var eqdamagelog = _mapper.Map<List<EqDamageLogVM>>(_eqDamageLogRepository.GetEqDamageLogByUserId(userID));
+
+            foreach (EqDamageLogVM us in eqdamagelog)
+            {
+                us.DetailEqDamageLogs = _mapper.Map<List<DetailEqDamageLogVM>>(_eqDamageLogRepository.GetDetailEqDamageLogs(us.EqDamageLogID));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(eqdamagelog);
+        }
+
         [HttpPost]
         public IActionResult CreateEqDamageLog(EqDamageLogVM eqDamageLogCreate)
         {

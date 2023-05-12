@@ -24,6 +24,11 @@ namespace InventoryManagementApp.Data.Repository
             return _context.UsageLogs.Where(u => u.UsageLogID == usagelogID).FirstOrDefault();
         }
 
+        public ICollection<UsageLog> GetUsageLogByUserId(string userID)
+        {
+            return _context.UsageLogs.Where(u => u.AppUserID == userID).ToList();
+        }
+
         public ICollection<UsageLog> GetUsageLogs()
         {
             return _context.UsageLogs.Where(u => u.isDeleted == false).OrderBy(u => u.UsageLogID).ToList();

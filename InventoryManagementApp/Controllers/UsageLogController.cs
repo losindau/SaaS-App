@@ -77,6 +77,26 @@ namespace InventoryManagementApp.Controllers
             return Ok(usagelog);
         }
 
+        [HttpGet("myusagelogs/{userID}")]
+        [ProducesResponseType(200, Type = typeof(UsageLog))]
+        [ProducesResponseType(400)]
+        public IActionResult GetUsageLogByUserID(string userID)
+        {
+            var usagelog = _mapper.Map<List<UsageLogVM>>(_usageLogRepository.GetUsageLogByUserId(userID));
+
+            foreach (UsageLogVM us in usagelog)
+            {
+                us.DetailUsageLogs = _mapper.Map<List<DetailUsageLogVM>>(_usageLogRepository.GetDetailUsageLogs(us.UsageLogID));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(usagelog);
+        }
+
         [HttpPost]
         public IActionResult CreateUsageLog(UsageLogVM usageLogCreate)
         {
