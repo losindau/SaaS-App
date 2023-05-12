@@ -7,8 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\EqDamageLog\MyEqDamageLog.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\EqDamageLog\MyEqDamageLog.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\EqDamageLog\MyEqDamageLog.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\EqDamageLog\MyEqDamageLog.cshtml" />
   </ItemGroup>
 
 </Project>

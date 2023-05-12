@@ -93,48 +93,60 @@
 
                     <div class="menu-inner-shadow"></div>
 
-                    @if (User.IsInRole("Staff"))
+                    @if (User.IsInRole(UserRoles.Staff))
                     {
                         <ul class="menu-inner py-1">
                             <!-- Dashboard -->
                             <li class="menu-item">
-                                <a href="index.html" class="menu-link">
+                                <a asp-controller="Home" asp-action="Index" class="menu-link">
                                     <i class="menu-icon tf-icons bx bx-home-circle"></i>
                                     <div data-i18n="Analytics">Dashboard</div>
                                 </a>
                             </li>
-                            <!-- Staff-->
+                            <!-- Staff -->
                             <li class="menu-header small text-uppercase"><span class="menu-header-text">Staff</span></li>
-
-                            <!-- Inventory -->
+                            <!-- Truck -->
                             <li class="menu-item">
-                                <a href="" class="menu-link">
-                                    <i class="menu-icon tf-icons bx bx-package"></i>
-                                    <div data-i18n="Truck">My Inventory</div>
+                                <a type="button" class="menu-link" asp-controller="Truck" asp-action="MyTruck" asp-route-page="1">
+                                    <i class="menu-icon tf-icons bx bxs-truck"></i>
+                                    <div data-i18n="Truck">My Truck</div>
                                 </a>
                             </li>
-                            <!-- Logs -->
+                            <!-- Usage -->
                             <li class="menu-item">
-                                <a href="" class="menu-link">
+                                <a type="button" class="menu-link" asp-controller="UsageLog" asp-action="MyUsageLog" asp-route-page="1">
                                     <i class="menu-icon tf-icons bx bx-collection"></i>
-                                    <div data-i18n="Usage-log">My Logs</div>
+                                    <div data-i18n="Usage-log">My Usage Logs</div>
+                                </a>
+                            </li>
+                            <!-- Restock -->
+                            <li class="menu-item">
+                                <a type="button" class="menu-link" asp-controller="RestockLog" asp-action="MyRestockLog" asp-route-page="1">
+                                    <i class="menu-icon tf-icons bx bx-box"></i>
+                                    <div data-i18n="Restock-log">My Restock Logs</div>
+                                </a>
+                            </li>
+                            <!-- Damage -->
+                            <li class="menu-item">
+                                <a type="button" class="menu-link" asp-controller="EqDamageLog" asp-action="MyEqDamageLog" asp-route-page="1">
+                                    <i class="menu-icon tf-icons bx bx-package"></i>
+                                    <div data-i18n="Damage-log">My Damage Logs</div>
                                 </a>
                             </li>
                         </ul>
                     }
-                    else if (User.IsInRole("Manager"))
+                    else if (User.IsInRole(UserRoles.Manager) || User.IsInRole(UserRoles.Admin))
                     {
                         <ul class="menu-inner py-1">
                             <!-- Dashboard -->
                             <li class="menu-item">
-                                <a href="index.html" class="menu-link">
+                                <a asp-controller="Home" asp-action="Index" class="menu-link">
                                     <i class="menu-icon tf-icons bx bx-home-circle"></i>
                                     <div data-i18n="Analytics">Dashboard</div>
                                 </a>
                             </li>
                             <!-- Manager-->
                             <li class="menu-header small text-uppercase"><span class="menu-header-text">Manage</span></li>
-
                             <!-- Staff -->
                             <li class="menu-item">
                                 <a type="button" class="menu-link" asp-controller="Account" asp-action="Index" asp-route-page="1">
@@ -167,21 +179,21 @@
                             <li class="menu-item">
                                 <a type="button" class="menu-link" asp-controller="UsageLog" asp-action="Index" asp-route-page="1">
                                     <i class="menu-icon tf-icons bx bx-collection"></i>
-                                    <div data-i18n="Usage-log">Usage log</div>
-                                </a>
-                            </li>
-                            <!-- Damage -->
-                            <li class="menu-item">
-                                <a type="button" class="menu-link" asp-controller="EqDamageLog" asp-action="Index" asp-route-page="1">
-                                    <i class="menu-icon tf-icons bx bx-package"></i>
-                                    <div data-i18n="Damage-log">Damage log</div>
+                                    <div data-i18n="Usage-log">Usage Logs</div>
                                 </a>
                             </li>
                             <!-- Restock -->
                             <li class="menu-item">
                                 <a type="button" class="menu-link" asp-controller="RestockLog" asp-action="Index" asp-route-page="1">
                                     <i class="menu-icon tf-icons bx bx-box"></i>
-                                    <div data-i18n="Restock-log">Restock Log</div>
+                                    <div data-i18n="Restock-log">Restock Logs</div>
+                                </a>
+                            </li>
+                            <!-- Damage -->
+                            <li class="menu-item">
+                                <a type="button" class="menu-link" asp-controller="EqDamageLog" asp-action="Index" asp-route-page="1">
+                                    <i class="menu-icon tf-icons bx bx-package"></i>
+                                    <div data-i18n="Damage-log">Damage Logs</div>
                                 </a>
                             </li>
                         </ul>
