@@ -9,6 +9,8 @@ namespace InventoryManagementApp.Data.ViewModels
         public string Model { get; set; }
         public string LicensePlate { get; set; }
         public int? ToolboxID { get; set; }
+        [ForeignKey("AppUser")]
+        public AppUserVM? AppUser { get; set; }
         public ToolboxVM? Toolbox { get; set; }
         public string? DriverName { get; set; }
         public int? CompanyID { get; set; }

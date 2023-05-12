@@ -11,6 +11,9 @@ namespace InventoryManagementAppMVC.ViewModels
         [Required]
         [Display(Name = "License-Plate")]
         public string LicensePlate { get; set; }
+        [ForeignKey("AppUser")]
+        public string? AppUserID { get; set; }
+        public AppUserVM? AppUser { get; set; }
         public int? ToolboxID { get; set; }
         public ToolboxVM? Toolbox { get; set; }
         public string? DriverName { get; set; }

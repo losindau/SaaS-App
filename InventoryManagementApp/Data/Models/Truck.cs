@@ -11,6 +11,8 @@ namespace InventoryManagementApp.Data.Models
         public string LicensePlate { get; set; }
         public int? ToolboxID { get; set; }
         public Toolbox? Toolbox { get; set; }
+        [ForeignKey("AppUser")]
+        public string? AppUserID { get; set; }
         public AppUser? AppUser { get; set; }
         public int? CompanyID { get; set; }
         public Company? Company { get; set; }
