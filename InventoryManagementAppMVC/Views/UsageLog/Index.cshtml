@@ -1,22 +1,12 @@
-﻿@using System.Text.Json;
-@using System.Text.Json.Serialization;
-@model ResponsePagination
+﻿@model ResponsePagination
 
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success alert-dismissible" role="alert">
-        <span>@TempData["Success"]</span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-        </button>
-    </div>
-}
+<partial name="_Message" />
 
-<!-- Striped Rows -->
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h5 class="fw-bold">Usage Log</h5>
-    <form asp-controller="UsageLog" asp-action="Create">
-        <button  type="submit" class="btn btn-primary">Create</button>
-    </form>
+    <a asp-controller="UsageLog" asp-action="Create">
+        <button class="btn btn-primary">Create</button>
+    </a>
 </div>
 <div class="card">
     <div class="table-responsive text-nowrap">
@@ -24,10 +14,10 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>log id</th>
+                    <th>Log Id</th>
                     <th>Date</th>
                     <th>License Plate</th>
-                    <th>Driver</th>
+                    <th>Driver Name</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0 accordion" id="accordionExample">
@@ -37,10 +27,10 @@
                     foreach (JsonElement item in Model.Entities)
                     {
                         UsageLogVM usage = JsonSerializer.Deserialize<UsageLogVM>(item, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true,
-                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-                });
+                        {
+                            PropertyNameCaseInsensitive = true,
+                            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                        });
 
                         <tr class="accordion-item">
                             <td>@i</td>
@@ -135,4 +125,3 @@
         </nav>
     </div>
 </div>
-<!--/ Striped Rows -->
