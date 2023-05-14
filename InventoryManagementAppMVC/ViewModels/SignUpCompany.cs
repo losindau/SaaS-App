@@ -16,9 +16,11 @@ namespace InventoryManagementAppMVC.ViewModels
         [Required]
         public string Address { get; set; }
         [Required]
+        [Phone]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
         [Required]
         [DataType(DataType.Password)]
