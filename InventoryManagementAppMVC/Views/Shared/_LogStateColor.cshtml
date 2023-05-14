@@ -1,0 +1,16 @@
+﻿@model LogState
+
+@switch (Model)
+{
+    case LogState.Accepted:
+        <span class="badge bg-label-success me-1">@Model</span>
+        break;
+    case LogState.Pending:
+        <span class="badge bg-label-warning me-1">@Model</span>
+        break;
+    case LogState.Declined:
+        <span class="badge bg-label-danger me-1">@Model</span>
+        break;
+    default:
+        break;
+}

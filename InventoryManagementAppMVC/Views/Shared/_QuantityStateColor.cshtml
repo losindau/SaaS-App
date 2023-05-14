@@ -1,0 +1,21 @@
+﻿@model QuantityState
+
+@switch (Model)
+{
+    case QuantityState.High:
+        <span class="badge bg-label-success me-1">@Model</span>
+        break;
+    case QuantityState.Medium:
+        <span class="badge bg-label-warning me-1">@Model</span>
+        break;
+    case QuantityState.Low:
+        <span class="badge bg-label-danger me-1">@Model</span>
+        break;
+    case QuantityState.OutOfStock:
+        <span class="badge bg-lable-danger me-1">@Model</span>
+        break;
+    default:
+        break;
+}
+
+
