@@ -61,20 +61,27 @@ namespace InventoryManagementAppMVC.Controllers
             }
 
 
-            equipmentVM.QualityState = QualityState.High;
+            if (equipmentVM.Quantity <= 100)
+            {
+                equipmentVM.QuantityState = QuantityState.Low;
+            }
+            else if (equipmentVM.Quantity > 100 && equipmentVM.Quantity <= 200)
+            {
+                equipmentVM.QuantityState = QuantityState.Medium;
+            }
+            else
+            {
+                equipmentVM.QuantityState = QuantityState.High;
+            }
 
             var companyID = _httpContextAccessor.HttpContext?.User.GetUserCompanyID();
-
             equipmentVM.CompanyID = int.Parse(companyID);
-
             equipmentVM.isDeleted = false;
 
             var accessToken = await HttpContext.GetTokenAsync("access_token");
-
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             var responsePost = await _httpClient.PostAsJsonAsync("api/Equipment", equipmentVM);
-
             if (!responsePost.IsSuccessStatusCode)
             {
                 TempData["Error"] = await responsePost.Content.ReadAsStringAsync();
@@ -115,18 +122,18 @@ namespace InventoryManagementAppMVC.Controllers
                 return View(equipmentVM);
             }
 
-            //if (equipmentVM.Quantity <= 100)
-            //{
-            //    equipmentVM.QuantityState = QuantityState.Low;
-            //}
-            //else if (equipmentVM.Quantity > 100 && equipmentVM.Quantity <= 200)
-            //{
-            //    equipmentVM.QuantityState = QuantityState.Medium;
-            //}
-            //else
-            //{
-            //    equipmentVM.QuantityState = QuantityState.High;
-            //}
+            if (equipmentVM.Quantity <= 100)
+            {
+                equipmentVM.QuantityState = QuantityState.Low;
+            }
+            else if (equipmentVM.Quantity > 100 && equipmentVM.Quantity <= 200)
+            {
+                equipmentVM.QuantityState = QuantityState.Medium;
+            }
+            else
+            {
+                equipmentVM.QuantityState = QuantityState.High;
+            }
 
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
