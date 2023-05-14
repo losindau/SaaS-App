@@ -26,7 +26,7 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<UsageLog> GetUsageLogByUserId(string userID)
         {
-            return _context.UsageLogs.Where(u => u.AppUserID == userID).ToList();
+            return _context.UsageLogs.Where(u => u.AppUserID == userID && u.isDeleted == false).ToList();
         }
 
         public ICollection<UsageLog> GetUsageLogs()

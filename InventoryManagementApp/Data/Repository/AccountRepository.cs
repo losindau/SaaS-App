@@ -84,7 +84,7 @@ namespace InventoryManagementApp.Data.Repository
 
         public async Task<AppUser> GetUserById(string userID)
         {
-            return _context.Users.Include(u => u.Truck).Where(u => u.Id.Trim().ToLower().Equals(userID.Trim().ToLower())).FirstOrDefault();
+            return _context.Users.Include(u => u.Truck).ThenInclude(t => t.TruckStockItems).ThenInclude(i => i.StockItem).Where(u => u.Id.Trim().ToLower().Equals(userID.Trim().ToLower())).FirstOrDefault();
         }
 
         public bool UserExists(string userID)

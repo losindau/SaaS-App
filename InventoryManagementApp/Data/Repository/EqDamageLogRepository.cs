@@ -31,7 +31,7 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<EqDamageLog> GetEqDamageLogByUserId(string userID)
         {
-            return _context.EqDamageLogs.Where(e => e.AppUserID == userID).ToList();
+            return _context.EqDamageLogs.Where(e => e.AppUserID == userID && e.isDeleted == false).ToList();
         }
 
         public ICollection<EqDamageLog> GetEqDamageLogs()
