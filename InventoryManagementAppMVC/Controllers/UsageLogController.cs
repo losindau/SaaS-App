@@ -48,17 +48,17 @@ namespace InventoryManagementAppMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            AppUserVM appUserVM = new AppUserVM();
+            TruckVM truckVM = new TruckVM();
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var userID = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var response = await _httpClient.GetAsync("api/Account/" + userID);
+            var truckID = _httpContextAccessor.HttpContext?.User.GetUserTruckID();
+            var response = await _httpClient.GetAsync("api/Truck/" + truckID);
             if (response.IsSuccessStatusCode)
             {
                 var apiResponse = await response.Content.ReadAsStreamAsync();
-                appUserVM = await JsonSerializer.DeserializeAsync<AppUserVM>(apiResponse, new JsonSerializerOptions
+                truckVM = await JsonSerializer.DeserializeAsync<TruckVM>(apiResponse, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
                     Converters = { new JsonStringEnumConverter() },
@@ -68,16 +68,15 @@ namespace InventoryManagementAppMVC.Controllers
 
             CreateUsageLogVM createUsageLogVM = new CreateUsageLogVM()
             {
-                TruckID = appUserVM.TruckID,
-                LicensePlate = appUserVM.Truck.LicensePlate,
-                TruckStockItems = appUserVM.Truck.TruckStockItems.ToList()
+                TruckID = truckVM.TruckID,
+                LicensePlate = truckVM.LicensePlate,
+                TruckStockItems = truckVM.TruckStockItems.ToList()
             };
 
-            foreach (var item in appUserVM.Truck.TruckStockItems)
+            foreach (var item in truckVM.TruckStockItems)
             {
                 createUsageLogVM.StockItemNames.Add((int)item.StockItemID, item.StockItem.Name);
                 createUsageLogVM.StockItemQuantities.Add((int)item.StockItemID, 0);
-                createUsageLogVM.TruckStockItemIDs.Add((int)item.StockItemID, item.TruckStockItemID);
             }
 
             return View(createUsageLogVM);
@@ -86,6 +85,21 @@ namespace InventoryManagementAppMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateUsageLogVM createUsageLogVM)
         {
+            int count = 0;
+            foreach (var item in createUsageLogVM.StockItemQuantities)
+            {
+                if (item.Value > 0)
+                {
+                    count++;
+                }
+            }
+
+            if (count < 1)
+            {
+                TempData["Error"] = "To create usagelog you must change quantity of at least 1 item";
+                return RedirectToAction("MyUsageLog", new { page = 1 });
+            }
+
             // Create master usagelog
             var userID = _httpContextAccessor.HttpContext?.User.GetUserId();
             var userName = _httpContextAccessor.HttpContext?.User.GetUserName();
@@ -138,10 +152,9 @@ namespace InventoryManagementAppMVC.Controllers
                     detailUsageLogVMs.Add(newDetailUsageLog);
 
                     //Get truck stock item
-                    var truckStockItemID = createUsageLogVM.TruckStockItemIDs[stockItemID];
                     TruckStockItemVM responseTruckStockItemVM = new TruckStockItemVM();
 
-                    var response = await _httpClient.GetAsync("api/TruckStockItem/" + truckStockItemID);
+                    var response = await _httpClient.GetAsync("api/TruckStockItem/" + stockItemID + "/itemid");
                     if (response.IsSuccessStatusCode)
                     {
                         var apiResponse = await response.Content.ReadAsStreamAsync();
@@ -154,7 +167,7 @@ namespace InventoryManagementAppMVC.Controllers
                     responseTruckStockItemVM.QuantityInTruck -= quantity;
 
                     //Put truck stock item to update quantity in truck
-                    var responsePutTruckStockItem = await _httpClient.PutAsJsonAsync("api/TruckStockItem/" + truckStockItemID, responseTruckStockItemVM);
+                    var responsePutTruckStockItem = await _httpClient.PutAsJsonAsync("api/TruckStockItem/" + responseTruckStockItemVM.TruckStockItemID, responseTruckStockItemVM);
                     var putTruckStockItemContent = await responsePutTruckStockItem.Content.ReadAsStringAsync();
 
                     if (!responsePutTruckStockItem.IsSuccessStatusCode)
@@ -163,12 +176,6 @@ namespace InventoryManagementAppMVC.Controllers
                         return RedirectToAction("MyUsageLog", new { page = 1 });
                     }
                 }
-            }
-
-            if (detailUsageLogVMs.Count() < 1)
-            {
-                TempData["Error"] = "To create usagelog you must change quantity of at least 1 item";
-                return View();
             }
 
             //Post list of detail usagelogs
