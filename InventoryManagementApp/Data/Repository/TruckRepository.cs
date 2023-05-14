@@ -14,7 +14,7 @@ namespace InventoryManagementApp.Data.Repository
             this._context = context;
         }
 
-        public Truck GetTruckId(int truckID)
+        public Truck GetTruckById(int truckID)
         {
             return _context.Trucks.Include(u => u.AppUser).Include(x => x.Toolbox.ToolboxEquipments).ThenInclude(x => x.Equipment).Where(t => t.TruckID == truckID).FirstOrDefault();
         }

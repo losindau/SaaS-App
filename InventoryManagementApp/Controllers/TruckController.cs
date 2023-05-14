@@ -64,7 +64,7 @@ namespace InventoryManagementApp.Controllers
                 return NotFound();
             }
 
-            var truck = _mapper.Map<TruckVM>(_truckRepository.GetTruckId(truckID));
+            var truck = _mapper.Map<TruckVM>(_truckRepository.GetTruckById(truckID));
             truck.TruckStockItems = _mapper.Map<List<TruckStockItemVM>>(_truckRepository.GetTruckStockItems(truckID));
 
             if (!ModelState.IsValid)
