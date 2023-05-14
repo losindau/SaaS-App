@@ -54,8 +54,7 @@ namespace InventoryManagementApp.Controllers
 
             if (result != null)
             {
-                ModelState.AddModelError("", "This email is already exists");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "This email is already exists");
             }
 
             var newUser = new AppUser()
@@ -65,7 +64,6 @@ namespace InventoryManagementApp.Controllers
                 PhoneNumber = signUpVM.PhoneNumber,
                 UserName = signUpVM.Email,
                 Email = signUpVM.Email,
-                TruckID = signUpVM.TruckID,
                 CompanyID = signUpVM.CompanyID
             };
 

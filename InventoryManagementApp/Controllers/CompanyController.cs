@@ -68,16 +68,14 @@ namespace InventoryManagementApp.Controllers
 
             if (company != null)
             {
-                ModelState.AddModelError("", "This company name is already exists");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "This company name is already exists");
             }
 
             var companyMap = _mapper.Map<Company>(companyCreate);
 
             if (!_companyRepository.CreateCompany(companyMap))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, "Something went wrong while saving");
             }
 
             return Ok(companyMap.CompanyID);
@@ -108,8 +106,7 @@ namespace InventoryManagementApp.Controllers
 
             if (!_companyRepository.UpdateCompany(companyMap))
             {
-                ModelState.AddModelError("", "Something went wrong updating");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, "Something went wrong updating");
             }
 
             return Ok("Updated successfully");

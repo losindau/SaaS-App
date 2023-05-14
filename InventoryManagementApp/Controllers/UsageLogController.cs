@@ -6,6 +6,7 @@ using InventoryManagementApp.Data.Repository;
 using InventoryManagementApp.Data.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.Design;
 
 namespace InventoryManagementApp.Controllers
@@ -77,14 +78,19 @@ namespace InventoryManagementApp.Controllers
             return Ok(usagelog);
         }
 
-        [HttpGet("myusagelogs/{userID}")]
-        [ProducesResponseType(200, Type = typeof(UsageLog))]
+        [HttpGet("{page}/myusagelogs/{userID}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<UsageLog>))]
         [ProducesResponseType(400)]
-        public IActionResult GetUsageLogByUserID(string userID)
+        public IActionResult GetUsageLogByUserID(int page, string userID)
         {
-            var usagelog = _mapper.Map<List<UsageLogVM>>(_usageLogRepository.GetUsageLogByUserId(userID));
+            var usagelogs = _usageLogRepository.GetUsageLogByUserId(userID);
 
-            foreach (UsageLogVM us in usagelog)
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(usagelogs.Count() / pageResults);
+
+            var usagelogsMap = _mapper.Map<List<UsageLogVM>>(usagelogs.Skip((page - 1) * (int)pageResults).Take((int)pageResults));
+
+            foreach (UsageLogVM us in usagelogsMap)
             {
                 us.DetailUsageLogs = _mapper.Map<List<DetailUsageLogVM>>(_usageLogRepository.GetDetailUsageLogs(us.UsageLogID));
             }
@@ -94,7 +100,14 @@ namespace InventoryManagementApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok(usagelog);
+            var response = new ResponsePagination()
+            {
+                Entities = new List<object>(usagelogsMap),
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+
+            return Ok(response);
         }
 
         [HttpPost]
@@ -112,7 +125,7 @@ namespace InventoryManagementApp.Controllers
                 return StatusCode(500, "Something went wrong while saving");
             }
 
-            return Ok("Successfully created");
+            return Ok(usageLogMap.UsageLogID);
         }
 
         [HttpPut("{usagelogID}")]
@@ -140,8 +153,7 @@ namespace InventoryManagementApp.Controllers
 
             if (!_usageLogRepository.UpdateUsageLog(usagelogMap))
             {
-                ModelState.AddModelError("", "Something went wrong updating");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, "Something went wrong updating");
             }
 
             return Ok("Updated successfully");

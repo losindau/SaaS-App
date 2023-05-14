@@ -54,8 +54,7 @@ namespace InventoryManagementApp.Controllers
 
             if (!_detailUsageLogRepository.CreateDetailUsageLogs(detailusageLogMap))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, "Something went wrong while saving");
             }
 
             return Ok("Successfully created");
@@ -86,8 +85,7 @@ namespace InventoryManagementApp.Controllers
 
             if (!_detailUsageLogRepository.UpdateDetailUsageLog(detailusagelogMap))
             {
-                ModelState.AddModelError("", "Something went wrong updating");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, "Something went wrong updating");
             }
 
             return Ok("Updated successfully");

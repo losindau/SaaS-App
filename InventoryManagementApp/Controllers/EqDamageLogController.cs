@@ -109,8 +109,7 @@ namespace InventoryManagementApp.Controllers
 
             if (!_eqDamageLogRepository.CreateEqDamageLog(eqDamageLogMap))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, "Something went wrong while saving");
             }
 
             return Ok("Successfully created");
@@ -141,8 +140,7 @@ namespace InventoryManagementApp.Controllers
 
             if (!_eqDamageLogRepository.UpdateEqDamageLog(eqdamagelogMap))
             {
-                ModelState.AddModelError("", "Something went wrong updating");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, "Something went wrong updating");
             }
 
             return Ok("Updated successfully");
