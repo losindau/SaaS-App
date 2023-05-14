@@ -76,16 +76,21 @@ namespace InventoryManagementApp.Controllers
             return Ok(restocklog);
         }
 
-        [HttpGet("myrestocklogs/{userID}")]
-        [ProducesResponseType(200, Type = typeof(RestockLog))]
+        [HttpGet("{page}/myrestocklogs/{userID}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<RestockLog>))]
         [ProducesResponseType(400)]
-        public IActionResult GetRestockLogByUserID(string userID)
+        public IActionResult GetRestockLogByUserID(int page, string userID)
         {
-            var restocklog = _mapper.Map<List<RestockLogVM>>(_restockLogRepository.GetRestockLogByUserId(userID));
+            var restocklog = _restockLogRepository.GetRestockLogByUserId(userID);
 
-            foreach (RestockLogVM us in restocklog)
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(restocklog.Count() / pageResults);
+
+            var restocklogsMap = _mapper.Map<List<RestockLogVM>>(restocklog.Skip((page - 1) * (int)pageResults).Take((int)pageResults));
+
+            foreach (RestockLogVM item in restocklogsMap)
             {
-                us.DetailRestockLogs = _mapper.Map<List<DetailRestockLogVM>>(_restockLogRepository.GetDetailRestockLogs(us.RestockLogID));
+                item.DetailRestockLogs = _mapper.Map<List<DetailRestockLogVM>>(_restockLogRepository.GetDetailRestockLogs(item.RestockLogID));
             }
 
             if (!ModelState.IsValid)
@@ -93,7 +98,14 @@ namespace InventoryManagementApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok(restocklog);
+            var response = new ResponsePagination()
+            {
+                Entities = new List<object>(restocklogsMap),
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+
+            return Ok(response);
         }
 
         [HttpPost]
@@ -111,7 +123,7 @@ namespace InventoryManagementApp.Controllers
                 return StatusCode(500, "Something went wrong while saving");
             }
 
-            return Ok("Successfully created");
+            return Ok(restockLogMap.RestockLogID);
         }
 
         [HttpPut("{restocklogID}")]
