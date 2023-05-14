@@ -14,7 +14,6 @@ namespace InventoryManagementAppMVC.ViewModels
         public AppUserVM? AppUser { get; set; }
         public int? ToolboxID { get; set; }
         public ToolboxVM? Toolbox { get; set; }
-        public string? DriverName { get; set; }
         public int? CompanyID { get; set; }
         public bool isDeleted { get; set; }
 

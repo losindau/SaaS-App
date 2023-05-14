@@ -11,7 +11,6 @@ namespace InventoryManagementAppMVC.ViewModels
         [ForeignKey("AppUser")] 
         public string? AppUserID { get; set; }
         public string? AppUserName { get; set; }
-        //public AppUserVM? AppUser { get; set; }
         public int? CompanyID { get; set; }
         public bool isDeleted { get; set; }
 
