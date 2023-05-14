@@ -1,0 +1,49 @@
+﻿@model CreateUsageLogVM
+
+<partial name="_Message" />
+
+<div class="card">
+    <div class="table-responsive text-nowrap">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Current</th>
+                </tr>
+            </thead>
+            <form asp-controller="UsageLog" asp-action="Create">
+                <div class="d-flex justify-content-between align-items-center p-3">
+                    <h5 class="fw-bold">Create Usage Log</h5>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            <tbody class="table-border-bottom-0">
+                <input type="hidden" asp-for="TruckID" />
+                <input type="hidden" asp-for="LicensePlate" />
+                    @{
+                        int i = 1;
+                        foreach (TruckStockItemVM truckStockItem in Model.TruckStockItems)
+                        {
+                        <input type="hidden" asp-for="TruckStockItemIDs[(int)truckStockItem.StockItemID]"/>
+                        <input type="hidden" asp-for="StockItemNames[(int)truckStockItem.StockItemID]"/>
+
+                        <tr>
+                            <td>@i</td>
+                            <td>
+                                <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                                <strong>@truckStockItem.StockItem.Name</strong>
+                            </td>
+                            <td>
+                                <input asp-for="StockItemQuantities[(int)truckStockItem.StockItemID]" class="form-control w-px-75" type="number" min="0" value="0" />
+                            </td>
+                            <td> <strong>@truckStockItem.QuantityInTruck</strong> / 50</td>
+                        </tr>
+                            i++;
+                        }
+                    }
+            </tbody>
+            </form>
+        </table>
+    </div>
+</div>
