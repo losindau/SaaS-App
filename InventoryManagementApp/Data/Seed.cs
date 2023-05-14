@@ -384,7 +384,7 @@ namespace InventoryManagementApp.Data
                             Name = "Screwdriver",
                             Quantity = 100,
                             Type = EquipmentType.HandTool,
-                            QualityState = QualityState.High,
+                            QuantityState = QuantityState.High,
                             CompanyID = 1,
                             isDeleted = false
                         },
@@ -393,7 +393,7 @@ namespace InventoryManagementApp.Data
                             Name = "Pliers",
                             Quantity = 100,
                             Type = EquipmentType.HandTool,
-                            QualityState = QualityState.High,
+                            QuantityState = QuantityState.High,
                             CompanyID = 1,
                             isDeleted = false
                         },
@@ -402,7 +402,7 @@ namespace InventoryManagementApp.Data
                             Name = "Voltage Tester",
                             Quantity = 100,
                             Type = EquipmentType.ElectricalTool,
-                            QualityState = QualityState.High,
+                            QuantityState = QuantityState.High,
                             CompanyID = 1,
                             isDeleted = false
                         },
@@ -411,7 +411,7 @@ namespace InventoryManagementApp.Data
                             Name = "Drill",
                             Quantity = 100,
                             Type = EquipmentType.PowerTool,
-                            QualityState = QualityState.High,
+                            QuantityState = QuantityState.High,
                             CompanyID = 1,
                             isDeleted = false
                         },
@@ -420,7 +420,7 @@ namespace InventoryManagementApp.Data
                             Name = "Tape Measure",
                             Quantity = 100,
                             Type = EquipmentType.MeasuringTool,
-                            QualityState = QualityState.High,
+                            QuantityState = QuantityState.High,
                             CompanyID = 1,
                             isDeleted = false
                         },
@@ -429,7 +429,7 @@ namespace InventoryManagementApp.Data
                             Name = "Screwdriver",
                             Quantity = 100,
                             Type = EquipmentType.HandTool,
-                            QualityState = QualityState.High,
+                            QuantityState = QuantityState.High,
                             CompanyID = 2,
                             isDeleted = false
                         },
@@ -438,7 +438,7 @@ namespace InventoryManagementApp.Data
                             Name = "Pliers",
                             Quantity = 100,
                             Type = EquipmentType.HandTool,
-                            QualityState = QualityState.High,
+                            QuantityState = QuantityState.High,
                             CompanyID = 2,
                             isDeleted = false
                         },
@@ -447,7 +447,7 @@ namespace InventoryManagementApp.Data
                             Name = "Voltage Tester",
                             Quantity = 100,
                             Type = EquipmentType.ElectricalTool,
-                            QualityState = QualityState.High,
+                            QuantityState = QuantityState.High,
                             CompanyID = 2,
                             isDeleted = false
                         },
@@ -456,7 +456,7 @@ namespace InventoryManagementApp.Data
                             Name = "Drill",
                             Quantity = 100,
                             Type = EquipmentType.PowerTool,
-                            QualityState = QualityState.High,
+                            QuantityState = QuantityState.High,
                             CompanyID = 2,
                             isDeleted = false
                         },
@@ -465,7 +465,7 @@ namespace InventoryManagementApp.Data
                             Name = "Tape Measure",
                             Quantity = 100,
                             Type = EquipmentType.MeasuringTool,
-                            QualityState = QualityState.High,
+                            QuantityState = QuantityState.High,
                             CompanyID = 2,
                             isDeleted = false
                         },

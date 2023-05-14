@@ -11,7 +11,7 @@ namespace InventoryManagementApp.Data.Models
         public string Name { get; set; }
         public int Quantity { get; set; }
         public EquipmentType Type { get; set; }
-        public QualityState QualityState { get; set; }
+        public QuantityState QuantityState { get; set; }
         public int? CompanyID { get; set; }
         public Company? Company { get; set; }
         public bool isDeleted { get; set; }

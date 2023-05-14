@@ -9,7 +9,7 @@ namespace InventoryManagementApp.Data.ViewModels
         public string Name { get; set; }
         public int Quantity { get; set; }
         public EquipmentType Type { get; set; }
-        public QualityState QualityState { get; set; }
+        public QuantityState QuantityState { get; set; }
         public int? CompanyID { get; set; }
         public bool isDeleted { get; set; }
     }

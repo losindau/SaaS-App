@@ -12,7 +12,7 @@ namespace InventoryManagementAppMVC.ViewModels
         public int Quantity { get; set; }
         [Required]
         public EquipmentType Type { get; set; }
-        public QualityState QualityState { get; set; }
+        public QuantityState QuantityState { get; set; }
         public int? CompanyID { get; set; }
         public bool isDeleted { get; set; }
     }
