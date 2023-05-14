@@ -21,37 +21,52 @@ namespace InventoryManagementApp.Controllers
             this._mapper = mapper;
         }
 
-        [HttpGet("{truckStockItemID}")]
+        [HttpGet("{truckStockItemID}/id")]
         [ProducesResponseType(200, Type = typeof(TruckStockItem))]
         [ProducesResponseType(400)]
-        public IActionResult GetTruckStockItem(int truckStockItemID)
+        public IActionResult GetTruckStockItemById(int truckStockItemID)
         {
             if (!_truckStockItemRepository.TruckStockItemExists(truckStockItemID))
             {
                 return NotFound();
             }
 
-            var truck = _mapper.Map<TruckStockItemVM>(_truckStockItemRepository.GetTruckStockItemById(truckStockItemID));
+            var truckStockItem = _mapper.Map<TruckStockItemVM>(_truckStockItemRepository.GetTruckStockItemById(truckStockItemID));
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            return Ok(truck);
+            return Ok(truckStockItem);
         }
 
-        [HttpPost]
-        public IActionResult CreateTruckStockItem(List<TruckStockItemVM> truckCreate)
+        [HttpGet("{itemID}/itemid")]
+        [ProducesResponseType(200, Type = typeof(TruckStockItem))]
+        [ProducesResponseType(400)]
+        public IActionResult GetTruckStockItemByItemId(int itemID)
         {
-            if (truckCreate == null)
+            var truckStockItem = _mapper.Map<TruckStockItemVM>(_truckStockItemRepository.GetTruckStockItemByItemId(itemID));
+
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var truckMap = _mapper.Map<List<TruckStockItem>>(truckCreate);
+            return Ok(truckStockItem);
+        }
 
-            if (!_truckStockItemRepository.CreateTruckStockItems(truckMap))
+        [HttpPost]
+        public IActionResult CreateTruckStockItem(List<TruckStockItemVM> truckStockItemCreate)
+        {
+            if (truckStockItemCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var truckStockItemMap = _mapper.Map<List<TruckStockItem>>(truckStockItemCreate);
+
+            if (!_truckStockItemRepository.CreateTruckStockItems(truckStockItemMap))
             {
                 return StatusCode(500, "Something went wrong while saving");
             }

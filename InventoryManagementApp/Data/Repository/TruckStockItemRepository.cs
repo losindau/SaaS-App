@@ -18,6 +18,11 @@ namespace InventoryManagementApp.Data.Repository
             return _context.TruckStockItems.Where(t => t.TruckStockItemID == truckStockItemID).FirstOrDefault();
         }
 
+        public TruckStockItem GetTruckStockItemByItemId(int itemID)
+        {
+            return _context.TruckStockItems.Where(t => t.StockItemID == itemID).FirstOrDefault();
+        }
+
         public bool TruckStockItemExists(int truckStockItemID)
         {           
             return _context.TruckStockItems.Where(t => t.isDeleted == false).Any(t => t.TruckStockItemID == truckStockItemID);
