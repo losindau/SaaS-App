@@ -34,6 +34,11 @@ namespace InventoryManagementAppMVC.Helper
             return user.FindFirst("LastName").Value;
         }
 
+        public static string GetUserTruckID(this ClaimsPrincipal user)
+        {
+            return user.FindFirst("TruckID").Value;
+        }
+
         public static string GetUserCompanyID(this ClaimsPrincipal user)
         {
             return user.FindFirst("CompanyID").Value;
