@@ -90,9 +90,9 @@ namespace InventoryManagementApp.Controllers
 
             var usagelogsMap = _mapper.Map<List<UsageLogVM>>(usagelogs.Skip((page - 1) * (int)pageResults).Take((int)pageResults));
 
-            foreach (UsageLogVM us in usagelogsMap)
+            foreach (UsageLogVM item in usagelogsMap)
             {
-                us.DetailUsageLogs = _mapper.Map<List<DetailUsageLogVM>>(_usageLogRepository.GetDetailUsageLogs(us.UsageLogID));
+                item.DetailUsageLogs = _mapper.Map<List<DetailUsageLogVM>>(_usageLogRepository.GetDetailUsageLogs(item.UsageLogID));
             }
 
             if (!ModelState.IsValid)
