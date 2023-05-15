@@ -46,6 +46,30 @@ namespace InventoryManagementAppMVC.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> MyTruck()
+        {
+            TruckVM truckVM = new TruckVM();
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var truckID = _httpContextAccessor.HttpContext?.User.GetUserTruckID();
+            var response = await _httpClient.GetAsync("api/Truck/" + truckID);
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                truckVM = await JsonSerializer.DeserializeAsync<TruckVM>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() },
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+            return View(truckVM);
+        }
+
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
