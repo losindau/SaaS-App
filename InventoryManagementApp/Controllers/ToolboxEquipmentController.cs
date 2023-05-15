@@ -23,7 +23,7 @@ namespace InventoryManagementApp.Controllers
         [HttpGet("{toolboxEquipmentID}")]
         [ProducesResponseType(200, Type = typeof(ToolboxEquipment))]
         [ProducesResponseType(400)]
-        public IActionResult GetToolboxEquipment(int toolboxEquipmentID)
+        public IActionResult GetToolboxEquipmentById(int toolboxEquipmentID)
         {
             if (!_toolboxRepository.ToolboxEquipmentExists(toolboxEquipmentID))
             {
@@ -38,6 +38,21 @@ namespace InventoryManagementApp.Controllers
             }
 
             return Ok(toolbox);
+        }
+
+        [HttpGet("{equipmentID}/equipmentid")]
+        [ProducesResponseType(200, Type = typeof(ToolboxEquipment))]
+        [ProducesResponseType(400)]
+        public IActionResult GetToolboxEquipmentByEqId(int equipmentID)
+        {
+            var toolboxEquipment = _mapper.Map<ToolboxEquipmentVM>(_toolboxRepository.GetToolboxEquipmentByEqId(equipmentID));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(toolboxEquipment);
         }
 
         [HttpPost]
