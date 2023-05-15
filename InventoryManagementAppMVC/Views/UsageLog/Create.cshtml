@@ -23,18 +23,18 @@
                 <input type="hidden" asp-for="LicensePlate" />
                     @{
                         int i = 1;
+
                         foreach (TruckStockItemVM truckStockItem in Model.TruckStockItems)
                         {
-                        <input type="hidden" asp-for="StockItemNames[(int)truckStockItem.StockItemID]" value="@truckStockItem.StockItem.Name"/>
-
                         <tr>
                             <td>@i</td>
                             <td>
+                                <input type="hidden" asp-for="StockItemNames[(int)truckStockItem.StockItemID]" value="@truckStockItem.StockItem.Name" />
                                 <i class="fab fa-angular fa-lg text-danger me-3"></i>
                                 <strong>@truckStockItem.StockItem.Name</strong>
                             </td>
                             <td>
-                                <input asp-for="StockItemQuantities[(int)truckStockItem.StockItemID]" class="form-control w-px-75" type="number" min="0" value="0" />
+                                <input asp-for="StockItemQuantities[(int)truckStockItem.StockItemID]" class="form-control w-px-75" type="number" min="0" max="@truckStockItem.QuantityInTruck" value="0" />
                             </td>
                             <td> <strong>@truckStockItem.QuantityInTruck</strong> / 50</td>
                         </tr>

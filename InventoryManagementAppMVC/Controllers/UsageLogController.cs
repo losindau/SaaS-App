@@ -151,30 +151,6 @@ namespace InventoryManagementAppMVC.Controllers
 
                     detailUsageLogVMs.Add(newDetailUsageLog);
 
-                    //Get truck stock item
-                    TruckStockItemVM responseTruckStockItemVM = new TruckStockItemVM();
-
-                    var response = await _httpClient.GetAsync("api/TruckStockItem/" + stockItemID + "/itemid");
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var apiResponse = await response.Content.ReadAsStreamAsync();
-                        responseTruckStockItemVM = await JsonSerializer.DeserializeAsync<TruckStockItemVM>(apiResponse, new JsonSerializerOptions
-                        {
-                            PropertyNameCaseInsensitive = true,
-                            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-                        });
-                    }
-                    responseTruckStockItemVM.QuantityInTruck -= quantity;
-
-                    //Put truck stock item to update quantity in truck
-                    var responsePutTruckStockItem = await _httpClient.PutAsJsonAsync("api/TruckStockItem/" + responseTruckStockItemVM.TruckStockItemID, responseTruckStockItemVM);
-                    var putTruckStockItemContent = await responsePutTruckStockItem.Content.ReadAsStringAsync();
-
-                    if (!responsePutTruckStockItem.IsSuccessStatusCode)
-                    {
-                        TempData["Error"] = putTruckStockItemContent;
-                        return RedirectToAction("MyUsageLog", new { page = 1 });
-                    }
                 }
             }
 
@@ -186,6 +162,35 @@ namespace InventoryManagementAppMVC.Controllers
             {
                 TempData["Error"] = postDetailUsageLogContent;
                 return RedirectToAction("MyUsageLog", new { page = 1 });
+            }
+
+            //Update quantity in truck
+            foreach (var item in detailUsageLogVMs)
+            {
+                //Get truck stock item
+                TruckStockItemVM responseTruckStockItemVM = new TruckStockItemVM();
+
+                var response = await _httpClient.GetAsync("api/TruckStockItem/" + item.StockItemID + "/itemid");
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = await response.Content.ReadAsStreamAsync();
+                    responseTruckStockItemVM = await JsonSerializer.DeserializeAsync<TruckStockItemVM>(apiResponse, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true,
+                        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                    });
+                }
+                responseTruckStockItemVM.QuantityInTruck -= item.Quantity;
+
+                //Put truck stock item to update quantity in truck
+                var responsePutTruckStockItem = await _httpClient.PutAsJsonAsync("api/TruckStockItem/" + responseTruckStockItemVM.TruckStockItemID, responseTruckStockItemVM);
+                var putTruckStockItemContent = await responsePutTruckStockItem.Content.ReadAsStringAsync();
+
+                if (!responsePutTruckStockItem.IsSuccessStatusCode)
+                {
+                    TempData["Error"] = putTruckStockItemContent;
+                    return RedirectToAction("MyUsageLog", new { page = 1 });
+                }
             }
 
             TempData["Success"] = "Create new usage log successfully";
