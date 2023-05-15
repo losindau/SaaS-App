@@ -77,16 +77,21 @@ namespace InventoryManagementApp.Controllers
             return Ok(eqdamagelog);
         }
 
-        [HttpGet("myeqdamagelogs/{userID}")]
+        [HttpGet("{page}/myeqdamagelogs/{userID}")]
         [ProducesResponseType(200, Type = typeof(EqDamageLog))]
         [ProducesResponseType(400)]
-        public IActionResult GetUsageLogByUserID(string userID)
+        public IActionResult GetUsageLogByUserID(int page, string userID)
         {
-            var eqdamagelog = _mapper.Map<List<EqDamageLogVM>>(_eqDamageLogRepository.GetEqDamageLogByUserId(userID));
+            var eqdamagelog = _eqDamageLogRepository.GetEqDamageLogByUserId(userID);
 
-            foreach (EqDamageLogVM us in eqdamagelog)
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(eqdamagelog.Count() / pageResults);
+
+            var eqdamgelogsMap = _mapper.Map<List<EqDamageLogVM>>(eqdamagelog.Skip((page - 1) * (int)pageResults).Take((int)pageResults));
+
+            foreach (EqDamageLogVM item in eqdamgelogsMap)
             {
-                us.DetailEqDamageLogs = _mapper.Map<List<DetailEqDamageLogVM>>(_eqDamageLogRepository.GetDetailEqDamageLogs(us.EqDamageLogID));
+                item.DetailEqDamageLogs = _mapper.Map<List<DetailEqDamageLogVM>>(_eqDamageLogRepository.GetDetailEqDamageLogs(item.EqDamageLogID));
             }
 
             if (!ModelState.IsValid)
@@ -94,7 +99,14 @@ namespace InventoryManagementApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok(eqdamagelog);
+            var response = new ResponsePagination()
+            {
+                Entities = new List<object>(eqdamgelogsMap),
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+
+            return Ok(response);
         }
 
         [HttpPost]
@@ -112,7 +124,7 @@ namespace InventoryManagementApp.Controllers
                 return StatusCode(500, "Something went wrong while saving");
             }
 
-            return Ok("Successfully created");
+            return Ok(eqDamageLogMap.EqDamageLogID);
         }
 
         [HttpPut("{eqdamagelogID}")]
