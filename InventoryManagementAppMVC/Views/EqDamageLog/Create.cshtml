@@ -1,0 +1,53 @@
+﻿@model CreateEqDamageLogVM
+
+<partial name="_Message" />
+
+<div class="card">
+    <div class="table-responsive text-nowrap">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Current</th>
+                    <th>Comment</th>
+                </tr>
+            </thead>
+            <form asp-controller="EqDamageLog" asp-action="Create">
+                <div class="d-flex justify-content-between align-items-center p-3">
+                    <h5 class="fw-bold">Create Equipment Damage/Lost Log</h5>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            <tbody class="table-border-bottom-0">
+                <input type="hidden" asp-for="ToolboxID" />
+                    @{
+                        int i = 1;
+                        foreach (ToolboxEquipmentVM toolBoxEquipment in Model.ToolboxEquipments)
+                        {
+                            int max = toolBoxEquipment.QuantityInToolbox;
+                        <tr>
+                            <td>@i</td>
+                            <td>
+                                <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                                <input type="hidden" asp-for="ToolboxEquipmentNames[(int)toolBoxEquipment.EquipmentID]" />
+                                <strong>@toolBoxEquipment.Equipment.Name</strong>
+                            </td>
+                            <td>
+                                <input asp-for="ToolboxEquipmentQuantities[(int)toolBoxEquipment.EquipmentID]" class="form-control w-px-75" type="number" min="0" max="@max" value="0" />
+                            </td>
+                            <td> <strong>@toolBoxEquipment.QuantityInToolbox</strong> / 5</td>
+                            <td>
+                                <div>
+                                    <input class="form-control" type="text" asp-for="ToolboxEquipmentComments[(int)toolBoxEquipment.EquipmentID]" />
+                                </div>
+                            </td>
+                        </tr>
+                            i++;
+                        }
+                    }
+            </tbody>
+            </form>
+        </table>
+    </div>
+</div>

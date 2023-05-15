@@ -12,7 +12,7 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>log id</th>
+                    <th>Log Id</th>
                     <th>Report Date</th>
                     <th>Report State</th>
                     <th>Replace Date</th>
@@ -29,10 +29,10 @@
                     foreach (JsonElement item in Model.Entities)
                     {
                         EqDamageLogVM damage = JsonSerializer.Deserialize<EqDamageLogVM>(item, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true,
-                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-                });
+                        {
+                            PropertyNameCaseInsensitive = true,
+                            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                        });
                         <tr class="accordion-item">
                             <td>@i</td>
                             <td>@damage.EqDamageLogID</td>
