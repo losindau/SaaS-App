@@ -54,7 +54,6 @@ namespace InventoryManagementApp.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet("{eqdamagelogID}")]
         [ProducesResponseType(200, Type = typeof(EqDamageLog))]
         [ProducesResponseType(400)]

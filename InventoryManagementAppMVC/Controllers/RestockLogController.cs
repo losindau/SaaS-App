@@ -8,6 +8,7 @@ using System.Text.Json;
 using InventoryManagementAppMVC.ViewModels;
 using InventoryManagementAppMVC.Helper;
 using InventoryManagementAppMVC.Enum;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace InventoryManagementAppMVC.Controllers
 {
@@ -44,6 +45,187 @@ namespace InventoryManagementAppMVC.Controllers
             }
 
             return View(responsePage);
+        }
+
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> AcceptRestockLog(int restockLogID)
+        {
+            RestockLogVM restockLogVM = new RestockLogVM();
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await _httpClient.GetAsync("api/RestockLog/" + restockLogID);
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                restockLogVM = await JsonSerializer.DeserializeAsync<RestockLogVM>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() },
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+            if (restockLogVM.LogState == LogState.Declined && restockLogVM.RestockState == RestockState.Canceled)
+            {
+                TempData["Error"] = "Restock log id #" + restockLogID + " has been rejected before";
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            if (restockLogVM.LogState == LogState.Accepted && restockLogVM.RestockState == RestockState.ReadyToRestock)
+            {
+                TempData["Error"] = "Restock log id #" + restockLogID + " has been accepted before";
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            restockLogVM.LogState = LogState.Accepted;
+            restockLogVM.RestockState = RestockState.ReadyToRestock;
+
+            //Put restock log
+            var responsePutRestockLog = await _httpClient.PutAsJsonAsync("api/RestockLog/" + restockLogID, restockLogVM);
+            var putRestockLogContent = await responsePutRestockLog.Content.ReadAsStringAsync();
+
+            if (!responsePutRestockLog.IsSuccessStatusCode)
+            {
+                TempData["Error"] = putRestockLogContent;
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            TempData["Success"] = "You have accepted restock log id #" + restockLogID;
+            return RedirectToAction("Index", new { page = 1 });
+        }
+
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> RejectRestockLog(int restockLogID)
+        {
+            RestockLogVM restockLogVM = new RestockLogVM();
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await _httpClient.GetAsync("api/RestockLog/" + restockLogID);
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                restockLogVM = await JsonSerializer.DeserializeAsync<RestockLogVM>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() },
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+
+            if (restockLogVM.LogState == LogState.Declined && restockLogVM.RestockState == RestockState.Canceled)
+            {
+                TempData["Error"] = "Restock log id #" + restockLogID + " has been rejected before";
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            if (restockLogVM.LogState == LogState.Accepted && restockLogVM.RestockState == RestockState.ReadyToRestock)
+            {
+                TempData["Error"] = "Restock log id #" + restockLogID + " has been accepted before";
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            restockLogVM.LogState = LogState.Declined;
+            restockLogVM.RestockState = RestockState.Canceled;
+
+            //Put restock log
+            var responsePutRestockLog = await _httpClient.PutAsJsonAsync("api/RestockLog/" + restockLogID, restockLogVM);
+            var putRestockLogContent = await responsePutRestockLog.Content.ReadAsStringAsync();
+
+            if (!responsePutRestockLog.IsSuccessStatusCode)
+            {
+                TempData["Error"] = putRestockLogContent;
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            TempData["Success"] = "You have rejected restock log id #" + restockLogID;
+            return RedirectToAction("Index", new { page = 1 });
+        }
+
+        public async Task<IActionResult> Restock(int restockLogID)
+        {
+            RestockLogVM restockLogVM = new RestockLogVM();
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var responseRestockLog = await _httpClient.GetAsync("api/RestockLog/" + restockLogID);
+            if (responseRestockLog.IsSuccessStatusCode)
+            {
+                var apiResponse = await responseRestockLog.Content.ReadAsStreamAsync();
+                restockLogVM = await JsonSerializer.DeserializeAsync<RestockLogVM>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() },
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+            if (restockLogVM.RestockState == RestockState.Restocked)
+            {
+                TempData["Error"] = "Restock log id #" + restockLogID + " has been restocked before";
+                return RedirectToAction("MyRestockLog", new { page = 1 });
+            }
+
+            if (restockLogVM.LogState == LogState.Declined || restockLogVM.RestockState == RestockState.Canceled)
+            {
+                TempData["Error"] = "Restock log id #" + restockLogID + " has been rejected before, contact your manager";
+                return RedirectToAction("MyRestockLog", new { page = 1 });
+            }
+
+            if (restockLogVM.LogState != LogState.Accepted || restockLogVM.RestockState != RestockState.ReadyToRestock)
+            {
+                TempData["Error"] = "Restock log id #" + restockLogID + " has not been accepted before, contact your manager";
+                return RedirectToAction("MyRestockLog", new { page = 1 });
+            }
+
+            restockLogVM.RestockState = RestockState.Restocked;
+
+            //Put restock log
+            var responsePutRestockLog = await _httpClient.PutAsJsonAsync("api/RestockLog/" + restockLogID, restockLogVM);
+            var putRestockLogContent = await responsePutRestockLog.Content.ReadAsStringAsync();
+
+            if (!responsePutRestockLog.IsSuccessStatusCode)
+            {
+                TempData["Error"] = putRestockLogContent;
+                return RedirectToAction("MyRestockLog", new { page = 1 });
+            }
+
+            //Update quantity in truck
+            foreach (var item in restockLogVM.DetailRestockLogs)
+            {
+                //Get truck stock item
+                TruckStockItemVM truckStockItemVM = new TruckStockItemVM();
+
+                var responseTruckStockItem = await _httpClient.GetAsync("api/TruckStockItem/" + item.StockItemID + "/itemid");
+                if (responseTruckStockItem.IsSuccessStatusCode)
+                {
+                    var apiResponse = await responseTruckStockItem.Content.ReadAsStreamAsync();
+                    truckStockItemVM = await JsonSerializer.DeserializeAsync<TruckStockItemVM>(apiResponse, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true,
+                        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                    });
+                }
+                truckStockItemVM.QuantityInTruck += item.Quantity;
+
+                //Put truck stock item to update quantity in truck
+                var responsePutTruckStockItem = await _httpClient.PutAsJsonAsync("api/TruckStockItem/" + truckStockItemVM.TruckStockItemID, truckStockItemVM);
+                var putTruckStockItemContent = await responsePutTruckStockItem.Content.ReadAsStringAsync();
+
+                if (!responsePutTruckStockItem.IsSuccessStatusCode)
+                {
+                    TempData["Error"] = putTruckStockItemContent;
+                    return RedirectToAction("MyRestockLog", new { page = 1 });
+                }
+            }
+
+            TempData["Success"] = "You have restocked log id #" + restockLogID + " check your quantity in truck";
+            return RedirectToAction("MyRestockLog", new { page = 1 });
         }
 
         [HttpGet]

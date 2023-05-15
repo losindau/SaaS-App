@@ -55,7 +55,6 @@ namespace InventoryManagementApp.Controllers
         }
 
         [HttpGet("{restocklogID}")]
-        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(RestockLog))]
         [ProducesResponseType(400)]
         public IActionResult GetRestockLogByID(int restocklogID)
