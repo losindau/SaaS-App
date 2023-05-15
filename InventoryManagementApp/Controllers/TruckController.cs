@@ -54,6 +54,38 @@ namespace InventoryManagementApp.Controllers
             return Ok(response);
         }
 
+        [HttpGet("{page}/assigntrucks")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Truck>))]
+        public IActionResult GetAssignTruck(int page)
+        {
+            var trucks = _truckRepository.GetAssignTrucks();
+
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(trucks.Count() / pageResults);
+
+            var trucksMap = _mapper.Map<List<TruckVM>>(trucks.Skip((page - 1) * (int)pageResults).Take((int)pageResults));
+
+            foreach (TruckVM us in trucksMap)
+            {
+                us.TruckStockItems = _mapper.Map<List<TruckStockItemVM>>(_truckRepository.GetTruckStockItems(us.TruckID));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var response = new ResponsePagination()
+            {
+                Entities = new List<object>(trucksMap),
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+
+            return Ok(response);
+        }
+
         [HttpGet("{truckID}")]
         [ProducesResponseType(200, Type = typeof(Truck))]
         [ProducesResponseType(400)]

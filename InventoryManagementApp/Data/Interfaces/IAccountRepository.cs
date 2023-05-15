@@ -10,6 +10,9 @@ namespace InventoryManagementApp.Data.Interfaces
         public Task<IdentityResult> SignUpAsync(AppUser appUser, string password);
         public ICollection<AppUser> GetUsers();
         public Task<AppUser> GetUserById(string userID);
+        public Task<AppUser> GetUserByEmail(string email);
         public bool UserExists(string userID);
+        public bool UpdateAccount(AppUser appUser);
+        public bool Save();
     }
 }

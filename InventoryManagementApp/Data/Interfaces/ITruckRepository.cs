@@ -5,6 +5,7 @@ namespace InventoryManagementApp.Data.Interfaces
     public interface ITruckRepository
     {
         ICollection<Truck> GetTrucks();
+        ICollection<Truck> GetAssignTrucks();
         Truck GetTruckById(int truckID);
         bool TruckExists(int truckID);
         ICollection<TruckStockItem> GetTruckStockItems(int truckID);

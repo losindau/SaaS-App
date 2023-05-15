@@ -6,7 +6,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h5 class="fw-bold">Employee</h5>
-    <a asp-controller="" asp-action=""><button class="btn btn-primary">Create</button></a>
+    <a asp-controller="Account" asp-action="SignUpEmployee"><button class="btn btn-primary">Create</button></a>
 </div>
 
 <div class="card">
@@ -20,6 +20,7 @@
                     <th>Phone</th>
                     <th>Email</th>
                     <th>Role</th>
+                    <th>Truck</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -46,14 +47,22 @@
                             <td>@user.PhoneNumber</td>
                             <td>@user.Email</td>
                             <td>@user.Role</td>
+
+                            @if(user.TruckID == null){
+                                <td>Need Assign</td>
+                            }
+                            else
+                            {
+                                <td>@user.Truck.LicensePlate</td>
+                            }
+
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                         <i class="bx bx-dots-vertical-rounded"></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="AssignTruck" asp-route-page="1" asp-route-email="@user.Email"><i class="bx bx-edit-alt me-1"></i> AssignTruck</a>
                                     </div>
                                 </div>
                             </td>

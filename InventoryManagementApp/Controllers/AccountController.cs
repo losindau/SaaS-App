@@ -135,5 +135,39 @@ namespace InventoryManagementApp.Controllers
 
             return Ok(appUserVM);
         }
+
+        [HttpGet("{email}/email")]
+        [ProducesResponseType(200, Type = typeof(AppUser))]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            var appUser = await _accountRepository.GetUserByEmail(email);
+            var appUserVM = _mapper.Map<AppUserVM>(appUser);
+            var role = await _userManager.GetRolesAsync(appUser);
+            appUserVM.Role = role[0].ToString();
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(appUserVM);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateAccount([FromBody] AppUserVM appUser)
+        {
+            var appUserMap = _mapper.Map<AppUser>(appUser);
+
+            if (!_accountRepository.UpdateAccount(appUserMap))
+            {
+                return StatusCode(500, "Something went wrong updating");
+            }
+
+            return Ok("Updated successfully");
+        }
     }
 }

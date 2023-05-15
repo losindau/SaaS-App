@@ -22,10 +22,12 @@ namespace InventoryManagementAppMVC.Controllers
     public class AccountController : Controller
     {
         private readonly HttpClient _httpClient;
-        
-        public AccountController(IHttpClientFactory httpClientFactory)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public AccountController(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
         {
-            _httpClient = httpClientFactory.CreateClient("myclient");
+            this._httpClient = httpClientFactory.CreateClient("myclient");
+            this._httpContextAccessor = httpContextAccessor;
         }
 
         [Authorize(Roles = "Manager")]
@@ -163,11 +165,110 @@ namespace InventoryManagementAppMVC.Controllers
             return RedirectToAction("SignIn");
         }
 
+        public IActionResult SignUpEmployee()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SignUpEmployee(SignUpVM signUpVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(signUpVM);
+            }
+
+            var companyID = _httpContextAccessor.HttpContext?.User.GetUserCompanyID();
+
+            signUpVM.CompanyID = int.Parse(companyID);
+            signUpVM.Role = UserRoles.Staff;
+
+            // Send a POST request to the login API
+            var responsePostAccount = await _httpClient.PostAsJsonAsync("api/Account/SignUp", signUpVM);
+
+            // Check if the request was successful
+            if (!responsePostAccount.IsSuccessStatusCode)
+            {
+                TempData["Error"] = "Something went wrong";
+                return View(signUpVM);
+            }
+
+            TempData["Success"] = "You have sign up an account successfully";
+            return RedirectToAction("Index", new { page = 1 });
+        }
+
         public async Task<IActionResult> SignOut()
         {
             await HttpContext.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AssignTruck(int page, string email)
+        {
+            ResponsePagination responsePage = new ResponsePagination();
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await _httpClient.GetAsync("api/Truck/" + page + "/assigntrucks");
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                responsePage = await JsonSerializer.DeserializeAsync<ResponsePagination>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() },
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+            AssignTruckVM assignTruckVM = new AssignTruckVM()
+            {
+                responsePagination = responsePage,
+                email = email,
+                truckID = 0
+            };
+
+            return View(assignTruckVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignTruck(AssignTruckVM assignTruckVM)
+        {
+            AppUserVM appUserVM = new AppUserVM();
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var responseGetAppUser = await _httpClient.GetAsync("api/Account/" + assignTruckVM.email + "/email");
+            if (responseGetAppUser.IsSuccessStatusCode)
+            {
+                var apiResponse = await responseGetAppUser.Content.ReadAsStreamAsync();
+                appUserVM = await JsonSerializer.DeserializeAsync<AppUserVM>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() },
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+            appUserVM.TruckID = assignTruckVM.truckID;
+            appUserVM.Truck = null;
+
+            var responsePutAppUser = await _httpClient.PutAsJsonAsync("api/Account/", appUserVM);
+            var putAppUserContent = await responsePutAppUser.Content.ReadAsStringAsync();
+
+            if (!responsePutAppUser.IsSuccessStatusCode)
+            {
+                TempData["Error"] = putAppUserContent;
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            TempData["Success"] = "You have assign truck #" + assignTruckVM.truckID + " for user " + appUserVM.FirstName;
+            return RedirectToAction("Index", new { page = 1 });
         }
     }
 }

@@ -1,0 +1,59 @@
+﻿@model SignUpVM
+
+<div class="authentication-wrapper authentication-basic container-p-y">
+    <div class="authentication-inner">
+        <!-- Register Card -->
+        <div class="card">
+            <div class="card-body">
+
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <span>@TempData["Error"]</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        </button>
+                    </div>
+                }
+
+                <form id="formAuthentication" asp-controller="Account" asp-action="SignUpEmployee" class="mb-3">
+                    <div class="mb-3">
+                        <label class="form-label">First name</label>
+                        <input asp-for="FirstName" type="text" class="form-control" placeholder="Enter your first name" autofocus />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Last name</label>
+                        <input asp-for="LastName" type="text" class="form-control" placeholder="Enter your last name" autofocus />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone number</label>
+                        <input asp-for="PhoneNumber" type="text" class="form-control" placeholder="Enter your company phone number" autofocus />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input asp-for="Email" type="text" class="form-control" placeholder="Enter your company email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="password">Password</label>
+                        <div class="input-group input-group-merge">
+                            <input asp-for="Password" type="password" class="form-control" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="password">Confirm Password</label>
+                        <div class="input-group input-group-merge">
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                        </div>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <button class="btn btn-primary d-grid w-100">Sign up</button>
+                </form>
+            </div>
+        </div>
+        <!-- Register Card -->
+    </div>
+</div>

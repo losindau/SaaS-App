@@ -86,10 +86,25 @@ namespace InventoryManagementApp.Data.Repository
         {
             return _context.Users.Include(u => u.Truck).ThenInclude(t => t.TruckStockItems).ThenInclude(i => i.StockItem).Where(u => u.Id.Trim().ToLower().Equals(userID.Trim().ToLower())).FirstOrDefault();
         }
-
+        public async Task<AppUser> GetUserByEmail(string email)
+        {
+            return _context.Users.Where(u => u.Email.Trim().ToLower().Equals(email.Trim().ToLower())).FirstOrDefault();
+        }
         public bool UserExists(string userID)
         {
             return _context.Users.Where(u => u.isDeleted == false).Any(u => u.Id.Trim().ToLower().Equals(userID.Trim().ToLower()));
+        }
+
+        public bool UpdateAccount(AppUser appUser)
+        {
+            _context.Update(appUser);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }
