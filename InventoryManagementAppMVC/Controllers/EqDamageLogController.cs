@@ -46,6 +46,186 @@ namespace InventoryManagementAppMVC.Controllers
             return View(responsePage);
         }
 
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> AcceptEqDamageLog(int eqDamageLogID)
+        {
+            EqDamageLogVM eqDamageLogVM = new EqDamageLogVM();
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await _httpClient.GetAsync("api/EqDamageLog/" + eqDamageLogID);
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                eqDamageLogVM = await JsonSerializer.DeserializeAsync<EqDamageLogVM>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() },
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+            if (eqDamageLogVM.LogState == LogState.Declined && eqDamageLogVM.RestockState == RestockState.Canceled)
+            {
+                TempData["Error"] = "Damage/Lost log id #" + eqDamageLogID + " has been rejected before";
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            if (eqDamageLogVM.LogState == LogState.Accepted && eqDamageLogVM.RestockState == RestockState.ReadyToRestock)
+            {
+                TempData["Error"] = "Damage/Lost id #" + eqDamageLogID + " has been accepted before";
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            eqDamageLogVM.LogState = LogState.Accepted;
+            eqDamageLogVM.RestockState = RestockState.ReadyToRestock;
+
+            //Put restock log
+            var responsePutEqDamageLog = await _httpClient.PutAsJsonAsync("api/EqDamageLog/" + eqDamageLogID, eqDamageLogVM);
+            var putEqDamageLogContent = await responsePutEqDamageLog.Content.ReadAsStringAsync();
+
+            if (!responsePutEqDamageLog.IsSuccessStatusCode)
+            {
+                TempData["Error"] = putEqDamageLogContent;
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            TempData["Success"] = "You have accepted Damage/Lost log id #" + eqDamageLogID;
+            return RedirectToAction("Index", new { page = 1 });
+        }
+
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> RejectEqDamageLog(int eqDamageLogID)
+        {
+            EqDamageLogVM eqDamageLogVM = new EqDamageLogVM();
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await _httpClient.GetAsync("api/EqDamageLog/" + eqDamageLogID);
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                eqDamageLogVM = await JsonSerializer.DeserializeAsync<EqDamageLogVM>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() },
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+            if (eqDamageLogVM.LogState == LogState.Declined && eqDamageLogVM.RestockState == RestockState.Canceled)
+            {
+                TempData["Error"] = "Damage/Lost log id #" + eqDamageLogID + " has been rejected before";
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            if (eqDamageLogVM.LogState == LogState.Accepted && eqDamageLogVM.RestockState == RestockState.ReadyToRestock)
+            {
+                TempData["Error"] = "Damage/Lost id #" + eqDamageLogID + " has been accepted before";
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            eqDamageLogVM.LogState = LogState.Declined;
+            eqDamageLogVM.RestockState = RestockState.Canceled;
+
+            //Put restock log
+            var responsePutEqDamageLog = await _httpClient.PutAsJsonAsync("api/EqDamageLog/" + eqDamageLogID, eqDamageLogVM);
+            var putEqDamageLogContent = await responsePutEqDamageLog.Content.ReadAsStringAsync();
+
+            if (!responsePutEqDamageLog.IsSuccessStatusCode)
+            {
+                TempData["Error"] = putEqDamageLogContent;
+                return RedirectToAction("Index", new { page = 1 });
+            }
+
+            TempData["Success"] = "You have rejected Damage/Lost log id #" + eqDamageLogID;
+            return RedirectToAction("Index", new { page = 1 });
+        }
+
+        public async Task<IActionResult> Restock(int eqDamageLogID)
+        {
+            EqDamageLogVM eqDamageLogVM = new EqDamageLogVM();
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var responseEqDamageLog = await _httpClient.GetAsync("api/EqDamageLog/" + eqDamageLogID);
+            if (responseEqDamageLog.IsSuccessStatusCode)
+            {
+                var apiResponse = await responseEqDamageLog.Content.ReadAsStreamAsync();
+                eqDamageLogVM = await JsonSerializer.DeserializeAsync<EqDamageLogVM>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() },
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+            if (eqDamageLogVM.RestockState == RestockState.Restocked)
+            {
+                TempData["Error"] = "Damage/Lost log id #" + eqDamageLogID + " has been restocked before";
+                return RedirectToAction("MyEqDamageLog", new { page = 1 });
+            }
+
+            if (eqDamageLogVM.LogState == LogState.Declined || eqDamageLogVM.RestockState == RestockState.Canceled)
+            {
+                TempData["Error"] = "Damage/Lost log id #" + eqDamageLogID + " has been rejected before, contact your manager";
+                return RedirectToAction("MyEqDamageLog", new { page = 1 });
+            }
+
+            if (eqDamageLogVM.LogState != LogState.Accepted || eqDamageLogVM.RestockState != RestockState.ReadyToRestock)
+            {
+                TempData["Error"] = "Damage/Lost id #" + eqDamageLogID + " has not been accepted before, contact your manager";
+                return RedirectToAction("MyEqDamageLog", new { page = 1 });
+            }
+
+            eqDamageLogVM.RestockState = RestockState.Restocked;
+
+            //Put restock log
+            var responsePutRestockLog = await _httpClient.PutAsJsonAsync("api/EqDamageLog/" + eqDamageLogID, eqDamageLogVM);
+            var putRestockLogContent = await responsePutRestockLog.Content.ReadAsStringAsync();
+
+            if (!responsePutRestockLog.IsSuccessStatusCode)
+            {
+                TempData["Error"] = putRestockLogContent;
+                return RedirectToAction("MyEqDamageLog", new { page = 1 });
+            }
+
+            //Update quantity in toolbox
+            foreach (var item in eqDamageLogVM.DetailEqDamageLogs)
+            {
+                //Get toolbox equipment
+                ToolboxEquipmentVM toolboxEquipmentVM = new ToolboxEquipmentVM();
+
+                var responseToolboxEquipment = await _httpClient.GetAsync("api/ToolboxEquipment/" + item.EquipmentID + "/equipmentid");
+                if (responseToolboxEquipment.IsSuccessStatusCode)
+                {
+                    var apiResponse = await responseToolboxEquipment.Content.ReadAsStreamAsync();
+                    toolboxEquipmentVM = await JsonSerializer.DeserializeAsync<ToolboxEquipmentVM>(apiResponse, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true,
+                        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                    });
+                }
+                toolboxEquipmentVM.QuantityInToolbox += item.Quantity;
+
+                //Put toolbox equipment to update quantity in toolbox
+                var responsePutTruckStockItem = await _httpClient.PutAsJsonAsync("api/ToolboxEquipment/" + toolboxEquipmentVM.ToolboxEquipmentID, toolboxEquipmentVM);
+                var putToolboxEquipmentContent = await responsePutTruckStockItem.Content.ReadAsStringAsync();
+
+                if (!responsePutTruckStockItem.IsSuccessStatusCode)
+                {
+                    TempData["Error"] = putToolboxEquipmentContent;
+                    return RedirectToAction("MyEqDamageLog", new { page = 1 });
+                }
+            }
+
+            TempData["Success"] = "You have restocked log id #" + eqDamageLogID + " check your quantity in truck";
+            return RedirectToAction("MyEqDamageLog", new { page = 1 });
+        }
+
         [HttpGet]
         public async Task<IActionResult> Create()
         {
