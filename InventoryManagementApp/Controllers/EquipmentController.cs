@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InventoryManagementApp.Data;
+using InventoryManagementApp.Data.Enum;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.Repository;
@@ -51,7 +52,6 @@ namespace InventoryManagementApp.Controllers
         }
 
         [HttpGet("{equipmentID}")]
-        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200,Type = typeof(Equipment))]
         [ProducesResponseType(400)]
         public IActionResult GetEquipment(int equipmentID) 
@@ -89,6 +89,19 @@ namespace InventoryManagementApp.Controllers
                 return StatusCode(422, "This item is already exists");
             }
 
+            if (equipmentCreate.Quantity <= 40)
+            {
+                equipmentCreate.QuantityState = QuantityState.Low;
+            }
+            else if (equipmentCreate.Quantity > 40 && equipmentCreate.Quantity <= 100)
+            {
+                equipmentCreate.QuantityState = QuantityState.Medium;
+            }
+            else
+            {
+                equipmentCreate.QuantityState = QuantityState.High;
+            }
+
             var equipmentMap = _mapper.Map<Equipment>(equipmentCreate);
 
             if (!_equipmentRepository.CreateEquipment(equipmentMap))
@@ -100,7 +113,6 @@ namespace InventoryManagementApp.Controllers
         }
 
         [HttpPut("{equipmentID}")]
-        [Authorize(Roles = "Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -119,6 +131,19 @@ namespace InventoryManagementApp.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest();
+            }
+
+            if (equipmentVM.Quantity <= 40)
+            {
+                equipmentVM.QuantityState = QuantityState.Low;
+            }
+            else if (equipmentVM.Quantity > 40 && equipmentVM.Quantity <= 100)
+            {
+                equipmentVM.QuantityState = QuantityState.Medium;
+            }
+            else
+            {
+                equipmentVM.QuantityState = QuantityState.High;
             }
 
             var equipmentMap = _mapper.Map<Equipment>(equipmentVM);

@@ -26,7 +26,7 @@ namespace InventoryManagementApp.Data.Repository
 
         public EqDamageLog GetEqDamageLogById(int eqdamagelogID)
         {
-            return _context.EqDamageLogs.Where(e => e.EqDamageLogID == eqdamagelogID).FirstOrDefault();
+            return _context.EqDamageLogs.Include(e => e.AppUser).Where(e => e.EqDamageLogID == eqdamagelogID).FirstOrDefault();
         }
 
         public ICollection<EqDamageLog> GetEqDamageLogByUserId(string userID)

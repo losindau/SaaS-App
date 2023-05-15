@@ -21,7 +21,7 @@ namespace InventoryManagementApp.Data.Repository
 
         public RestockLog GetRestockLogById(int restocklogID)
         {
-            return _context.RestockLogs.Where(d => d.RestockLogID == restocklogID).FirstOrDefault();
+            return _context.RestockLogs.Include(r => r.AppUser).Where(d => d.RestockLogID == restocklogID).FirstOrDefault();
         }
 
         public ICollection<RestockLog> GetRestockLogByUserId(string userID)

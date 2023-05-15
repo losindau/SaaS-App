@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InventoryManagementApp.Data;
+using InventoryManagementApp.Data.Enum;
 using InventoryManagementApp.Data.Interfaces;
 using InventoryManagementApp.Data.Models;
 using InventoryManagementApp.Data.Repository;
@@ -51,7 +52,6 @@ namespace InventoryManagementApp.Controllers
         }
 
         [HttpGet("{stockitemID}")]
-        [Authorize(Roles = "Manager")]
         [ProducesResponseType(200, Type = typeof(StockItem))]
         [ProducesResponseType(400)]
         public IActionResult GetStockItem(int stockitemID)
@@ -89,6 +89,19 @@ namespace InventoryManagementApp.Controllers
                 return StatusCode(422, "This item is already exists");
             }
 
+            if (stockitemCreate.Quantity <= 100)
+            {
+                stockitemCreate.QuantityState = QuantityState.Low;
+            }
+            else if (stockitemCreate.Quantity > 100 && stockitemCreate.Quantity <= 200)
+            {
+                stockitemCreate.QuantityState = QuantityState.Medium;
+            }
+            else
+            {
+                stockitemCreate.QuantityState = QuantityState.High;
+            }
+
             var stockitemMap = _mapper.Map<StockItem>(stockitemCreate);
 
             if (!_stockItemRepository.CreateStockItem(stockitemMap))
@@ -100,7 +113,6 @@ namespace InventoryManagementApp.Controllers
         }
 
         [HttpPut("{stockitemID}")]
-        [Authorize(Roles = "Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -119,6 +131,19 @@ namespace InventoryManagementApp.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest();
+            }
+
+            if (stockItemVM.Quantity <= 100)
+            {
+                stockItemVM.QuantityState = QuantityState.Low;
+            }
+            else if (stockItemVM.Quantity > 100 && stockItemVM.Quantity <= 200)
+            {
+                stockItemVM.QuantityState = QuantityState.Medium;
+            }
+            else
+            {
+                stockItemVM.QuantityState = QuantityState.High;
             }
 
             var stockitemMap = _mapper.Map<StockItem>(stockItemVM);

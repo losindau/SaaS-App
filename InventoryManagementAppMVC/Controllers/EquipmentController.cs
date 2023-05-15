@@ -60,20 +60,6 @@ namespace InventoryManagementAppMVC.Controllers
                 return View(equipmentVM);
             }
 
-
-            if (equipmentVM.Quantity <= 100)
-            {
-                equipmentVM.QuantityState = QuantityState.Low;
-            }
-            else if (equipmentVM.Quantity > 100 && equipmentVM.Quantity <= 200)
-            {
-                equipmentVM.QuantityState = QuantityState.Medium;
-            }
-            else
-            {
-                equipmentVM.QuantityState = QuantityState.High;
-            }
-
             var companyID = _httpContextAccessor.HttpContext?.User.GetUserCompanyID();
             equipmentVM.CompanyID = int.Parse(companyID);
             equipmentVM.isDeleted = false;
@@ -120,19 +106,6 @@ namespace InventoryManagementAppMVC.Controllers
             if (!ModelState.IsValid)
             {
                 return View(equipmentVM);
-            }
-
-            if (equipmentVM.Quantity <= 100)
-            {
-                equipmentVM.QuantityState = QuantityState.Low;
-            }
-            else if (equipmentVM.Quantity > 100 && equipmentVM.Quantity <= 200)
-            {
-                equipmentVM.QuantityState = QuantityState.Medium;
-            }
-            else
-            {
-                equipmentVM.QuantityState = QuantityState.High;
             }
 
             var accessToken = await HttpContext.GetTokenAsync("access_token");

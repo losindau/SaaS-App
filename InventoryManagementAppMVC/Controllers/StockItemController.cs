@@ -60,19 +60,6 @@ namespace InventoryManagementAppMVC.Controllers
                 return View(stockItemVM);
             }
 
-            if (stockItemVM.Quantity <= 100)
-            {
-                stockItemVM.QuantityState = QuantityState.Low;
-            }
-            else if (stockItemVM.Quantity > 100 && stockItemVM.Quantity <= 200)
-            {
-                stockItemVM.QuantityState = QuantityState.Medium;
-            }
-            else
-            {
-                stockItemVM.QuantityState = QuantityState.High;
-            }
-
             var companyID = _httpContextAccessor.HttpContext?.User.GetUserCompanyID();
             stockItemVM.CompanyID = int.Parse(companyID);
             stockItemVM.isDeleted = false;
@@ -119,19 +106,6 @@ namespace InventoryManagementAppMVC.Controllers
             if (!ModelState.IsValid)
             {
                 return View(stockItemVM);
-            }
-
-            if (stockItemVM.Quantity <= 100)
-            {
-                stockItemVM.QuantityState = QuantityState.Low;
-            }
-            else if (stockItemVM.Quantity > 100 && stockItemVM.Quantity <= 200)
-            {
-                stockItemVM.QuantityState = QuantityState.Medium;
-            }
-            else
-            {
-                stockItemVM.QuantityState = QuantityState.High;
             }
 
             var accessToken = await HttpContext.GetTokenAsync("access_token");

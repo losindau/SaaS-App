@@ -8,6 +8,8 @@ using System.Text.Json;
 using InventoryManagementAppMVC.ViewModels;
 using InventoryManagementAppMVC.Helper;
 using InventoryManagementAppMVC.Enum;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace InventoryManagementAppMVC.Controllers
 {
@@ -66,13 +68,16 @@ namespace InventoryManagementAppMVC.Controllers
                 });
             }
 
-            if (eqDamageLogVM.LogState == LogState.Declined && eqDamageLogVM.RestockState == RestockState.Canceled)
+            string phoneNumber = eqDamageLogVM.AppUser.PhoneNumber;
+            phoneNumber.Remove(0, 1).Insert(0, "+84");
+
+            if (eqDamageLogVM.LogState == LogState.Declined)
             {
                 TempData["Error"] = "Damage/Lost log id #" + eqDamageLogID + " has been rejected before";
                 return RedirectToAction("Index", new { page = 1 });
             }
 
-            if (eqDamageLogVM.LogState == LogState.Accepted && eqDamageLogVM.RestockState == RestockState.ReadyToRestock)
+            if (eqDamageLogVM.LogState == LogState.Accepted)
             {
                 TempData["Error"] = "Damage/Lost id #" + eqDamageLogID + " has been accepted before";
                 return RedirectToAction("Index", new { page = 1 });
@@ -90,6 +95,19 @@ namespace InventoryManagementAppMVC.Controllers
                 TempData["Error"] = putEqDamageLogContent;
                 return RedirectToAction("Index", new { page = 1 });
             }
+
+            string accountSid = "ACfa04bb234e7b4c07cd8effc2adac0419";
+            string authToken = "61e4f6dd4c10dc60420c257f6e51c44b";
+
+            TwilioClient.Init(accountSid, authToken);
+
+            var message = MessageResource.Create(
+                body: "Equipment Damage/Lost log id: #" + eqDamageLogVM +
+                "\nReport Date: " + eqDamageLogVM.ReportDate +
+                "\nYour log has been accepted, please go to warehouse and restock.",
+                from: new Twilio.Types.PhoneNumber("+12542806183"),
+                to: new Twilio.Types.PhoneNumber(phoneNumber)
+            );
 
             TempData["Success"] = "You have accepted Damage/Lost log id #" + eqDamageLogID;
             return RedirectToAction("Index", new { page = 1 });
@@ -115,13 +133,13 @@ namespace InventoryManagementAppMVC.Controllers
                 });
             }
 
-            if (eqDamageLogVM.LogState == LogState.Declined && eqDamageLogVM.RestockState == RestockState.Canceled)
+            if (eqDamageLogVM.LogState == LogState.Declined)
             {
                 TempData["Error"] = "Damage/Lost log id #" + eqDamageLogID + " has been rejected before";
                 return RedirectToAction("Index", new { page = 1 });
             }
 
-            if (eqDamageLogVM.LogState == LogState.Accepted && eqDamageLogVM.RestockState == RestockState.ReadyToRestock)
+            if (eqDamageLogVM.LogState == LogState.Accepted)
             {
                 TempData["Error"] = "Damage/Lost id #" + eqDamageLogID + " has been accepted before";
                 return RedirectToAction("Index", new { page = 1 });
@@ -169,19 +187,20 @@ namespace InventoryManagementAppMVC.Controllers
                 return RedirectToAction("MyEqDamageLog", new { page = 1 });
             }
 
-            if (eqDamageLogVM.LogState == LogState.Declined || eqDamageLogVM.RestockState == RestockState.Canceled)
+            if (eqDamageLogVM.LogState == LogState.Declined)
             {
                 TempData["Error"] = "Damage/Lost log id #" + eqDamageLogID + " has been rejected before, contact your manager";
                 return RedirectToAction("MyEqDamageLog", new { page = 1 });
             }
 
-            if (eqDamageLogVM.LogState != LogState.Accepted || eqDamageLogVM.RestockState != RestockState.ReadyToRestock)
+            if (eqDamageLogVM.LogState != LogState.Accepted)
             {
                 TempData["Error"] = "Damage/Lost id #" + eqDamageLogID + " has not been accepted before, contact your manager";
                 return RedirectToAction("MyEqDamageLog", new { page = 1 });
             }
 
             eqDamageLogVM.RestockState = RestockState.Restocked;
+            eqDamageLogVM.ReplaceDate = DateTime.Now;
 
             //Put restock log
             var responsePutRestockLog = await _httpClient.PutAsJsonAsync("api/EqDamageLog/" + eqDamageLogID, eqDamageLogVM);
@@ -218,6 +237,36 @@ namespace InventoryManagementAppMVC.Controllers
                 if (!responsePutTruckStockItem.IsSuccessStatusCode)
                 {
                     TempData["Error"] = putToolboxEquipmentContent;
+                    return RedirectToAction("MyEqDamageLog", new { page = 1 });
+                }
+            }
+
+            //Update quantity in warehouse
+            foreach (var item in eqDamageLogVM.DetailEqDamageLogs)
+            {
+                //Get equipment in warehouse
+                EquipmentVM equipmentVM = new EquipmentVM();
+
+                var responseEquipment = await _httpClient.GetAsync("api/Equipment/" + item.EquipmentID);
+                if (responseEquipment.IsSuccessStatusCode)
+                {
+                    var apiResponse = await responseEquipment.Content.ReadAsStreamAsync();
+                    equipmentVM = await JsonSerializer.DeserializeAsync<EquipmentVM>(apiResponse, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true,
+                        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                    });
+                }
+
+                equipmentVM.Quantity -= item.Quantity;
+
+                //Put equipment to update quantity in warehouse
+                var responsePutEquipment = await _httpClient.PutAsJsonAsync("api/Equipment/" + equipmentVM.EquipmentID, equipmentVM);
+                var putEquipmentContent = await responsePutEquipment.Content.ReadAsStringAsync();
+
+                if (!responsePutEquipment.IsSuccessStatusCode)
+                {
+                    TempData["Error"] = putEquipmentContent;
                     return RedirectToAction("MyEqDamageLog", new { page = 1 });
                 }
             }
