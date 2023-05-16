@@ -51,6 +51,23 @@ namespace InventoryManagementApp.Controllers
             return Ok(response);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Equipment>))]
+        public IActionResult GetEquipmentsNoPage()
+        {
+            var equipments = _equipmentRepository.GetEquipmentsNoPage();
+
+            var equipmentsMap = _mapper.Map<List<EquipmentVM>>(equipments);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(equipmentsMap);
+        }
+
         [HttpGet("{equipmentID}")]
         [ProducesResponseType(200,Type = typeof(Equipment))]
         [ProducesResponseType(400)]

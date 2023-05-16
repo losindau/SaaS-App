@@ -24,6 +24,11 @@ namespace InventoryManagementApp.Data.Repository
             return _context.Equipment.Where(c => c.isDeleted == false).OrderBy(e => e.EquipmentID).ToList();
         }
 
+        public ICollection<Equipment> GetEquipmentsNoPage()
+        {
+            return _context.Equipment.Where(c => c.isDeleted == false).OrderBy(e => e.EquipmentID).ToList();
+        }
+
         public Equipment GetEquipmnetById(int equipmentID)
         {
             return _context.Equipment.Where(e => e.EquipmentID == equipmentID).FirstOrDefault();
