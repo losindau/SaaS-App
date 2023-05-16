@@ -17,11 +17,13 @@ namespace InventoryManagementAppMVC.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IConfiguration _configuration;
 
-        public EqDamageLogController(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
+        public EqDamageLogController(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             this._httpClient = httpClientFactory.CreateClient("myclient");
             this._httpContextAccessor = httpContextAccessor;
+            this._configuration = configuration;
         }
 
         [Authorize(Roles = "Manager")]
@@ -85,6 +87,7 @@ namespace InventoryManagementAppMVC.Controllers
 
             eqDamageLogVM.LogState = LogState.Accepted;
             eqDamageLogVM.RestockState = RestockState.ReadyToRestock;
+            eqDamageLogVM.AppUser = null;
 
             //Put restock log
             var responsePutEqDamageLog = await _httpClient.PutAsJsonAsync("api/EqDamageLog/" + eqDamageLogID, eqDamageLogVM);
@@ -96,17 +99,17 @@ namespace InventoryManagementAppMVC.Controllers
                 return RedirectToAction("Index", new { page = 1 });
             }
 
-            string accountSid = "ACfa04bb234e7b4c07cd8effc2adac0419";
-            string authToken = "61e4f6dd4c10dc60420c257f6e51c44b";
+            string accountSid = _configuration["TwilioAccountDetails:AccountSid"];
+            string authToken = _configuration["TwilioAccountDetails:AuthToken"];
 
             TwilioClient.Init(accountSid, authToken);
 
             var message = MessageResource.Create(
-                body: "Equipment Damage/Lost log id: #" + eqDamageLogVM +
+                body: "Equipment Damage/Lost log id: #" + eqDamageLogVM.EqDamageLogID +
                 "\nReport Date: " + eqDamageLogVM.ReportDate +
                 "\nYour log has been accepted, please go to warehouse and restock.",
-                from: new Twilio.Types.PhoneNumber("+12542806183"),
-                to: new Twilio.Types.PhoneNumber(phoneNumber)
+                from: new Twilio.Types.PhoneNumber("+12543213907"),
+                to: new Twilio.Types.PhoneNumber("+84946777827")
             );
 
             TempData["Success"] = "You have accepted Damage/Lost log id #" + eqDamageLogID;
@@ -147,6 +150,7 @@ namespace InventoryManagementAppMVC.Controllers
 
             eqDamageLogVM.LogState = LogState.Declined;
             eqDamageLogVM.RestockState = RestockState.Canceled;
+            eqDamageLogVM.AppUser = null;
 
             //Put restock log
             var responsePutEqDamageLog = await _httpClient.PutAsJsonAsync("api/EqDamageLog/" + eqDamageLogID, eqDamageLogVM);
@@ -201,6 +205,7 @@ namespace InventoryManagementAppMVC.Controllers
 
             eqDamageLogVM.RestockState = RestockState.Restocked;
             eqDamageLogVM.ReplaceDate = DateTime.Now;
+            eqDamageLogVM.AppUser = null;
 
             //Put restock log
             var responsePutRestockLog = await _httpClient.PutAsJsonAsync("api/EqDamageLog/" + eqDamageLogID, eqDamageLogVM);
@@ -218,7 +223,7 @@ namespace InventoryManagementAppMVC.Controllers
                 //Get toolbox equipment
                 ToolboxEquipmentVM toolboxEquipmentVM = new ToolboxEquipmentVM();
 
-                var responseToolboxEquipment = await _httpClient.GetAsync("api/ToolboxEquipment/" + item.EquipmentID + "/equipmentid");
+                var responseToolboxEquipment = await _httpClient.GetAsync("api/ToolboxEquipment/" + item.EquipmentID + "/equipmentid/" + eqDamageLogVM.ToolboxID + "/toolboxid");
                 if (responseToolboxEquipment.IsSuccessStatusCode)
                 {
                     var apiResponse = await responseToolboxEquipment.Content.ReadAsStreamAsync();
@@ -402,7 +407,7 @@ namespace InventoryManagementAppMVC.Controllers
                 //Get toolbox equipment
                 ToolboxEquipmentVM responseToolboxEquipmentVM = new ToolboxEquipmentVM();
 
-                var response = await _httpClient.GetAsync("api/ToolboxEquipment/" + item.EquipmentID + "/equipmentid");
+                var response = await _httpClient.GetAsync("api/ToolboxEquipment/" + item.EquipmentID + "/equipmentid/" + eqdamagelogVM.ToolboxID + "/toolboxid");
                 if (response.IsSuccessStatusCode)
                 {
                     var apiResponse = await response.Content.ReadAsStreamAsync();

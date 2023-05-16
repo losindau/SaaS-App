@@ -40,12 +40,12 @@ namespace InventoryManagementApp.Controllers
             return Ok(toolbox);
         }
 
-        [HttpGet("{equipmentID}/equipmentid")]
+        [HttpGet("{equipmentID}/equipmentid/{toolboxID}/toolboxid")]
         [ProducesResponseType(200, Type = typeof(ToolboxEquipment))]
         [ProducesResponseType(400)]
-        public IActionResult GetToolboxEquipmentByEqId(int equipmentID)
+        public IActionResult GetToolboxEquipmentByEqId(int equipmentID, int toolboxID)
         {
-            var toolboxEquipment = _mapper.Map<ToolboxEquipmentVM>(_toolboxRepository.GetToolboxEquipmentByEqId(equipmentID));
+            var toolboxEquipment = _mapper.Map<ToolboxEquipmentVM>(_toolboxRepository.GetToolboxEquipmentByEqId(equipmentID, toolboxID));
 
             if (!ModelState.IsValid)
             {

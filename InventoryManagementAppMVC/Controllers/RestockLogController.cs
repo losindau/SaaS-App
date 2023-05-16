@@ -18,11 +18,13 @@ namespace InventoryManagementAppMVC.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IConfiguration _configuration;
 
-        public RestockLogController(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
+        public RestockLogController(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             this._httpClient = httpClientFactory.CreateClient("myclient");
             this._httpContextAccessor = httpContextAccessor;
+            this._configuration = configuration;
         }
 
         [Authorize(Roles = "Manager")]
@@ -98,17 +100,17 @@ namespace InventoryManagementAppMVC.Controllers
                 return RedirectToAction("Index", new { page = 1 });
             }
 
-            string accountSid = "ACfa04bb234e7b4c07cd8effc2adac0419";
-            string authToken = "61e4f6dd4c10dc60420c257f6e51c44b";
+            string accountSid = _configuration["TwilioAccountDetails:AccountSid"];
+            string authToken = _configuration["TwilioAccountDetails:AuthToken"];
 
             TwilioClient.Init(accountSid, authToken);
 
             var message = MessageResource.Create(
-                body: "Restock log id: #" + restockLogVM +
+                body: "Restock log id: #" + restockLogVM.RestockLogID +
                 "\nRequest Date: " + restockLogVM.RequestDate +
                 "\nYour log has been accepted, please go to warehouse and restock.",
-                from: new Twilio.Types.PhoneNumber("+12542806183"),
-                to: new Twilio.Types.PhoneNumber(phoneNumber)
+                from: new Twilio.Types.PhoneNumber("+12543213907"),
+                to: new Twilio.Types.PhoneNumber("+84946777827")
             );
 
             TempData["Success"] = "You have accepted restock log id #" + restockLogID;
@@ -150,6 +152,7 @@ namespace InventoryManagementAppMVC.Controllers
 
             restockLogVM.LogState = LogState.Declined;
             restockLogVM.RestockState = RestockState.Canceled;
+            restockLogVM.AppUser = null;
 
             //Put restock log
             var responsePutRestockLog = await _httpClient.PutAsJsonAsync("api/RestockLog/" + restockLogID, restockLogVM);
@@ -204,6 +207,7 @@ namespace InventoryManagementAppMVC.Controllers
 
             restockLogVM.RestockState = RestockState.Restocked;
             restockLogVM.RestockDate = DateTime.Now;
+            restockLogVM.AppUser = null;
 
             //Put restock log
             var responsePutRestockLog = await _httpClient.PutAsJsonAsync("api/RestockLog/" + restockLogID, restockLogVM);
@@ -221,7 +225,7 @@ namespace InventoryManagementAppMVC.Controllers
                 //Get truck stock item
                 TruckStockItemVM truckStockItemVM = new TruckStockItemVM();
 
-                var responseTruckStockItem = await _httpClient.GetAsync("api/TruckStockItem/" + item.StockItemID + "/itemid");
+                var responseTruckStockItem = await _httpClient.GetAsync("api/TruckStockItem/" + item.StockItemID + "/itemid/" + restockLogVM.TruckID + "/truckid");
                 if (responseTruckStockItem.IsSuccessStatusCode)
                 {
                     var apiResponse = await responseTruckStockItem.Content.ReadAsStreamAsync();

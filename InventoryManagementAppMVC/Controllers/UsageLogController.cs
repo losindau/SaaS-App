@@ -170,7 +170,7 @@ namespace InventoryManagementAppMVC.Controllers
                 //Get truck stock item
                 TruckStockItemVM responseTruckStockItemVM = new TruckStockItemVM();
 
-                var response = await _httpClient.GetAsync("api/TruckStockItem/" + item.StockItemID + "/itemid");
+                var response = await _httpClient.GetAsync("api/TruckStockItem/" + item.StockItemID + "/itemid/" + usagelogVM.TruckID + "/truckid");
                 if (response.IsSuccessStatusCode)
                 {
                     var apiResponse = await response.Content.ReadAsStreamAsync();

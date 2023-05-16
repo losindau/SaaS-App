@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient("myclient", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7105");
+    client.BaseAddress = new Uri("http://localhost:48899");
 });
 
 builder.Services.AddDistributedMemoryCache();
@@ -48,7 +48,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();

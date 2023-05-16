@@ -41,12 +41,12 @@ namespace InventoryManagementApp.Controllers
             return Ok(truckStockItem);
         }
 
-        [HttpGet("{itemID}/itemid")]
+        [HttpGet("{itemID}/itemid/{truckID}/truckid")]
         [ProducesResponseType(200, Type = typeof(TruckStockItem))]
         [ProducesResponseType(400)]
-        public IActionResult GetTruckStockItemByItemId(int itemID)
+        public IActionResult GetTruckStockItemByItemId(int itemID, int truckID)
         {
-            var truckStockItem = _mapper.Map<TruckStockItemVM>(_truckStockItemRepository.GetTruckStockItemByItemId(itemID));
+            var truckStockItem = _mapper.Map<TruckStockItemVM>(_truckStockItemRepository.GetTruckStockItemByItemId(itemID, truckID));
 
             if (!ModelState.IsValid)
             {

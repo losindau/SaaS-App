@@ -19,9 +19,9 @@ namespace InventoryManagementApp.Data.Repository
             return _context.ToolboxEquipment.Where(t => t.ToolboxEquipmentID == toolboxEquipmentID).FirstOrDefault();
         }
 
-        public ToolboxEquipment GetToolboxEquipmentByEqId(int equipmentID)
+        public ToolboxEquipment GetToolboxEquipmentByEqId(int equipmentID, int toolboxID)
         {
-            return _context.ToolboxEquipment.Where(t => t.EquipmentID == equipmentID).FirstOrDefault();
+            return _context.ToolboxEquipment.Where(t => t.EquipmentID == equipmentID && t.ToolboxID == toolboxID).FirstOrDefault();
         }
 
         public bool ToolboxEquipmentExists(int toolboxEquipmentID)

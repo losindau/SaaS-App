@@ -158,11 +158,22 @@ namespace InventoryManagementApp.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateAccount([FromBody] AppUserVM appUser)
+        public async Task<IActionResult> UpdateAccount([FromBody] AppUserVM appUserVM)
         {
-            var appUserMap = _mapper.Map<AppUser>(appUser);
+            AppUser appUser = await _accountRepository.GetUserByEmail(appUserVM.Email);
 
-            if (!_accountRepository.UpdateAccount(appUserMap))
+            if (appUser == null)
+            {
+                return NotFound();
+            }
+
+            appUser.FirstName = appUserVM.FirstName;
+            appUser.LastName = appUserVM.LastName;
+            appUser.TruckID = appUserVM.TruckID;
+            appUser.CompanyID = appUserVM.CompanyID;
+            appUser.isDeleted = appUserVM.isDeleted;
+
+            if (!_accountRepository.UpdateAccount(appUser))
             {
                 return StatusCode(500, "Something went wrong updating");
             }
