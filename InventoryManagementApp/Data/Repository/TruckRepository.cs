@@ -21,8 +21,12 @@ namespace InventoryManagementApp.Data.Repository
 
         public ICollection<Truck> GetTrucks()
         {
-            return _context.Trucks.Include(u => u.AppUser).Include(x => x.Toolbox.ToolboxEquipments).ThenInclude(x => x.Equipment).Where(t => t.isDeleted == false).OrderBy(t => t.TruckID).ToList();
+            return _context.Trucks.Include(u => u.AppUser).Include(t => t.TruckStockItems).ThenInclude(s => s.StockItem).Include(x => x.Toolbox.ToolboxEquipments).ThenInclude(x => x.Equipment).Where(t => t.isDeleted == false).OrderBy(t => t.TruckID).ToList();
+        }
 
+        public ICollection<Truck> GetTrucksNoPage()
+        {
+            return _context.Trucks.Include(u => u.AppUser).Include(t => t.TruckStockItems).ThenInclude(s => s.StockItem).Include(x => x.Toolbox.ToolboxEquipments).ThenInclude(x => x.Equipment).Where(t => t.isDeleted == false).OrderBy(t => t.TruckID).ToList();
         }
 
         public ICollection<Truck> GetAssignTrucks()

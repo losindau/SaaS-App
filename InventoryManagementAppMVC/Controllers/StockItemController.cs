@@ -9,6 +9,7 @@ using InventoryManagementAppMVC.ViewModels;
 using InventoryManagementAppMVC.Helper;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Twilio.Base;
 
 namespace InventoryManagementAppMVC.Controllers
 {
@@ -67,11 +68,51 @@ namespace InventoryManagementAppMVC.Controllers
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var responsePost = await _httpClient.PostAsJsonAsync("api/StockItem", stockItemVM);
-            if (!responsePost.IsSuccessStatusCode)
+            var responsePostStockItemVM = await _httpClient.PostAsJsonAsync("api/StockItem", stockItemVM);
+            var postStockItemVMContent = await responsePostStockItemVM.Content.ReadAsStringAsync();
+            if (!responsePostStockItemVM.IsSuccessStatusCode)
             {
-                TempData["Error"] = await responsePost.Content.ReadAsStringAsync();
+                TempData["Error"] = postStockItemVMContent;
                 return View(stockItemVM);
+            }
+
+            List<TruckVM> truckVMs = new List<TruckVM>();
+
+            var responseGetTruckVM = await _httpClient.GetAsync("api/Truck");
+            if (responseGetTruckVM.IsSuccessStatusCode)
+            {
+                var apiResponse = await responseGetTruckVM.Content.ReadAsStreamAsync();
+                truckVMs = await JsonSerializer.DeserializeAsync<List<TruckVM>>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() },
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+            List<TruckStockItemVM> truckStockItemVMs = new List<TruckStockItemVM>();
+
+            foreach (var item in truckVMs)
+            {
+                TruckStockItemVM truckStockItemVM = new TruckStockItemVM()
+                {
+                    TruckID = item.TruckID,
+                    StockItemID = int.Parse(postStockItemVMContent),
+                    QuantityInTruck = 0,
+                    CompanyID = int.Parse(companyID),
+                    isDeleted = false
+                };
+
+                truckStockItemVMs.Add(truckStockItemVM);
+            }
+
+            var responsePostTruckStockItem = await _httpClient.PostAsJsonAsync("api/TruckStockItem", truckStockItemVMs);
+            var postTruckStockItemContent = await responsePostTruckStockItem.Content.ReadAsStringAsync();
+
+            if (!responsePostTruckStockItem.IsSuccessStatusCode)
+            {
+                TempData["Error"] = postTruckStockItemContent;
+                return RedirectToAction("Index", new { page = 1 });
             }
 
             TempData["Success"] = "Create new stock item successfully";

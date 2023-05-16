@@ -67,11 +67,51 @@ namespace InventoryManagementAppMVC.Controllers
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var responsePost = await _httpClient.PostAsJsonAsync("api/Equipment", equipmentVM);
-            if (!responsePost.IsSuccessStatusCode)
+            var responsePostEquipment = await _httpClient.PostAsJsonAsync("api/Equipment", equipmentVM);
+            var postEquipmentVMContent = await responsePostEquipment.Content.ReadAsStringAsync();
+            if (!responsePostEquipment.IsSuccessStatusCode)
             {
-                TempData["Error"] = await responsePost.Content.ReadAsStringAsync();
+                TempData["Error"] = postEquipmentVMContent;
                 return View(equipmentVM);
+            }
+
+            List<TruckVM> truckVMs = new List<TruckVM>();
+
+            var responseGetTruckVM = await _httpClient.GetAsync("api/Truck");
+            if (responseGetTruckVM.IsSuccessStatusCode)
+            {
+                var apiResponse = await responseGetTruckVM.Content.ReadAsStreamAsync();
+                truckVMs = await JsonSerializer.DeserializeAsync<List<TruckVM>>(apiResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() },
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+            }
+
+            List<ToolboxEquipmentVM> toolboxEquipmentVMs = new List<ToolboxEquipmentVM>();
+
+            foreach (var item in truckVMs)
+            {
+                ToolboxEquipmentVM toolboxEquipmentVM = new ToolboxEquipmentVM()
+                {
+                    ToolboxID = item.ToolboxID,
+                    EquipmentID = int.Parse(postEquipmentVMContent),
+                    QuantityInToolbox = 0,
+                    CompanyID = int.Parse(companyID),
+                    isDeleted = false
+                };
+
+                toolboxEquipmentVMs.Add(toolboxEquipmentVM);
+            }
+
+            var responsePostToolboxEquipment = await _httpClient.PostAsJsonAsync("api/ToolboxEquipment", toolboxEquipmentVMs);
+            var postToolboxEquipmentContent = await responsePostToolboxEquipment.Content.ReadAsStringAsync();
+
+            if (!responsePostToolboxEquipment.IsSuccessStatusCode)
+            {
+                TempData["Error"] = postToolboxEquipmentContent;
+                return RedirectToAction("Index", new { page = 1 });
             }
 
             TempData["Success"] = "Create new equipment successfully";

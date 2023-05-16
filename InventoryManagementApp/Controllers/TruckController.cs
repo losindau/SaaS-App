@@ -34,11 +34,6 @@ namespace InventoryManagementApp.Controllers
 
             var trucksMap = _mapper.Map<List<TruckVM>>(trucks.Skip((page - 1) * (int)pageResults).Take((int)pageResults));
 
-            foreach (TruckVM us in trucksMap)
-            {
-                us.TruckStockItems = _mapper.Map<List<TruckStockItemVM>>(_truckRepository.GetTruckStockItems(us.TruckID));
-            }
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -52,6 +47,23 @@ namespace InventoryManagementApp.Controllers
             };
 
             return Ok(response);
+        }
+
+        [HttpGet()]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Truck>))]
+        public IActionResult GetTruckNoPage()
+        {
+            var trucks = _truckRepository.GetTrucksNoPage();
+
+            var trucksMap = _mapper.Map<List<TruckVM>>(trucks);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(trucksMap);
         }
 
         [HttpGet("{page}/assigntrucks")]
