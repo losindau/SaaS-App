@@ -100,18 +100,18 @@ namespace InventoryManagementAppMVC.Controllers
                 return RedirectToAction("Index", new { page = 1 });
             }
 
-            string accountSid = _configuration["TwilioAccountDetails:AccountSid"];
-            string authToken = _configuration["TwilioAccountDetails:AuthToken"];
+            //string accountSid = _configuration["TwilioAccountDetails:AccountSid"];
+            //string authToken = _configuration["TwilioAccountDetails:AuthToken"];
 
-            TwilioClient.Init(accountSid, authToken);
+            //TwilioClient.Init(accountSid, authToken);
 
-            var message = MessageResource.Create(
-                body: "Restock log id: #" + restockLogVM.RestockLogID +
-                "\nRequest Date: " + restockLogVM.RequestDate +
-                "\nYour log has been accepted, please go to warehouse and restock.",
-                from: new Twilio.Types.PhoneNumber("+12543213907"),
-                to: new Twilio.Types.PhoneNumber("+84946777827")
-            );
+            //var message = MessageResource.Create(
+            //    body: "Restock log id: #" + restockLogVM.RestockLogID +
+            //    "\nRequest Date: " + restockLogVM.RequestDate +
+            //    "\nYour log has been accepted, please go to warehouse and restock.",
+            //    from: new Twilio.Types.PhoneNumber("+12543213907"),
+            //    to: new Twilio.Types.PhoneNumber("+84946777827")
+            //);
 
             TempData["Success"] = "You have accepted restock log id #" + restockLogID;
             return RedirectToAction("Index", new { page = 1 });

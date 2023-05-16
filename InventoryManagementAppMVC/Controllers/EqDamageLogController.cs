@@ -99,18 +99,18 @@ namespace InventoryManagementAppMVC.Controllers
                 return RedirectToAction("Index", new { page = 1 });
             }
 
-            string accountSid = _configuration["TwilioAccountDetails:AccountSid"];
-            string authToken = _configuration["TwilioAccountDetails:AuthToken"];
+            //string accountSid = _configuration["TwilioAccountDetails:AccountSid"];
+            //string authToken = _configuration["TwilioAccountDetails:AuthToken"];
 
-            TwilioClient.Init(accountSid, authToken);
+            //TwilioClient.Init(accountSid, authToken);
 
-            var message = MessageResource.Create(
-                body: "Equipment Damage/Lost log id: #" + eqDamageLogVM.EqDamageLogID +
-                "\nReport Date: " + eqDamageLogVM.ReportDate +
-                "\nYour log has been accepted, please go to warehouse and restock.",
-                from: new Twilio.Types.PhoneNumber("+12543213907"),
-                to: new Twilio.Types.PhoneNumber("+84946777827")
-            );
+            //var message = MessageResource.Create(
+            //    body: "Equipment Damage/Lost log id: #" + eqDamageLogVM.EqDamageLogID +
+            //    "\nReport Date: " + eqDamageLogVM.ReportDate +
+            //    "\nYour log has been accepted, please go to warehouse and restock.",
+            //    from: new Twilio.Types.PhoneNumber("+12543213907"),
+            //    to: new Twilio.Types.PhoneNumber("+84946777827")
+            //);
 
             TempData["Success"] = "You have accepted Damage/Lost log id #" + eqDamageLogID;
             return RedirectToAction("Index", new { page = 1 });
