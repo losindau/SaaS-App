@@ -132,7 +132,7 @@ namespace InventoryManagementApp.Controllers
                 return StatusCode(500, "Something went wrong while saving");
             }
 
-            return Ok("Successfully created");
+            return Ok(truckMap.TruckID);
         }
 
         [HttpPut("{truckID}")]

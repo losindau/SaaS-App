@@ -17,6 +17,11 @@ namespace InventoryManagementApp.Data.Repository
             return _context.StockItems.Where(i => i.isDeleted == false).OrderBy(i => i.StockItemID).ToList();
         }
 
+        public ICollection<StockItem> GetStockItemsNoPage()
+        {
+            return _context.StockItems.Where(i => i.isDeleted == false).OrderBy(i => i.StockItemID).ToList();
+        }
+
         public StockItem GetStockItemById(int stockitemID)
         {
             return _context.StockItems.Where(i => i.StockItemID == stockitemID).FirstOrDefault();

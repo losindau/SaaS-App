@@ -51,6 +51,23 @@ namespace InventoryManagementApp.Controllers
             return Ok(response);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<StockItem>))]
+        public IActionResult GetStockItemsNoPage()
+        {
+            var stockitems = _stockItemRepository.GetStockItemsNoPage();
+
+            var stockitemsMap = _mapper.Map<List<StockItemVM>>(stockitems);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(stockitemsMap);
+        }
+
         [HttpGet("{stockitemID}")]
         [ProducesResponseType(200, Type = typeof(StockItem))]
         [ProducesResponseType(400)]
